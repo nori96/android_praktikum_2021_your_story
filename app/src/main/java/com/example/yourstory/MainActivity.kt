@@ -2,10 +2,33 @@ package com.example.yourstory
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.navigation.findNavController
+import android.widget.Toolbar
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.navigation.ui.setupWithNavController
+import com.example.yourstory.databinding.ActivityMainBinding
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity() {
+
+    private lateinit var binding: ActivityMainBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        val navView: BottomNavigationView = binding.bottomNavigation;
+
+        val navController = findNavController(R.id.nav_host_fragment_activity_main)
+
+        val appBarConfiguration = AppBarConfiguration(
+            setOf(
+                R.id.navigation_reports, R.id.navigation_today, R.id.navigation_diary
+            )
+        )
+        setupActionBarWithNavController(navController,appBarConfiguration)
+        //navView.setupWithNavController(navController)
     }
 }

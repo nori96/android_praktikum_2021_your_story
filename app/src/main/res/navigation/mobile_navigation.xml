@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@id/navigation_today">
+
+    <fragment android:id="@+id/navigation_reports"
+        android:name="com.example.yourstory.reports.ReportsFragment"
+        android:label="Reports"
+        tools:layout="@layout/reports_fragment"/>
+
+    <fragment android:id="@+id/navigation_today"
+        android:name="com.example.yourstory.today.TodayFragment"
+        android:label="Today"
+        tools:layout="@layout/today_fragment"/>
+
+    <fragment android:id="@+id/navigation_diary"
+        android:name="com.example.yourstory.diary.DiaryFragment"
+        android:label="Diary"
+        tools:layout="@layout/diary_fragment"/>
+
+</navigation>
