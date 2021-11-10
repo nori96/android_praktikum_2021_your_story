@@ -3,7 +3,6 @@ package com.example.yourstory
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.navigation.findNavController
-import android.widget.Toolbar
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
@@ -19,6 +18,7 @@ class MainActivity : AppCompatActivity() {
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
         val navView: BottomNavigationView = binding.bottomNavigation;
 
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
@@ -28,7 +28,8 @@ class MainActivity : AppCompatActivity() {
                 R.id.navigation_reports, R.id.navigation_today, R.id.navigation_diary
             )
         )
+
         setupActionBarWithNavController(navController,appBarConfiguration)
-        //navView.setupWithNavController(navController)
+        navView.setupWithNavController(navController)
     }
 }
