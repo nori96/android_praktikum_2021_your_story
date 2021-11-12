@@ -12,4 +12,6 @@
     <color name="green_selected_nav">#DCFFAF</color>
     <color name="green_darker">#618123</color>
     <color name="green_selected">#618123</color>
+    <color name="back_ground_light_red">#FFF4F4</color>
+    <color name="egg_white">#FDFBEF</color>
 </resources>

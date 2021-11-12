@@ -8,7 +8,17 @@
     <fragment android:id="@+id/navigation_reports"
         android:name="com.example.yourstory.reports.ReportsFragment"
         android:label="Reports"
-        tools:layout="@layout/reports_fragment"/>
+        tools:layout="@layout/reports_fragment">
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|bottom"
+            android:src="@drawable/diary"
+            android:contentDescription="asdfasdfasdf"
+            android:layout_margin="16dp" />
+    </fragment>
+
 
     <fragment android:id="@+id/navigation_today"
         android:name="com.example.yourstory.today.TodayFragment"
