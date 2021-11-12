@@ -9,8 +9,9 @@ import com.example.yourstory.R
 import com.example.yourstory.databinding.ReportRowItemBinding
 import com.example.yourstory.reports.ReportModel
 
-class ReportsAdapter(private val dataSet: ArrayList<ReportModel>) : RecyclerView.Adapter<ReportsAdapter.ViewHolder>(){
+class ReportsAdapter() : RecyclerView.Adapter<ReportsAdapter.ViewHolder>(){
 
+    var dataSet: ArrayList<ReportModel> = arrayListOf()
     private lateinit var binding: ReportRowItemBinding
 
     /**
