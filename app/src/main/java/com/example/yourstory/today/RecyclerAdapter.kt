@@ -23,9 +23,20 @@ class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
     override fun onBindViewHolder(holder: RecyclerAdapter.ViewHolder, position: Int) {
         holder.diaryText.text = todayViewModel.entries.value?.get(position)!!.diaryText//entryTexts[position]
         holder.diaryImage.setImageResource( todayViewModel.entries.value?.get(position)!!.diaryImage)
+        // TODO following line does not work
+        holder.diaryImage.clipToOutline = true
         if (todayViewModel.entries.value?.get(position)!!.diaryImage == 0) {
             (holder.diaryImage.parent as ViewGroup).removeView(holder.diaryImage)
         }
+        if (!todayViewModel.entries.value?.get(position)!!.diaryLocation)
+        {
+            (holder.diaryLocation.parent as ViewGroup).removeView(holder.diaryLocation)
+        }
+        if(!todayViewModel.entries.value?.get(position)!!.diaryAudio)
+        {
+            (holder.diaryAudio.parent as ViewGroup).removeView(holder.diaryAudio)
+        }
+
         //var imageView = v.findViewById<ImageView>(R.id.main_today_image)
         //
     }
@@ -38,10 +49,14 @@ class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
     inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         var diaryText: TextView
         var diaryImage: ImageView
+        var diaryAudio: View
+        var diaryLocation: ImageView
 
         init {
             diaryText = itemView.findViewById(R.id.main_today_text)
             diaryImage = itemView.findViewById(R.id.main_today_image)
+            diaryAudio = itemView.findViewById(R.id.main_today_audio_source)
+            diaryLocation = itemView.findViewById(R.id.main_today_location)
         }
     }
 }
