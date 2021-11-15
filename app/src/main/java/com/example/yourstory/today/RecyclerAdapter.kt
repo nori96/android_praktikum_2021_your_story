@@ -1,5 +1,6 @@
 package com.example.yourstory.today
 
+import android.media.Image
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,13 +16,18 @@ class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
     private var todayViewModel = TodayViewModel()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerAdapter.ViewHolder {
-        val v = LayoutInflater.from(parent.context).inflate(R.layout.text_entry_diary_layout, parent, false)
+        var v = LayoutInflater.from(parent.context).inflate(R.layout.text_entry_diary_layout, parent, false)
         return ViewHolder(v)
     }
 
     override fun onBindViewHolder(holder: RecyclerAdapter.ViewHolder, position: Int) {
         holder.diaryText.text = todayViewModel.entries.value?.get(position)!!.diaryText//entryTexts[position]
         holder.diaryImage.setImageResource( todayViewModel.entries.value?.get(position)!!.diaryImage)
+        if (todayViewModel.entries.value?.get(position)!!.diaryImage == 0) {
+            (holder.diaryImage.parent as ViewGroup).removeView(holder.diaryImage)
+        }
+        //var imageView = v.findViewById<ImageView>(R.id.main_today_image)
+        //
     }
 
     override fun getItemCount(): Int {
