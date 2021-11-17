@@ -10,7 +10,7 @@
 
     <androidx.recyclerview.widget.RecyclerView
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-        app:spanCount="1"
+        app:spanCount="2"
         android:id="@+id/recycler_view_today_page"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
