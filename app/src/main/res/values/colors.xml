@@ -7,6 +7,7 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="white_light_transparent">#DFFFFFFF</color>
 
     <color name="green_standard">#A1E44D</color>
     <color name="green_selected_nav">#DCFFAF</color>
@@ -14,4 +15,11 @@
     <color name="green_selected">#618123</color>
     <color name="back_ground_light_red">#FFF4F4</color>
     <color name="egg_white">#FDFBEF</color>
+
+    <color name="disgust_diagram">#869200</color>
+    <color name="sadness_diagram">#7BB8FF</color>
+    <color name="anger_diagram">#FF8181</color>
+    <color name="joy_diagram">#4BF430</color>
+    <color name="surprise_diagram">#FEF63B</color>
+    <color name="fear_diagram">#B960FF</color>
 </resources>
