@@ -23,8 +23,8 @@ class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
     override fun onBindViewHolder(holder: RecyclerAdapter.ViewHolder, position: Int) {
         holder.diaryText.text = todayViewModel.entries.value?.get(position)!!.diaryText//entryTexts[position]
         holder.diaryImage.setImageResource( todayViewModel.entries.value?.get(position)!!.diaryImage)
-        // TODO following line does not work
         holder.diaryImage.clipToOutline = true
+        holder.diaryLocation.clipToOutline = true
         if (todayViewModel.entries.value?.get(position)!!.diaryImage == 0) {
             (holder.diaryImage.parent as ViewGroup).removeView(holder.diaryImage)
         }
