@@ -15,11 +15,28 @@
     <fragment android:id="@+id/navigation_today"
         android:name="com.example.yourstory.today.TodayFragment"
         android:label="Today"
-        tools:layout="@layout/today_fragment"/>
+        tools:layout="@layout/today_fragment">
+        <action
+            android:id="@+id/action_navigation_today_to_thought_dialog"
+            app:destination="@id/thought_dialog" />
+        <action
+            android:id="@+id/action_navigation_today_to_likertDialog"
+            app:destination="@id/likertDialog" />
+    </fragment>
 
     <fragment android:id="@+id/navigation_diary"
         android:name="com.example.yourstory.diary.DiaryFragment"
         android:label="Diary"
         tools:layout="@layout/diary_fragment"/>
+    <fragment
+        android:id="@+id/thought_dialog"
+        android:name="com.example.yourstory.today.thought.AddThoughtDialog"
+        android:label="thought_dialog_fragment"
+        tools:layout="@layout/thought_dialog_fragment" />
+    <fragment
+        android:id="@+id/likertDialog"
+        android:name="com.example.yourstory.today.likert.LikertDialog"
+        android:label="likert_dialog_fragment"
+        tools:layout="@layout/likert_dialog_fragment" />
 
 </navigation>
