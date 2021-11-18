@@ -18,8 +18,8 @@ class TodayFragment : Fragment() {
 
     private lateinit var viewModel: TodayViewModel
 
-    private var layoutManager: RecyclerView.LayoutManager? = null
-    private var todayAdapter: RecyclerView.Adapter<RecyclerAdapter.ViewHolder>? = null
+    //private var layoutManager: RecyclerView.LayoutManager? = null
+    //private var todayAdapter: RecyclerView.Adapter<RecyclerAdapter.ViewHolder>? = null
 
     // TodayFragmentBinding is a generated datatype...
     private var _binding: TodayFragmentBinding? = null
@@ -48,7 +48,7 @@ class TodayFragment : Fragment() {
             // set the custom adapter to the RecyclerView
             todayAdapter = RecyclerAdapter()
         }*/
-        binding.recyclerViewTodayPage.layoutManager = LinearLayoutManager(activity)
+        //binding.recyclerViewTodayPage.layoutManager = LinearLayoutManager(activity)
         binding.recyclerViewTodayPage.adapter = RecyclerAdapter()
     }
 

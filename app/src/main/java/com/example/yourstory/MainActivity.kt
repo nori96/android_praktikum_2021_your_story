@@ -3,6 +3,7 @@ package com.example.yourstory
 import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.widget.Toolbar
@@ -24,8 +25,9 @@ class MainActivity : AppCompatActivity() {
     private lateinit var hostFragment: Fragment
     private lateinit var hostFramentNavController: NavController
 
+    private var fabClicked = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
-        //TODO: Settings
         super.onCreate(savedInstanceState)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -45,6 +47,25 @@ class MainActivity : AppCompatActivity() {
                 R.id.navigation_reports, R.id.navigation_today, R.id.navigation_diary
             )
         )
+        binding.rootFab.setOnClickListener {
+            if (!fabClicked) {
+                binding.likertFab.visibility = View.VISIBLE
+                binding.thoughtFab.visibility = View.VISIBLE
+            }
+            else {
+                binding.likertFab.visibility = View.INVISIBLE
+                binding.thoughtFab.visibility = View.INVISIBLE
+            }
+            fabClicked = !fabClicked
+        }
+        binding.thoughtFab.setOnClickListener {
+            navController.navigate(R.id.thought_dialog)
+        }
+        binding.likertFab.setOnClickListener {
+            navController.navigate(R.id.likertDialog)
+        }
+        setupActionBarWithNavController(navController,appBarConfiguration)
+        navView.setupWithNavController(navController)
 
         setupActionBarWithNavController(hostFramentNavController,appBarConfiguration)
         bottomNavigationView.setupWithNavController(hostFramentNavController)
