@@ -42,7 +42,7 @@
             app:layout_constraintRight_toRightOf="@+id/root_fab"
             app:fabSize="mini"
             android:visibility="invisible"
-            android:src="@drawable/ic_baseline_add_24"
+            android:src="@drawable/likert"
 
             android:layout_margin="16dp">
         </com.google.android.material.floatingactionbutton.FloatingActionButton>
@@ -54,7 +54,7 @@
             app:layout_constraintBottom_toTopOf="@+id/root_fab"
             app:layout_constraintLeft_toLeftOf="@+id/root_fab"
             app:layout_constraintRight_toRightOf="@+id/root_fab"
-            android:src="@drawable/ic_baseline_add_24"
+            android:src="@drawable/thought"
             android:layout_margin="16dp"
             android:visibility="invisible"
             app:fabSize="mini">

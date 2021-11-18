@@ -30,12 +30,12 @@
     <fragment
         android:id="@+id/thought_dialog"
         android:name="com.example.yourstory.today.thought.AddThoughtDialog"
-        android:label="thought_dialog_fragment"
+        android:label="Create Thought"
         tools:layout="@layout/thought_dialog_fragment" />
     <fragment
         android:id="@+id/likertDialog"
         android:name="com.example.yourstory.today.likert.LikertDialog"
-        android:label="likert_dialog_fragment"
+        android:label="Record Emotional State"
         tools:layout="@layout/likert_dialog_fragment" />
 
     <fragment
