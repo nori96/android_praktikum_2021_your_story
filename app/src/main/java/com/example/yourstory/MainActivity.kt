@@ -59,17 +59,16 @@ class MainActivity : AppCompatActivity() {
             fabClicked = !fabClicked
         }
         binding.thoughtFab.setOnClickListener {
-            navController.navigate(R.id.thought_dialog)
+            hostFramentNavController.navigate(R.id.thought_dialog)
         }
         binding.likertFab.setOnClickListener {
-            navController.navigate(R.id.likertDialog)
+            hostFramentNavController.navigate(R.id.likertDialog)
         }
-        setupActionBarWithNavController(navController,appBarConfiguration)
-        navView.setupWithNavController(navController)
+        setupActionBarWithNavController(hostFramentNavController, appBarConfiguration)
+        bottomNavigationView.setupWithNavController(hostFramentNavController)
 
         setupActionBarWithNavController(hostFramentNavController,appBarConfiguration)
         bottomNavigationView.setupWithNavController(hostFramentNavController)
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
