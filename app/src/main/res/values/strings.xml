@@ -18,6 +18,10 @@
     <string name="settings_allow_data_collection_summary">Allow data collection to generate a movement profile.</string>
     <string name="settings_scanning_interval_title">Interval for scanning</string>
     <string name="settings_scanning_interval_summary">If allowed, define an interval for scanning the location in minutes</string>
+    <string name="notification">Notification</string>
+    <string name="settings_enable_notifications">Enable notifications</string>
+    <string name="settings_notification_interval_title">Notification interval</string>
+    <string name="settings_notification_interval_text">Define an interval for sending notifications</string>
 
 
 </resources>

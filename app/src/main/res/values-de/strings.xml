@@ -14,4 +14,8 @@
     <string name="settings_allow_data_collection_title">Bewegungsprofil</string>
     <string name="settings_scanning_interval_title">Abtastfrequenz</string>
     <string name="settings_scanning_interval_summary">Falls aktiviert, legen Sie ein Intervall für die Abstastung des Standorts in Minuten fest.</string>
+    <string name="notification">Benachrichtigungen</string>
+    <string name="settings_enable_notifications">Benachrichtigungen erlauben</string>
+    <string name="settings_notification_interval_title">Notification interval</string>
+    <string name="settings_notification_interval_text">Define an interval for sending notifications</string>
 </resources>
