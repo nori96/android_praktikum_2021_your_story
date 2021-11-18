@@ -1,4 +1,4 @@
-package com.example.yourstory.reports.view
+package com.example.yourstory.reports
 
 import android.view.LayoutInflater
 import android.view.View
@@ -6,14 +6,11 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.yourstory.R
-import com.example.yourstory.databinding.ReportRowItemBinding
-import com.example.yourstory.reports.ReportModel
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.utils.ColorTemplate
-import kotlin.math.absoluteValue
 
 class ReportsAdapter() : RecyclerView.Adapter<ReportsAdapter.ViewHolder>(){
 
@@ -47,7 +44,7 @@ class ReportsAdapter() : RecyclerView.Adapter<ReportsAdapter.ViewHolder>(){
         }
     }
 
-    override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ReportsAdapter.ViewHolder {
+    override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
         // Create a new view, which defines the UI of the list item
         val context = viewGroup.context
         val inflater = LayoutInflater.from(context)
@@ -55,7 +52,7 @@ class ReportsAdapter() : RecyclerView.Adapter<ReportsAdapter.ViewHolder>(){
         return ViewHolder(reportView)
     }
 
-    override fun onBindViewHolder(viewHolder: ReportsAdapter.ViewHolder, position: Int) {
+    override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         viewHolder.textViewDate.text = dataSet[position].date
         viewHolder.textViewAverage.text = dataSet[position].average.toString()
         viewHolder.textViewTimeInterval.text = dataSet[position].interval

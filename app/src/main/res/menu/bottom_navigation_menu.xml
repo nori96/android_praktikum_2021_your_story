@@ -4,15 +4,15 @@
         android:id="@+id/navigation_reports"
         android:enabled="true"
         android:icon="@drawable/diagramm"
-        android:title="@string/text_menu_1"/>
+        android:title="@string/reports_caps"/>
     <item
         android:id="@+id/navigation_today"
         android:enabled="true"
         android:icon="@drawable/ic_baseline_today_24"
-        android:title="@string/text_menu_2"/>
+        android:title="@string/today_caps"/>
     <item
         android:id="@+id/navigation_diary"
         android:enabled="true"
         android:icon="@drawable/diary"
-        android:title="@string/text_menu_3"/>
+        android:title="@string/diary_caps"/>
 </menu>

@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.yourstory.R
 import com.example.yourstory.databinding.ReportsFragmentBinding
-import com.example.yourstory.reports.view.ReportsAdapter
 
 class ReportsFragment : Fragment() {
 

@@ -1,22 +1,31 @@
 package com.example.yourstory
 
+import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
+import android.view.MenuItem
 import androidx.appcompat.widget.Toolbar
+import androidx.fragment.app.Fragment
+import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.yourstory.databinding.ActivityMainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var toolbar: Toolbar
+    private lateinit var bottomNavigationView: BottomNavigationView
+    private lateinit var hostFragment: Fragment
+    private lateinit var hostFramentNavController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        //TODO: Settings
         super.onCreate(savedInstanceState)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -24,11 +33,12 @@ class MainActivity : AppCompatActivity() {
 
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
+
         toolbar.inflateMenu(R.menu.toolbar_settings_menu)
 
-        val navView: BottomNavigationView = binding.bottomNavigation;
+        bottomNavigationView  = binding.bottomNavigation;
 
-        val navController = findNavController(R.id.nav_host_fragment_activity_main)
+        hostFramentNavController = findNavController(R.id.host_fragment)
 
         val appBarConfiguration = AppBarConfiguration(
             setOf(
@@ -36,8 +46,9 @@ class MainActivity : AppCompatActivity() {
             )
         )
 
-        setupActionBarWithNavController(navController,appBarConfiguration)
-        navView.setupWithNavController(navController)
+        setupActionBarWithNavController(hostFramentNavController,appBarConfiguration)
+        bottomNavigationView.setupWithNavController(hostFramentNavController)
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -45,5 +56,28 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 
+    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
+        16908332 -> {
+            onBackPressed()
+            true
+        }
+        R.id.action_settings -> {
+            // User chose the "Settings" item, show the app settings UI...
+            hostFramentNavController.navigate(R.id.settingsFragment)
+            true
+        }
 
+        R.id.action_help -> {
+            // User chose the "Favorite" action, mark the current item
+            // as a favorite...
+            hostFramentNavController.navigate(R.id.helpFragment)
+            true
+        }
+
+        else -> {
+            // If we got here, the user's action was not recognized.
+            // Invoke the superclass to handle it.
+            super.onOptionsItemSelected(item)
+        }
+    }
 }

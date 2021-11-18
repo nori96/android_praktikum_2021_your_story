@@ -1,10 +1,23 @@
 <resources>
     <string name="app_name">Your Story</string>
     <!--navigation_bar-->
-    <string name="text_menu_1">REPORTS</string>
-    <string name="text_menu_2">TODAY</string>
-    <string name="text_menu_3">DIARY</string>
+    <string name="reports_caps">REPORTS</string>
+    <string name="today_caps">TODAY</string>
+    <string name="diary_caps">DIARY</string>
     <!--toolbar_menu-->
-    <string name="toolbar_settings">Settings</string>
-    <string name="toolbar_help">Help</string>
+    <string name="settings">Settings</string>
+    <string name="help">Help</string>
+    <string name="reports">reports</string>
+    <string name="today">today</string>
+    <string name="diary">diary</string>
+
+
+    <!-- Preference Titles -->
+    <string name="location_title">location</string>
+    <string name="settings_allow_data_collection_title">Movement Profiling</string>
+    <string name="settings_allow_data_collection_summary">Allow data collection to generate a movement profile.</string>
+    <string name="settings_scanning_interval_title">Interval for scanning</string>
+    <string name="settings_scanning_interval_summary">If allowed, define an interval for scanning the location in minutes</string>
+
+
 </resources>

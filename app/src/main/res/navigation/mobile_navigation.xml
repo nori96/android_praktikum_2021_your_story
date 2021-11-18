@@ -7,27 +7,24 @@
 
     <fragment android:id="@+id/navigation_reports"
         android:name="com.example.yourstory.reports.ReportsFragment"
-        android:label="Reports"
-        tools:layout="@layout/reports_fragment">
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end|bottom"
-            android:src="@drawable/diary"
-            android:contentDescription="asdfasdfasdf"
-            android:layout_margin="16dp" />
-    </fragment>
-
-
+        android:label="@string/reports"
+        tools:layout="@layout/reports_fragment"/>
     <fragment android:id="@+id/navigation_today"
         android:name="com.example.yourstory.today.TodayFragment"
-        android:label="Today"
+        android:label="@string/today"
         tools:layout="@layout/today_fragment"/>
 
     <fragment android:id="@+id/navigation_diary"
         android:name="com.example.yourstory.diary.DiaryFragment"
-        android:label="Diary"
+        android:label="@string/diary"
         tools:layout="@layout/diary_fragment"/>
-
+    <fragment
+        android:id="@+id/helpFragment"
+        android:name="com.example.yourstory.help.HelpFragment"
+        android:label="@string/help"
+        tools:layout="@layout/help_fragment" />
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.example.yourstory.settings.SettingsFragment"
+        android:label="@string/settings" />
 </navigation>

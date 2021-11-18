@@ -9,15 +9,20 @@
         <entry key="..\:/Users/Erik/StudioProjects/android_praktikum/app/src/main/res/drawable/ic_baseline_share_24.xml" value="0.37864583333333335" />
         <entry key="..\:/Users/Erik/StudioProjects/android_praktikum/app/src/main/res/drawable/ic_baseline_today_24.xml" value="0.37864583333333335" />
         <entry key="..\:/Users/Erik/StudioProjects/android_praktikum/app/src/main/res/drawable/ic_launcher_background.xml" value="0.37864583333333335" />
+        <entry key="..\:/Users/Erik/StudioProjects/android_praktikum/app/src/main/res/layout-land/activity_main.xml" value="0.24514991181657847" />
         <entry key="..\:/Users/Erik/StudioProjects/android_praktikum/app/src/main/res/layout/activity_main.xml" value="0.25815217391304346" />
         <entry key="..\:/Users/Erik/StudioProjects/android_praktikum/app/src/main/res/layout/diary_fragment.xml" value="0.22" />
+        <entry key="..\:/Users/Erik/StudioProjects/android_praktikum/app/src/main/res/layout/help_fragment.xml" value="0.20520833333333333" />
         <entry key="..\:/Users/Erik/StudioProjects/android_praktikum/app/src/main/res/layout/report_row_item.xml" value="0.33" />
         <entry key="..\:/Users/Erik/StudioProjects/android_praktikum/app/src/main/res/layout/reports_fragment.xml" value="0.20260416666666667" />
+        <entry key="..\:/Users/Erik/StudioProjects/android_praktikum/app/src/main/res/layout/settings_fragment.xml" value="0.22" />
         <entry key="..\:/Users/Erik/StudioProjects/android_praktikum/app/src/main/res/layout/text_entry_diary_layout.xml" value="0.17426545086119555" />
         <entry key="..\:/Users/Erik/StudioProjects/android_praktikum/app/src/main/res/layout/text_row_item.xml" value="0.1762917933130699" />
         <entry key="..\:/Users/Erik/StudioProjects/android_praktikum/app/src/main/res/layout/today_fragment.xml" value="0.20260416666666667" />
         <entry key="..\:/Users/Erik/StudioProjects/android_praktikum/app/src/main/res/menu/bottom_navigation_menu.xml" value="0.3625" />
         <entry key="..\:/Users/Erik/StudioProjects/android_praktikum/app/src/main/res/menu/toolbar_settings_menu.xml" value="0.2942708333333333" />
+        <entry key="..\:/Users/Erik/StudioProjects/android_praktikum/app/src/main/res/xml-v26/root_preferences.xml" value="0.17239583333333333" />
+        <entry key="..\:/Users/Erik/StudioProjects/android_praktikum/app/src/main/res/xml/root_preferences.xml" value="0.25" />
       </map>
     </option>
   </component>

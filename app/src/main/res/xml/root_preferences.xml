@@ -1,0 +1,30 @@
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:title="@string/location_title">
+
+        <SwitchPreferenceCompat
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:key="location"
+            app:title="@string/settings_allow_data_collection_title"
+            app:summary="@string/settings_allow_data_collection_summary"/>
+
+        <SeekBarPreference
+            android:defaultValue="true"
+            app:defaultValue="15"
+            app:dependency="location"
+            app:key="interval"
+            app:min="0"
+            app:seekBarIncrement="5"
+            android:max="60"
+            app:isPreferenceVisible="true"
+            app:showSeekBarValue="true"
+            app:title="@string/settings_scanning_interval_title"
+            app:summary="@string/settings_allow_data_collection_summary"/>
+    </PreferenceCategory>
+
+</PreferenceScreen>
