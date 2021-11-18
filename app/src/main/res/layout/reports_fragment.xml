@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:alpha="0.1"
     tools:context=".reports.ReportsFragment">
 
     <ImageView
@@ -18,6 +17,8 @@
         app:srcCompat="@drawable/graph" />
 
     <androidx.recyclerview.widget.RecyclerView
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:spanCount="1"
         android:id="@+id/report_recycler_view"
         android:layout_width="0dp"
         android:layout_height="0dp"

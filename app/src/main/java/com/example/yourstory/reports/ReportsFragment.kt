@@ -30,7 +30,6 @@ class ReportsFragment : Fragment() {
 
         recyclerView = views.findViewById(R.id.report_recycler_view)
         recyclerView.adapter = ReportsAdapter()
-        recyclerView.layoutManager = LinearLayoutManager(this.context)
 
 
 
