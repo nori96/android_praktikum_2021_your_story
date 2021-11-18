@@ -70,7 +70,7 @@
             android:layout_marginTop="10dp"
             android:layout_height="50dp"
             android:background="@drawable/round_outline"
-            android:backgroundTint="@color/media_player_blue"
+            android:backgroundTint="@color/green_standard"
             android:src="@drawable/ic_baseline_play_arrow_24"
             android:scaleType="fitCenter"
 
