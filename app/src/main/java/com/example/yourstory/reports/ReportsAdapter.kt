@@ -36,11 +36,11 @@ class ReportsAdapter() : RecyclerView.Adapter<ReportsAdapter.ViewHolder>(){
             barChart.description.text = ""
             barChart.xAxis.isEnabled = false
             barChart.isClickable = false
-            barChart.setDrawGridBackground(false)
             barChart.isDoubleTapToZoomEnabled = false
             barChart.axisLeft.setDrawLabels(false)
             barChart.axisRight.setDrawLabels(false)
             barChart.legend.isEnabled = false
+            barChart.setDrawValueAboveBar(true)
         }
     }
 
