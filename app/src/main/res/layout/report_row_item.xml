@@ -18,8 +18,8 @@
 
         <com.github.mikephil.charting.charts.BarChart
             android:id="@+id/barChart"
-            android:layout_width="150dp"
-            android:layout_height="80dp"
+            android:layout_width="200dp"
+            android:layout_height="130dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"></com.github.mikephil.charting.charts.BarChart>
@@ -31,7 +31,7 @@
             android:layout_marginBottom="4dp"
             android:text="Date"
             android:textColor="@color/black"
-            android:textSize="14dp"
+            android:textSize="18dp"
             app:layout_constraintBottom_toTopOf="@+id/report_item_MS"
             app:layout_constraintStart_toStartOf="@+id/report_item_MS" />
 
@@ -41,7 +41,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:text="00.00.00 - 0.00.00"
-            android:textSize="12dp"
+            android:textSize="14dp"
             app:layout_constraintStart_toStartOf="@+id/report_item_MS"
             app:layout_constraintTop_toBottomOf="@+id/report_item_MS" />
 
@@ -51,15 +51,15 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:text="MS"
-            android:textSize="12dp"
+            android:textSize="14dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/barChart"
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
             android:id="@+id/report_item_share"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
             android:background="@drawable/ic_baseline_share_24"
             android:text=""
             app:layout_constraintEnd_toEndOf="parent"
