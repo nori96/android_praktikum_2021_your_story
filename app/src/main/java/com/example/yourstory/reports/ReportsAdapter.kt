@@ -41,6 +41,7 @@ class ReportsAdapter() : RecyclerView.Adapter<ReportsAdapter.ViewHolder>(){
             barChart.axisRight.setDrawLabels(false)
             barChart.legend.isEnabled = false
             barChart.setDrawValueAboveBar(true)
+            barChart.setMaxVisibleValueCount(0)
         }
     }
 
