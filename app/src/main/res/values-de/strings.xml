@@ -18,4 +18,10 @@
     <string name="settings_enable_notifications">Benachrichtigungen erlauben</string>
     <string name="settings_notification_interval_title">Notification interval</string>
     <string name="settings_notification_interval_text">Define an interval for sending notifications</string>
+
+    <!--thought dialog -->
+    <string name="thought_dialog_audio">Audioaufnahme</string>
+    <string name="thought_dialog_image">Bild</string>
+    <string name="thought_dialog_location">Ort</string>
+    <string name="thought_dialog_text">Text</string>
 </resources>

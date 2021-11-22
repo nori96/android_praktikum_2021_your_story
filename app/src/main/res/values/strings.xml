@@ -12,6 +12,12 @@
     <string name="diary">Diary</string>
 
 
+    <!--thought dialog -->
+    <string name="thought_dialog_audio">Voice</string>
+    <string name="thought_dialog_image">Image</string>
+    <string name="thought_dialog_location">Location</string>
+    <string name="thought_dialog_text">Text</string>
+
     <!-- Preference Titles -->
     <string name="location_title">location</string>
     <string name="settings_allow_data_collection_title">Movement Profiling</string>
