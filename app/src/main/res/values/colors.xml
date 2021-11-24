@@ -9,7 +9,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="white_light_transparent">#DFFFFFFF</color>
     <color name="dialog_blue">#4D68EDCB</color>
-
+    <color name="non_clickable_grey">#888888</color>
     <color name="green_standard">#A1E44D</color>
     <color name="green_selected_nav">#DCFFAF</color>
     <color name="green_darker">#618123</color>

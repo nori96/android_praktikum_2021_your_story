@@ -17,6 +17,9 @@
     <string name="thought_dialog_image">Image</string>
     <string name="thought_dialog_location">Location</string>
     <string name="thought_dialog_text">Text</string>
+    <string name="thought_dialog_heading">Thought</string>
+    <string name="thought_dialog_permission_location">Please allow location access for recording it.</string>
+    <string name="thought_dialog_permission_camera">Please allow camera access to take a picture.</string>
 
     <!-- Preference Titles -->
     <string name="location_title">location</string>

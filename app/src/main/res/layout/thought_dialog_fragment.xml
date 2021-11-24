@@ -5,7 +5,6 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".today.thought.AddThoughtDialog">
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -19,8 +18,7 @@
             android:layout_marginLeft="16dp"
             android:layout_marginTop="16dp"
             android:textSize="32dp"
-            android:text="Thought">
-
+            android:text="@string/thought_dialog_heading">
         </TextView>
         <LinearLayout
             android:layout_width="0dp"
@@ -44,6 +42,7 @@
                     android:layout_weight="1"
                     android:layout_height="match_parent">
                     <androidx.cardview.widget.CardView
+                        android:id="@+id/thought_image_card_view"
                         app:layout_constraintDimensionRatio="1:1"
                         android:layout_width="0dp"
                         android:layout_height="0dp"
@@ -65,7 +64,7 @@
                                 android:layout_width="60dp"
                                 android:layout_height="60dp"
                                 android:layout_centerInParent="true"
-                                android:src="@drawable/thougt_dialog_image"></ImageView>
+                                android:src="@drawable/thougt_dialog_image" />
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -83,6 +82,7 @@
                     android:layout_weight="1"
                     android:layout_height="match_parent">
                     <androidx.cardview.widget.CardView
+                        android:id="@+id/thought_voice_card_view"
                         app:layout_constraintDimensionRatio="1:1"
                         android:layout_width="0dp"
                         android:layout_height="0dp"
@@ -103,8 +103,7 @@
                                 android:layout_width="50dp"
                                 android:layout_height="50dp"
                                 android:src="@drawable/microphone"
-                                android:layout_centerInParent="true">
-                            </ImageView>
+                                android:layout_centerInParent="true"/>
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -128,6 +127,7 @@
                     android:layout_weight="1"
                     android:layout_height="match_parent">
                     <androidx.cardview.widget.CardView
+                        android:id="@+id/thought_text_card_view"
                         app:layout_constraintDimensionRatio="1:1"
                         android:layout_width="0dp"
                         android:layout_height="0dp"
@@ -149,7 +149,7 @@
                                 android:layout_width="40dp"
                                 android:layout_height="40dp"
                                 android:layout_centerInParent="true"
-                                android:src="@drawable/thought_letter_t"></ImageView>
+                                android:src="@drawable/thought_letter_t" />
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -166,6 +166,7 @@
                     android:layout_weight="1"
                     android:layout_height="match_parent">
                     <androidx.cardview.widget.CardView
+                        android:id="@+id/thought_location_card_view"
                         app:layout_constraintDimensionRatio="1:1"
                         android:layout_width="0dp"
                         android:layout_height="0dp"
@@ -187,7 +188,7 @@
                                 android:layout_width="60dp"
                                 android:layout_height="60dp"
                                 android:layout_centerInParent="true"
-                                android:src="@drawable/tought_dialog_location"></ImageView>
+                                android:src="@drawable/tought_dialog_location" />
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"

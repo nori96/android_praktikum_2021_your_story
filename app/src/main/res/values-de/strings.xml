@@ -24,4 +24,7 @@
     <string name="thought_dialog_image">Bild</string>
     <string name="thought_dialog_location">Ort</string>
     <string name="thought_dialog_text">Text</string>
+    <string name="thought_dialog_heading">Gedanke</string>
+    <string name="thought_dialog_permission_location">Erlauben Sie den Zugriff auf den Standort, um diesen aufzunehmen</string>
+    <string name="thought_dialog_permission_camera">Erlauben Sie den Kamerazugriff, um ein Bild aufzunehmen.</string>
 </resources>
