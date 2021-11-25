@@ -20,6 +20,145 @@
             android:textSize="32dp"
             android:text="@string/thought_dialog_heading">
         </TextView>
+
+        <ImageView
+            android:id="@+id/cancel_thought_image_card_view_icon"
+            app:layout_constraintTop_toTopOf="@+id/cancel_thought_image_card_view"
+            app:layout_constraintRight_toRightOf="@+id/cancel_thought_image_card_view"
+            android:layout_marginRight="-8dp"
+            android:layout_marginTop="-8dp"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/cancel_thought_dialog"
+            android:elevation="4dp"/>
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cancel_thought_image_card_view"
+            app:layout_constraintDimensionRatio="1:1"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:cardBackgroundColor="@color/white"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="3dp"
+            app:contentPadding="4dp"
+            android:layout_marginRight="32dp"
+            android:layout_marginTop="24dp">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/thougt_dialog_image" />
+            </RelativeLayout>
+        </androidx.cardview.widget.CardView>
+
+        <ImageView
+            android:id="@+id/cancel_thought_audio_card_view_icon"
+            app:layout_constraintTop_toTopOf="@+id/cancel_thought_audio_card_view"
+            app:layout_constraintRight_toRightOf="@+id/cancel_thought_audio_card_view"
+            android:layout_marginRight="-8dp"
+            android:layout_marginTop="-8dp"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/cancel_thought_dialog"
+            android:elevation="4dp"/>
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cancel_thought_audio_card_view"
+            app:layout_constraintDimensionRatio="1:1"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            app:layout_constraintRight_toLeftOf="@id/cancel_thought_image_card_view"
+            app:layout_constraintTop_toTopOf="parent"
+            app:cardBackgroundColor="@color/white"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="3dp"
+            app:contentPadding="4dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="24dp">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <ImageView
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/microphone"/>
+            </RelativeLayout>
+        </androidx.cardview.widget.CardView>
+
+        <ImageView
+            android:id="@+id/cancel_thought_location_card_view_icon"
+            app:layout_constraintTop_toTopOf="@+id/cancel_thought_location_card_view"
+            app:layout_constraintRight_toRightOf="@+id/cancel_thought_location_card_view"
+            android:layout_marginRight="-8dp"
+            android:layout_marginTop="-8dp"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/cancel_thought_dialog"
+            android:elevation="4dp"/>
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cancel_thought_location_card_view"
+            app:layout_constraintDimensionRatio="1:1"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            app:layout_constraintRight_toLeftOf="@id/cancel_thought_audio_card_view"
+            app:layout_constraintTop_toTopOf="parent"
+            app:cardBackgroundColor="@color/white"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="3dp"
+            app:contentPadding="4dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="24dp">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <ImageView
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/tought_dialog_location"/>
+            </RelativeLayout>
+        </androidx.cardview.widget.CardView>
+
+        <ImageView
+            android:id="@+id/cancel_thought_text_card_view_icon"
+            app:layout_constraintTop_toTopOf="@+id/cancel_thought_text_card_view"
+            app:layout_constraintRight_toRightOf="@+id/cancel_thought_text_card_view"
+            android:layout_marginRight="-8dp"
+            android:layout_marginTop="-8dp"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/cancel_thought_dialog"
+            android:elevation="4dp"/>
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cancel_thought_text_card_view"
+            app:layout_constraintDimensionRatio="1:1"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            app:layout_constraintRight_toLeftOf="@id/cancel_thought_location_card_view"
+            app:layout_constraintTop_toTopOf="parent"
+            app:cardBackgroundColor="@color/white"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="3dp"
+            app:contentPadding="4dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="24dp">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/thought_letter_t" />
+            </RelativeLayout>
+        </androidx.cardview.widget.CardView>
+
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -29,8 +168,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintDimensionRatio="1:1"
             android:layout_margin="16dp"
-            android:orientation="vertical"
-            >
+            android:orientation="vertical">
             <LinearLayout
                 android:layout_weight="1"
                 android:layout_width="match_parent"
@@ -98,12 +236,13 @@
                         <RelativeLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent">
+
                             <ImageView
                                 android:id="@+id/microphone_image"
                                 android:layout_width="50dp"
                                 android:layout_height="50dp"
-                                android:src="@drawable/microphone"
-                                android:layout_centerInParent="true"/>
+                                android:layout_centerInParent="true"
+                                android:src="@drawable/microphone" />
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -202,5 +341,23 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </LinearLayout>
         </LinearLayout>
+        <TextView
+            android:id= "@+id/confirm_thought_dialog"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:text="@string/finish_dialog"
+            android:layout_margin="16dp"
+            android:textSize="28dp" />
+        <TextView
+            android:id= "@+id/cancel_thought_dialog"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/confirm_thought_dialog"
+            android:text="@string/cancel_dialog"
+            android:layout_margin="16dp"
+            android:textSize="28dp" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

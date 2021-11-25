@@ -31,4 +31,8 @@
     <string name="thought_dialog_permission_location_permanently">Erlauben Sie den Zugriff auf den Standort in den Einstellungen. Dies ist notwendig, um den Standort einem Tagebucheintrag hinzuzufügen.</string>
     <string name="thought_dialog_permission_camera_permanently">Erlauben Sie den Zugriff auf die Kamera in den Einstellungen. Dies ist notwendig, um ein Bild einem Tagebucheintrag hinzuzufügen.</string>
     <string name="thought_dialog_permission_audio_permanently">Erlauben Sie den Zugriff auf das Mikrophon in den Einstellungen. Dies ist notwendig, um eine Audio einem Tagebucheintrag hinzuzufügen.</string>
+
+    <!-- dialog ok cancel texts -->
+    <string name="finish_dialog">Bestätigen</string>
+    <string name="cancel_dialog">Zurück</string>
 </resources>

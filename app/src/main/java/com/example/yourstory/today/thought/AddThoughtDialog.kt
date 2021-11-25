@@ -1,8 +1,10 @@
 package com.example.yourstory.today.thought
 
 import android.Manifest
+import android.opengl.Visibility
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -22,10 +24,17 @@ class AddThoughtDialog : Fragment(), EasyPermissions.PermissionCallbacks {
         const val PERMISSION_CAMERA_REQUEST_CODE = 3
     }
 
-    private lateinit var viewModel: ThoughtDialogViewModel
+    private lateinit var viewModelShared: SharedThoughtDialogViewModel
     private lateinit var hostFragmentNavController: NavController
     private var _binding: ThoughtDialogFragmentBinding? = null
     private val binding get() = _binding!!
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+
+
+
+        super.onCreate(savedInstanceState)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,7 +42,7 @@ class AddThoughtDialog : Fragment(), EasyPermissions.PermissionCallbacks {
     ): View? {
 
         _binding = ThoughtDialogFragmentBinding.inflate(inflater, container, false)
-
+        viewModelShared = ViewModelProvider(requireActivity())[SharedThoughtDialogViewModel::class.java]
         hostFragmentNavController = findNavController(this)
         binding.thoughtLocationCardView.setOnClickListener {
             if (hasLocationPermission()) {
@@ -59,6 +68,70 @@ class AddThoughtDialog : Fragment(), EasyPermissions.PermissionCallbacks {
                 requestMicrophonePermission()
             }
         }
+        binding.confirmThoughtDialog.setOnClickListener {
+            // TODO some action on the database
+            hostFragmentNavController.navigate(R.id.navigation_today)
+        }
+        binding.cancelThoughtDialog.setOnClickListener {
+            hostFragmentNavController.navigate(R.id.navigation_today)
+        }
+
+
+        viewModelShared.hasLocation.observe(viewLifecycleOwner, { location ->
+            if (location) {
+                binding.cancelThoughtLocationCardView.visibility = View.VISIBLE
+                binding.cancelThoughtLocationCardViewIcon.visibility = View.VISIBLE
+            } else {
+                binding.cancelThoughtLocationCardView.visibility = View.INVISIBLE
+                binding.cancelThoughtLocationCardViewIcon.visibility = View.INVISIBLE
+            }
+        })
+        binding.cancelThoughtLocationCardViewIcon.setOnClickListener {
+            viewModelShared.hasLocation.value = false
+        }
+
+        viewModelShared.hasImage.observe(viewLifecycleOwner, { image ->
+            if (image) {
+                binding.cancelThoughtImageCardView.visibility = View.VISIBLE
+                binding.cancelThoughtImageCardViewIcon.visibility = View.VISIBLE
+            } else {
+                binding.cancelThoughtImageCardView.visibility = View.INVISIBLE
+                binding.cancelThoughtImageCardViewIcon.visibility = View.INVISIBLE
+            }
+        })
+        binding.cancelThoughtImageCardViewIcon.setOnClickListener {
+            viewModelShared.hasImage.value = false
+        }
+
+        viewModelShared.hasAudio.observe(viewLifecycleOwner, { audio ->
+            if (audio) {
+                Log.i("asdff", viewModelShared.hasAudio.value.toString());
+                binding.cancelThoughtAudioCardView.visibility = View.VISIBLE
+                binding.cancelThoughtAudioCardViewIcon.visibility = View.VISIBLE
+            } else {
+                Log.i("asdfq", viewModelShared.hasAudio.value.toString());
+                binding.cancelThoughtAudioCardView.visibility = View.INVISIBLE
+                binding.cancelThoughtAudioCardViewIcon.visibility = View.INVISIBLE
+            }
+        })
+        binding.cancelThoughtAudioCardViewIcon.setOnClickListener {
+            viewModelShared.hasAudio.value = false
+            Log.i("asdf", viewModelShared.hasAudio.value.toString());
+        }
+
+        viewModelShared.hasText.observe(viewLifecycleOwner, { text ->
+            if (text) {
+                binding.cancelThoughtTextCardView.visibility = View.VISIBLE
+                binding.cancelThoughtTextCardViewIcon.visibility = View.VISIBLE
+            } else {
+                binding.cancelThoughtTextCardView.visibility = View.INVISIBLE
+                binding.cancelThoughtTextCardViewIcon.visibility = View.INVISIBLE
+            }
+        })
+        binding.cancelThoughtTextCardViewIcon.setOnClickListener {
+            viewModelShared.hasText.value = false
+        }
+
         return binding.root
     }
 
@@ -106,7 +179,7 @@ class AddThoughtDialog : Fragment(), EasyPermissions.PermissionCallbacks {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(ThoughtDialogViewModel::class.java)
+        viewModelShared = ViewModelProvider(this).get(SharedThoughtDialogViewModel::class.java)
         // TODO: Use the ViewModel
     }
 

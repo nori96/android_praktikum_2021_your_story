@@ -65,22 +65,22 @@
         android:label="@string/settings" />
     <fragment
         android:id="@+id/takePictureFragment"
-        android:name="com.example.yourstory.TakePictureFragment"
+        android:name="com.example.yourstory.today.thought.TakePictureFragment"
         android:label="take_picture_fragment"
         tools:layout="@layout/take_picture_fragment" />
     <fragment
         android:id="@+id/recordAudioFragment"
-        android:name="com.example.yourstory.RecordAudioFragment"
+        android:name="com.example.yourstory.today.thought.RecordAudioFragment"
         android:label="record_audio_fragment"
         tools:layout="@layout/record_audio_fragment" />
     <fragment
         android:id="@+id/recordTextFragment"
-        android:name="com.example.yourstory.RecordTextFragment"
+        android:name="com.example.yourstory.today.thought.RecordTextFragment"
         android:label="record_text_fragment"
         tools:layout="@layout/record_text_fragment" />
     <fragment
         android:id="@+id/recordLocationFragment"
-        android:name="com.example.yourstory.RecordLocationFragment"
+        android:name="com.example.yourstory.today.thought.RecordLocationFragment"
         android:label="record_location_fragment"
         tools:layout="@layout/record_location_fragment" />
 </navigation>
