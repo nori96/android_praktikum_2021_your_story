@@ -27,4 +27,8 @@
     <string name="thought_dialog_heading">Gedanke</string>
     <string name="thought_dialog_permission_location">Erlauben Sie den Zugriff auf den Standort, um diesen aufzunehmen</string>
     <string name="thought_dialog_permission_camera">Erlauben Sie den Kamerazugriff, um ein Bild aufzunehmen.</string>
+    <string name="thought_dialog_permission_audio">Erlauben Sie den Zugiff auf das Mikrophon, um etwas aufzunehmen.</string>
+    <string name="thought_dialog_permission_location_permanently">Erlauben Sie den Zugriff auf den Standort in den Einstellungen. Dies ist notwendig, um den Standort einem Tagebucheintrag hinzuzufügen.</string>
+    <string name="thought_dialog_permission_camera_permanently">Erlauben Sie den Zugriff auf die Kamera in den Einstellungen. Dies ist notwendig, um ein Bild einem Tagebucheintrag hinzuzufügen.</string>
+    <string name="thought_dialog_permission_audio_permanently">Erlauben Sie den Zugriff auf das Mikrophon in den Einstellungen. Dies ist notwendig, um eine Audio einem Tagebucheintrag hinzuzufügen.</string>
 </resources>

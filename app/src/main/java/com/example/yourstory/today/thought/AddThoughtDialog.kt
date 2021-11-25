@@ -3,19 +3,18 @@ package com.example.yourstory.today.thought
 import android.Manifest
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
+import androidx.navigation.NavController
 import com.example.yourstory.R
 import com.vmadalin.easypermissions.EasyPermissions
 import com.example.yourstory.databinding.ThoughtDialogFragmentBinding
 import com.vmadalin.easypermissions.dialogs.SettingsDialog
+import androidx.navigation.fragment.NavHostFragment.findNavController
 
 class AddThoughtDialog : Fragment(), EasyPermissions.PermissionCallbacks {
-
 
     companion object {
         const val PERMISSION_LOCATION_REQUEST_CODE = 1
@@ -24,6 +23,7 @@ class AddThoughtDialog : Fragment(), EasyPermissions.PermissionCallbacks {
     }
 
     private lateinit var viewModel: ThoughtDialogViewModel
+    private lateinit var hostFragmentNavController: NavController
     private var _binding: ThoughtDialogFragmentBinding? = null
     private val binding get() = _binding!!
 
@@ -34,22 +34,30 @@ class AddThoughtDialog : Fragment(), EasyPermissions.PermissionCallbacks {
 
         _binding = ThoughtDialogFragmentBinding.inflate(inflater, container, false)
 
-        /*if(EasyPermissions.permissionPermanentlyDenied(this, Manifest.permission.ACCESS_FINE_LOCATION))
-        {
-            binding.thoughtLocationCardView.setCardBackgroundColor(ContextCompat.getColor(requireContext(), R.color.non_clickable_grey))
-        }*/
-
+        hostFragmentNavController = findNavController(this)
         binding.thoughtLocationCardView.setOnClickListener {
-            requestLocationPermission()
+            if (hasLocationPermission()) {
+                hostFragmentNavController.navigate(R.id.recordLocationFragment)
+            } else {
+                requestLocationPermission()
+            }
         }
         binding.thoughtImageCardView.setOnClickListener {
-            requestCameraPermission()
+            if (hasCameraPermission()) {
+                hostFragmentNavController.navigate(R.id.takePictureFragment)
+            } else {
+                requestCameraPermission()
+            }
         }
         binding.thoughtTextCardView.setOnClickListener {
-
+            hostFragmentNavController.navigate(R.id.recordTextFragment)
         }
         binding.thoughtVoiceCardView.setOnClickListener {
-
+            if (hasMicrophonePermission()) {
+                hostFragmentNavController.navigate(R.id.recordAudioFragment)
+            } else {
+                requestMicrophonePermission()
+            }
         }
         return binding.root
     }
@@ -72,11 +80,30 @@ class AddThoughtDialog : Fragment(), EasyPermissions.PermissionCallbacks {
         )
     }
 
+    private fun requestMicrophonePermission() {
+        EasyPermissions.requestPermissions(
+            this,
+            resources.getString(R.string.thought_dialog_permission_audio),
+            PERMISSION_AUDIO_REQUEST_CODE,
+            Manifest.permission.RECORD_AUDIO
+        )
+    }
+
     private fun hasLocationPermission() =
         EasyPermissions.hasPermissions(
             requireContext(),
-            Manifest.permission.ACCESS_FINE_LOCATION
-        )
+            Manifest.permission.ACCESS_FINE_LOCATION)
+
+    private fun hasMicrophonePermission() =
+        EasyPermissions.hasPermissions(
+            requireContext(),
+            Manifest.permission.RECORD_AUDIO)
+
+    private fun hasCameraPermission() =
+        EasyPermissions.hasPermissions(
+            requireContext(),
+            Manifest.permission.CAMERA)
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(this).get(ThoughtDialogViewModel::class.java)
@@ -93,38 +120,47 @@ class AddThoughtDialog : Fragment(), EasyPermissions.PermissionCallbacks {
     }
 
     override fun onPermissionsDenied(requestCode: Int, perms: List<String>) {
-        if (requestCode == 1)
-        {
+        if (requestCode == 1) {
             if (EasyPermissions.somePermissionPermanentlyDenied(this, perms)) {
                 SettingsDialog.Builder(requireActivity())
-                    .rationale(R.string.thought_dialog_permission_location)
+                    .rationale(R.string.thought_dialog_permission_location_permanently)
                     .build()
                     .show()
+            } else {
+                requestLocationPermission()
             }
         }
-        if (requestCode == 3)
-        {
+        if (requestCode == 2) {
             if (EasyPermissions.somePermissionPermanentlyDenied(this, perms)) {
                 SettingsDialog.Builder(requireActivity())
-                    .rationale(R.string.thought_dialog_heading)
+                    .rationale(R.string.thought_dialog_permission_audio_permanently)
                     .build()
                     .show()
+            } else {
+                requestMicrophonePermission()
             }
         }
-        //requestLocationPermission()
-        //EasyPermissions.somePermissionPermanentlyDenied(this, perms)
-        //handleLocationDialog()
+        if (requestCode == 3) {
+            if (EasyPermissions.somePermissionPermanentlyDenied(this, perms)) {
+                SettingsDialog.Builder(requireActivity())
+                    .rationale(R.string.thought_dialog_permission_camera_permanently)
+                    .build()
+                    .show()
+            } else {
+                requestCameraPermission()
+            }
+        }
     }
 
     override fun onPermissionsGranted(requestCode: Int, perms: List<String>) {
-        TODO("Not yet implemented")
-    }
-    /*private fun handleLocationDialog() {
-        if (hasLocationPermission()) {
-            //binding.locationCardView.setCardBackgroundColor(resources.getColor(R.color.non_clickable_grey))
-
-        } else {
-            binding.thoughtLocationCardView.setCardBackgroundColor(ContextCompat.getColor(requireContext(), R.color.non_clickable_grey))
+        if (requestCode == 1) {
+            hostFragmentNavController.navigate(R.id.recordLocationFragment)
         }
-    }*/
+        if (requestCode == 2) {
+            hostFragmentNavController.navigate(R.id.recordAudioFragment)
+        }
+        if (requestCode == 3) {
+            hostFragmentNavController.navigate(R.id.takePictureFragment)
+        }
+    }
 }
