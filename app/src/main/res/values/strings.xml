@@ -12,6 +12,22 @@
     <string name="diary">Diary</string>
 
 
+    <!--thought dialog -->
+    <string name="thought_dialog_audio">Voice</string>
+    <string name="thought_dialog_image">Image</string>
+    <string name="thought_dialog_location">Location</string>
+    <string name="thought_dialog_text">Text</string>
+    <string name="thought_dialog_heading">Thought</string>
+    <string name="thought_dialog_permission_location">Please allow location access for recording it.</string>
+    <string name="thought_dialog_permission_camera">Please allow camera access to take a picture.</string>
+    <string name="thought_dialog_permission_audio">Please allow microphone access for recording.</string>
+    <string name="thought_dialog_permission_location_permanently">Please allow the location access in your settings. Its necessary for adding the location in a diary entry.</string>
+    <string name="thought_dialog_permission_camera_permanently">Please allow camera access in your settings. Its necessary for adding a picture to your diary entry.</string>
+    <string name="thought_dialog_permission_audio_permanently">Please allow microphone access in your settings. Its necessary for adding a recording to your diary entry.</string>
+
+    <!-- dialog ok cancel texts -->
+    <string name="finish_dialog">Finish</string>
+    <string name="cancel_dialog">Cancel</string>
     <!-- Preference Titles -->
     <string name="location_title">location</string>
     <string name="settings_allow_data_collection_title">Movement Profiling</string>
@@ -22,6 +38,7 @@
     <string name="settings_enable_notifications">Enable notifications</string>
     <string name="settings_notification_interval_title">Notification interval</string>
     <string name="settings_notification_interval_text">Define an interval for sending notifications</string>
+
 
 
 </resources>
