@@ -3,11 +3,151 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".today.likert.LikertDialog">
 
-    <TextView
-        android:layout_width="match_parent"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:text="Likert" />
+        android:background="@color/dialog_blue">
 
+        <TextView
+            android:id="@+id/start_likert_dialog"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:paddingRight="32dp"
+            android:text="@string/likert_dialog_start"
+            android:textColor="@color/black"
+            android:textSize="20dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <androidx.gridlayout.widget.GridLayout
+            android:id="@+id/likert_grid_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:stretchMode="none"
+            app:columnCount="2"
+            app:layout_constraintBottom_toTopOf="@+id/cancel_likert_dialog"
+            app:rowCount="6">
+
+            <TextView
+                android:layout_margin="16dp"
+                android:text="@string/likert_dialog_joy"
+                android:textColor="@color/black"
+                android:textSize="20dp"
+                app:layout_columnWeight="1" />
+
+            <SeekBar
+                android:id="@+id/joy_seek_bar"
+                android:layout_margin="16dp"
+                android:max="4"
+                app:defaultValue="0"
+                app:layout_columnWeight="4"
+                app:layout_gravity="center_vertical"
+                app:seekBarIncrement="1" />
+
+            <TextView
+                android:layout_margin="16dp"
+                android:text="@string/likert_dialog_surprise"
+                android:textColor="@color/black"
+                android:textSize="20dp"
+                app:layout_columnWeight="1" />
+
+            <SeekBar
+                android:layout_margin="16dp"
+                android:max="4"
+                app:defaultValue="0"
+                app:layout_columnWeight="4"
+                app:layout_gravity="center_vertical"
+                app:showSeekBarValue="true" />
+
+            <TextView
+                android:layout_margin="16dp"
+                android:text="@string/likert_dialog_anger"
+                android:textColor="@color/black"
+                android:textSize="20dp"
+                app:layout_columnWeight="1" />
+
+            <SeekBar
+                android:layout_margin="16dp"
+                android:max="4"
+                app:defaultValue="0"
+                app:layout_columnWeight="4"
+                app:layout_gravity="center_vertical"
+                app:showSeekBarValue="true" />
+
+            <TextView
+                android:layout_margin="16dp"
+                android:text="@string/likert_dialog_sadness"
+                android:textColor="@color/black"
+                android:textSize="20dp"
+                app:layout_columnWeight="1" />
+
+            <SeekBar
+                android:layout_margin="16dp"
+                android:max="4"
+                app:defaultValue="0"
+                app:layout_columnWeight="4"
+                app:layout_gravity="center_vertical"
+                app:showSeekBarValue="true" />
+
+            <TextView
+                android:layout_margin="16dp"
+                android:text="@string/likert_dialog_fear"
+                android:textColor="@color/black"
+                android:textSize="20dp"
+                app:layout_columnWeight="1" />
+
+            <SeekBar
+                android:layout_margin="16dp"
+                android:max="4"
+                app:defaultValue="0"
+                app:layout_columnWeight="4"
+                app:layout_gravity="center_vertical"
+                app:showSeekBarValue="true" />
+
+            <TextView
+                android:layout_margin="16dp"
+                android:text="@string/likert_dialog_disgust"
+                android:textColor="@color/black"
+                android:textSize="20dp"
+                app:layout_columnWeight="1" />
+
+            <SeekBar
+                android:layout_margin="16dp"
+                android:max="4"
+                app:defaultValue="0"
+                app:layout_columnWeight="4"
+                app:layout_gravity="center_vertical"
+                app:showSeekBarValue="true" />
+        </androidx.gridlayout.widget.GridLayout>
+
+        <TextView
+            android:id="@+id/confirm_likert_dialog"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:text="@string/finish_dialog"
+            android:textColor="@color/black"
+            android:textSize="28dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
+
+        <TextView
+            android:id="@+id/cancel_likert_dialog"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:text="@string/cancel_dialog"
+            android:textColor="@color/black"
+            android:textSize="28dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/confirm_likert_dialog" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

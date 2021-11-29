@@ -20,19 +20,34 @@
     <string name="settings_notification_interval_text">Define an interval for sending notifications</string>
 
     <!--thought dialog -->
-    <string name="thought_dialog_audio">Audioaufnahme</string>
+    <string name="thought_dialog_top_heading">Gedanken erstellen</string>
+    <string name="thought_dialog_audio">Audio</string>
     <string name="thought_dialog_image">Bild</string>
     <string name="thought_dialog_location">Ort</string>
     <string name="thought_dialog_text">Text</string>
-    <string name="thought_dialog_heading">Gedanke</string>
+    <string name="thought_dialog_heading">Inhalt:</string>
     <string name="thought_dialog_permission_location">Erlauben Sie den Zugriff auf den Standort, um diesen aufzunehmen</string>
     <string name="thought_dialog_permission_camera">Erlauben Sie den Kamerazugriff, um ein Bild aufzunehmen.</string>
     <string name="thought_dialog_permission_audio">Erlauben Sie den Zugiff auf das Mikrophon, um etwas aufzunehmen.</string>
     <string name="thought_dialog_permission_location_permanently">Erlauben Sie den Zugriff auf den Standort in den Einstellungen. Dies ist notwendig, um den Standort einem Tagebucheintrag hinzuzufügen.</string>
     <string name="thought_dialog_permission_camera_permanently">Erlauben Sie den Zugriff auf die Kamera in den Einstellungen. Dies ist notwendig, um ein Bild einem Tagebucheintrag hinzuzufügen.</string>
     <string name="thought_dialog_permission_audio_permanently">Erlauben Sie den Zugriff auf das Mikrophon in den Einstellungen. Dies ist notwendig, um eine Audio einem Tagebucheintrag hinzuzufügen.</string>
+    <string name="add_thought_image_dialog_heading">Nimm ein Bild auf</string>
+    <string name="add_thought_audio_dialog_heading">Nimm Audio auf</string>
+    <string name="add_thought_text_dialog_heading">Schreib einen Text auf</string>
+    <string name="add_thought_location_dialog_heading">Speichere eine Koordinate</string>
+
+    <!--likert dialog -->
+    <string name="likert_dialog_heading">Emotionaler Zustand</string>
+    <string name="likert_dialog_start">Passe die Emotionen deinem Gemüt entsprechend an.</string>
+    <string name="likert_dialog_joy">Freude</string>
+    <string name="likert_dialog_surprise">Überraschung</string>
+    <string name="likert_dialog_anger">Wut</string>
+    <string name="likert_dialog_sadness">Trauer</string>
+    <string name="likert_dialog_fear">Angst</string>
+    <string name="likert_dialog_disgust">Ekel</string>
 
     <!-- dialog ok cancel texts -->
-    <string name="finish_dialog">Bestätigen</string>
+    <string name="finish_dialog">Okay</string>
     <string name="cancel_dialog">Zurück</string>
 </resources>

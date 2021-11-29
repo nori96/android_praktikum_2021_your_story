@@ -73,7 +73,7 @@
     <fragment
         android:id="@+id/takePictureFragment"
         android:name="com.example.yourstory.today.thought.TakePictureFragment"
-        android:label="take_picture_fragment"
+        android:label="@string/add_thought_image_dialog_heading"
         tools:layout="@layout/take_picture_fragment" >
         <action
             android:id="@+id/action_takePictureFragment_to_thought_dialog"
@@ -82,7 +82,7 @@
     <fragment
         android:id="@+id/recordAudioFragment"
         android:name="com.example.yourstory.today.thought.RecordAudioFragment"
-        android:label="record_audio_fragment"
+        android:label="@string/add_thought_audio_dialog_heading"
         tools:layout="@layout/record_audio_fragment" >
         <action
             android:id="@+id/action_recordAudioFragment_to_thought_dialog"
@@ -91,7 +91,7 @@
     <fragment
         android:id="@+id/recordTextFragment"
         android:name="com.example.yourstory.today.thought.RecordTextFragment"
-        android:label="record_text_fragment"
+        android:label="@string/add_thought_text_dialog_heading"
         tools:layout="@layout/record_text_fragment" >
         <action
             android:id="@+id/action_recordTextFragment_to_thought_dialog"
@@ -100,7 +100,7 @@
     <fragment
         android:id="@+id/recordLocationFragment"
         android:name="com.example.yourstory.today.thought.RecordLocationFragment"
-        android:label="record_location_fragment"
+        android:label="@string/add_thought_location_dialog_heading"
         tools:layout="@layout/record_location_fragment" >
         <action
             android:id="@+id/action_recordLocationFragment_to_thought_dialog"

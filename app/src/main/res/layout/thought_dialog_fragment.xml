@@ -14,9 +14,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/cancel_thought_image_card_view"
             android:layout_marginLeft="16dp"
-            android:layout_marginTop="16dp"
+            android:textColor="@color/black"
             android:textSize="32dp"
             android:text="@string/thought_dialog_heading">
         </TextView>
@@ -349,6 +349,7 @@
             app:layout_constraintRight_toRightOf="parent"
             android:text="@string/finish_dialog"
             android:layout_margin="16dp"
+            android:textColor="@color/black"
             android:textSize="28dp" />
         <TextView
             android:id= "@+id/cancel_thought_dialog"
@@ -358,6 +359,7 @@
             app:layout_constraintRight_toLeftOf="@+id/confirm_thought_dialog"
             android:text="@string/cancel_dialog"
             android:layout_margin="16dp"
+            android:textColor="@color/black"
             android:textSize="28dp" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>
