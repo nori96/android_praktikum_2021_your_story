@@ -26,11 +26,14 @@ class RecordAudioFragment : Fragment() {
     ): View? {
         _binding = RecordAudioFragmentBinding.inflate(inflater, container, false)
         hostFragmentNavController = NavHostFragment.findNavController(this)
-        viewModelShared = ViewModelProvider(requireActivity()).get(SharedThoughtDialogViewModel::class.java)
+        viewModelShared = ViewModelProvider(requireActivity())[SharedThoughtDialogViewModel::class.java]
 
         binding.confirmThoughtDialogAudio.setOnClickListener {
             viewModelShared.hasAudio.value = true
-            hostFragmentNavController.navigate(R.id.thought_dialog)
+            hostFragmentNavController.navigate(R.id.action_recordAudioFragment_to_thought_dialog)
+        }
+        binding.cancelThoughtDialogAudio.setOnClickListener {
+            hostFragmentNavController.navigate(R.id.action_recordAudioFragment_to_thought_dialog)
         }
 
         return binding.root

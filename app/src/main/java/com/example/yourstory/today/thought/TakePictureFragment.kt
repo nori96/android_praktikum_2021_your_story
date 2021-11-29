@@ -25,12 +25,16 @@ class TakePictureFragment : Fragment() {
     ): View? {
         _binding = TakePictureFragmentBinding.inflate(inflater, container, false)
         hostFragmentNavController = NavHostFragment.findNavController(this)
-        viewModelShared = ViewModelProvider(requireActivity()).get(SharedThoughtDialogViewModel::class.java)
+        viewModelShared = ViewModelProvider(requireActivity())[SharedThoughtDialogViewModel::class.java]
 
         binding.confirmThoughtDialogPicture.setOnClickListener {
             viewModelShared.hasImage.value = true
-            hostFragmentNavController.navigate(R.id.thought_dialog)
+            hostFragmentNavController.navigate(R.id.action_takePictureFragment_to_thought_dialog)
         }
+        binding.cancelThoughtDialogPicture.setOnClickListener {
+            hostFragmentNavController.navigate(R.id.action_takePictureFragment_to_thought_dialog)
+        }
+
         return binding.root
     }
 }

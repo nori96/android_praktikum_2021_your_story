@@ -30,13 +30,6 @@ class AddThoughtDialog : Fragment(), EasyPermissions.PermissionCallbacks {
     private var _binding: ThoughtDialogFragmentBinding? = null
     private val binding get() = _binding!!
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-
-
-
-        super.onCreate(savedInstanceState)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -45,36 +38,41 @@ class AddThoughtDialog : Fragment(), EasyPermissions.PermissionCallbacks {
         _binding = ThoughtDialogFragmentBinding.inflate(inflater, container, false)
         viewModelShared = ViewModelProvider(requireActivity())[SharedThoughtDialogViewModel::class.java]
         hostFragmentNavController = findNavController(this)
+
         binding.thoughtLocationCardView.setOnClickListener {
             if (hasLocationPermission()) {
-                hostFragmentNavController.navigate(R.id.recordLocationFragment)
+                hostFragmentNavController.navigate(R.id.action_thought_dialog_to_recordLocationFragment)
             } else {
                 requestLocationPermission()
             }
         }
+
         binding.thoughtImageCardView.setOnClickListener {
             if (hasCameraPermission()) {
-                hostFragmentNavController.navigate(R.id.takePictureFragment)
+                hostFragmentNavController.navigate(R.id.action_thought_dialog_to_takePictureFragment)
             } else {
                 requestCameraPermission()
             }
         }
+
         binding.thoughtTextCardView.setOnClickListener {
-            hostFragmentNavController.navigate(R.id.recordTextFragment)
+            hostFragmentNavController.navigate(R.id.action_thought_dialog_to_recordTextFragment)
         }
+
         binding.thoughtVoiceCardView.setOnClickListener {
             if (hasMicrophonePermission()) {
-                hostFragmentNavController.navigate(R.id.recordAudioFragment)
+                hostFragmentNavController.navigate(R.id.action_thought_dialog_to_recordAudioFragment)
             } else {
                 requestMicrophonePermission()
             }
         }
+
         binding.confirmThoughtDialog.setOnClickListener {
             // TODO some action on the database
-            hostFragmentNavController.navigate(R.id.navigation_today)
+            hostFragmentNavController.navigate(R.id.action_thought_dialog_to_navigation_today)
         }
         binding.cancelThoughtDialog.setOnClickListener {
-            hostFragmentNavController.navigate(R.id.navigation_today)
+            hostFragmentNavController.navigate(R.id.action_thought_dialog_to_navigation_today)
         }
 
         viewModelShared.hasLocation.observe(viewLifecycleOwner, { location ->
@@ -105,18 +103,15 @@ class AddThoughtDialog : Fragment(), EasyPermissions.PermissionCallbacks {
 
         viewModelShared.hasAudio.observe(viewLifecycleOwner, { audio ->
             if (audio) {
-                Log.i("asdff", viewModelShared.hasAudio.value.toString());
                 binding.cancelThoughtAudioCardView.visibility = View.VISIBLE
                 binding.cancelThoughtAudioCardViewIcon.visibility = View.VISIBLE
             } else {
-                Log.i("asdfq", viewModelShared.hasAudio.value.toString());
                 binding.cancelThoughtAudioCardView.visibility = View.INVISIBLE
                 binding.cancelThoughtAudioCardViewIcon.visibility = View.INVISIBLE
             }
         })
         binding.cancelThoughtAudioCardViewIcon.setOnClickListener {
             viewModelShared.hasAudio.value = false
-            Log.i("asdf", viewModelShared.hasAudio.value.toString());
         }
 
         viewModelShared.hasText.observe(viewLifecycleOwner, { text ->
@@ -133,6 +128,10 @@ class AddThoughtDialog : Fragment(), EasyPermissions.PermissionCallbacks {
         }
 
         return binding.root
+    }
+
+    override fun onDestroyView(){
+        super.onDestroyView()
     }
 
     private fun requestLocationPermission() {
@@ -176,12 +175,6 @@ class AddThoughtDialog : Fragment(), EasyPermissions.PermissionCallbacks {
         EasyPermissions.hasPermissions(
             requireContext(),
             Manifest.permission.CAMERA)
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModelShared = ViewModelProvider(requireActivity()).get(SharedThoughtDialogViewModel::class.java)
-        // TODO: Use the ViewModel
-    }
 
     override fun onRequestPermissionsResult(
         requestCode: Int,

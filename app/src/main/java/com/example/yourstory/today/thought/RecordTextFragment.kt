@@ -25,12 +25,16 @@ class RecordTextFragment : Fragment() {
     ): View? {
         _binding = RecordTextFragmentBinding.inflate(inflater, container, false)
         hostFragmentNavController = NavHostFragment.findNavController(this)
-        viewModelShared = ViewModelProvider(requireActivity()).get(SharedThoughtDialogViewModel::class.java)
+        viewModelShared = ViewModelProvider(requireActivity())[SharedThoughtDialogViewModel::class.java]
 
         binding.confirmThoughtDialogText.setOnClickListener {
             viewModelShared.hasText.value = true
-            hostFragmentNavController.navigate(R.id.thought_dialog)
+            hostFragmentNavController.navigate(R.id.action_recordTextFragment_to_thought_dialog)
         }
+        binding.cancelThoughtDialogText.setOnClickListener {
+            hostFragmentNavController.navigate(R.id.action_recordTextFragment_to_thought_dialog)
+        }
+
         return binding.root
     }
 }

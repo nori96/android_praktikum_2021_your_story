@@ -24,12 +24,15 @@ class RecordLocationFragment : Fragment() {
     ): View? {
         _binding = RecordLocationFragmentBinding.inflate(inflater, container, false)
         hostFragmentNavController = NavHostFragment.findNavController(this)
-        viewModelShared = ViewModelProvider(requireActivity()).get(SharedThoughtDialogViewModel::class.java)
+        viewModelShared = ViewModelProvider(requireActivity())[SharedThoughtDialogViewModel::class.java]
 
         binding.confirmThoughtDialogLocation.setOnClickListener {
             viewModelShared.hasLocation.value = true
-            hostFragmentNavController.navigate(R.id.thought_dialog)
+            hostFragmentNavController.navigate(R.id.action_recordLocationFragment_to_thought_dialog)
+        }
 
+        binding.cancelThoughtDialogLocation.setOnClickListener {
+            hostFragmentNavController.navigate(R.id.action_recordLocationFragment_to_thought_dialog)
         }
 
         return binding.root

@@ -47,12 +47,19 @@
         <action
             android:id="@+id/action_thought_dialog_to_recordLocationFragment"
             app:destination="@id/recordLocationFragment" />
+        <action
+            android:id="@+id/action_thought_dialog_to_navigation_today"
+            app:destination="@id/navigation_today" />
     </fragment>
     <fragment
         android:id="@+id/likertDialog"
         android:name="com.example.yourstory.today.likert.LikertDialog"
         android:label="Record Emotional State"
-        tools:layout="@layout/likert_dialog_fragment" />
+        tools:layout="@layout/likert_dialog_fragment" >
+        <action
+            android:id="@+id/action_likertDialog_to_navigation_today"
+            app:destination="@id/navigation_today" />
+    </fragment>
 
     <fragment
         android:id="@+id/helpFragment"
@@ -67,20 +74,36 @@
         android:id="@+id/takePictureFragment"
         android:name="com.example.yourstory.today.thought.TakePictureFragment"
         android:label="take_picture_fragment"
-        tools:layout="@layout/take_picture_fragment" />
+        tools:layout="@layout/take_picture_fragment" >
+        <action
+            android:id="@+id/action_takePictureFragment_to_thought_dialog"
+            app:destination="@id/thought_dialog" />
+    </fragment>
     <fragment
         android:id="@+id/recordAudioFragment"
         android:name="com.example.yourstory.today.thought.RecordAudioFragment"
         android:label="record_audio_fragment"
-        tools:layout="@layout/record_audio_fragment" />
+        tools:layout="@layout/record_audio_fragment" >
+        <action
+            android:id="@+id/action_recordAudioFragment_to_thought_dialog"
+            app:destination="@id/thought_dialog" />
+    </fragment>
     <fragment
         android:id="@+id/recordTextFragment"
         android:name="com.example.yourstory.today.thought.RecordTextFragment"
         android:label="record_text_fragment"
-        tools:layout="@layout/record_text_fragment" />
+        tools:layout="@layout/record_text_fragment" >
+        <action
+            android:id="@+id/action_recordTextFragment_to_thought_dialog"
+            app:destination="@id/thought_dialog" />
+    </fragment>
     <fragment
         android:id="@+id/recordLocationFragment"
         android:name="com.example.yourstory.today.thought.RecordLocationFragment"
         android:label="record_location_fragment"
-        tools:layout="@layout/record_location_fragment" />
+        tools:layout="@layout/record_location_fragment" >
+        <action
+            android:id="@+id/action_recordLocationFragment_to_thought_dialog"
+            app:destination="@id/thought_dialog" />
+    </fragment>
 </navigation>
