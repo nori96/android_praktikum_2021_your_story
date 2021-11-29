@@ -6,9 +6,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.NavController
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.yourstory.R
 import com.example.yourstory.databinding.TodayFragmentBinding
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class TodayFragment : Fragment() {
 
@@ -16,16 +21,19 @@ class TodayFragment : Fragment() {
         fun newInstance() = TodayFragment()
     }
 
+    private lateinit var hostFramentNavController: NavController
     private lateinit var viewModel: TodayViewModel
+    private lateinit var likertFab: FloatingActionButton
+    private lateinit var thoughtFab: FloatingActionButton
+    private var fabClicked = false
 
     //private var layoutManager: RecyclerView.LayoutManager? = null
     //private var todayAdapter: RecyclerView.Adapter<RecyclerAdapter.ViewHolder>? = null
 
     // TodayFragmentBinding is a generated datatype...
-    private var _binding: TodayFragmentBinding? = null
+    private lateinit var binding: TodayFragmentBinding
     // This property is only valid between onCreateView and
     // onDestroyView.
-    private val binding get() = _binding!!
 
 
     override fun onCreateView(
@@ -33,10 +41,34 @@ class TodayFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = TodayFragmentBinding.inflate(inflater, container, false)
-        val view = binding.root
 
-        return view
+        binding = TodayFragmentBinding.inflate(inflater, container, false)
+
+        if (container != null) {
+            hostFramentNavController = container.findNavController()
+        }
+
+        likertFab = binding.likertFab!!
+        thoughtFab = binding.thoughtFab!!
+
+        binding.rootFab?.setOnClickListener {
+            if (!fabClicked) {
+                likertFab.visibility = View.VISIBLE
+                thoughtFab.visibility = View.VISIBLE
+            } else {
+                likertFab.visibility = View.INVISIBLE
+                thoughtFab.visibility = View.INVISIBLE
+            }
+            fabClicked = !fabClicked
+        }
+        binding.thoughtFab?.setOnClickListener {
+            hostFramentNavController.navigate(R.id.thought_dialog)
+        }
+        binding.likertFab?.setOnClickListener {
+            hostFramentNavController.navigate(R.id.likertDialog)
+        }
+
+        return binding.root
     }
 
     override fun onViewCreated(itemView: View, savedInstanceState: Bundle?) {
@@ -60,7 +92,6 @@ class TodayFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null
     }
 
 }

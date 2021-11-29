@@ -46,29 +46,9 @@ class MainActivity : AppCompatActivity() {
                 R.id.navigation_reports, R.id.navigation_today, R.id.navigation_diary
             )
         )
-        binding.rootFab.setOnClickListener {
-            if (!fabClicked) {
-                binding.likertFab.visibility = View.VISIBLE
-                binding.thoughtFab.visibility = View.VISIBLE
-            }
-            else {
-                binding.likertFab.visibility = View.INVISIBLE
-                binding.thoughtFab.visibility = View.INVISIBLE
-            }
-            fabClicked = !fabClicked
-        }
-        binding.thoughtFab.setOnClickListener {
-            hostFramentNavController.navigate(R.id.thought_dialog)
-        }
-        binding.likertFab.setOnClickListener {
-            hostFramentNavController.navigate(R.id.likertDialog)
-        }
-        setupActionBarWithNavController(hostFramentNavController,appBarConfiguration)
-        bottomNavigationView.setupWithNavController(hostFramentNavController)
 
         setupActionBarWithNavController(hostFramentNavController,appBarConfiguration)
         bottomNavigationView.setupWithNavController(hostFramentNavController)
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -77,6 +57,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
+        //TODO: Auslagerung des BackPressed-Vehaltens in die Navigation-Component
         16908332 -> {
             onBackPressed()
             true
@@ -88,8 +69,6 @@ class MainActivity : AppCompatActivity() {
         }
 
         R.id.action_help -> {
-            // User chose the "Favorite" action, mark the current item
-            // as a favorite...
             hostFramentNavController.navigate(R.id.helpFragment)
             true
         }
