@@ -18,24 +18,13 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class TodayFragment : Fragment() {
 
-    companion object {
-        fun newInstance() = TodayFragment()
-    }
-
     private lateinit var hostFramentNavController: NavController
     private lateinit var viewModel: TodayViewModel
     private lateinit var likertFab: FloatingActionButton
     private lateinit var thoughtFab: FloatingActionButton
     private var fabClicked = false
 
-    //private var layoutManager: RecyclerView.LayoutManager? = null
-    //private var todayAdapter: RecyclerView.Adapter<RecyclerAdapter.ViewHolder>? = null
-
-    // TodayFragmentBinding is a generated datatype...
     private lateinit var binding: TodayFragmentBinding
-    // This property is only valid between onCreateView and
-    // onDestroyView.
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -69,11 +58,11 @@ class TodayFragment : Fragment() {
             fabClicked = !fabClicked
         }
         binding.thoughtFab.setOnClickListener {
-            hostFramentNavController.navigate(R.id.thought_dialog)
+            hostFramentNavController.navigate(R.id.action_navigation_today_to_thought_dialog)
             fabClicked = false
         }
         binding.likertFab.setOnClickListener {
-            hostFramentNavController.navigate(R.id.likertDialog)
+            hostFramentNavController.navigate(R.id.action_navigation_today_to_likertDialog)
             fabClicked = false
         }
 

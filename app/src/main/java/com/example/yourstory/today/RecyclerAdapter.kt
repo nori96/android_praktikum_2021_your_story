@@ -30,7 +30,7 @@ class RecyclerAdapter(todayModelData: ArrayList<DiaryEntry>) : RecyclerView.Adap
         if (todayModelData[position].diaryImage == 0) {
             (holder.diaryImage.parent as ViewGroup).removeView(holder.diaryImage)
         }
-        if (todayModelData[position].diaryLocation) {
+        if (!todayModelData[position].diaryLocation) {
             (holder.diaryLocation.parent as ViewGroup).removeView(holder.diaryLocation)
         }
         if(todayModelData[position].diaryAudio == 0) {
