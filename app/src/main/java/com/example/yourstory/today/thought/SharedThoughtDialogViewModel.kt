@@ -2,17 +2,20 @@ package com.example.yourstory.today.thought
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.yourstory.R
 
 class SharedThoughtDialogViewModel : ViewModel() {
-    var hasImage = MutableLiveData(false)
-    var hasLocation = MutableLiveData(false)
-    var hasAudio = MutableLiveData(false)
-    var hasText = MutableLiveData(false)
+
+    // these values represent their null values
+    var image = MutableLiveData(0)
+    var location = MutableLiveData(false)
+    var audio = MutableLiveData(0)
+    var text = MutableLiveData("")
 
     public fun resetData() {
-        hasAudio.value = false
-        hasLocation.value = false
-        hasText.value = false
-        hasImage.value = false
+        audio.value = 0
+        location.value = false
+        text.value = ""
+        image.value = 0
     }
  }

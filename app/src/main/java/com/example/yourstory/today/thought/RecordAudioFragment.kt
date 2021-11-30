@@ -10,7 +10,6 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.example.yourstory.R
 import com.example.yourstory.databinding.RecordAudioFragmentBinding
-import com.example.yourstory.databinding.RecordLocationFragmentBinding
 
 
 class RecordAudioFragment : Fragment() {
@@ -29,7 +28,7 @@ class RecordAudioFragment : Fragment() {
         viewModelShared = ViewModelProvider(requireActivity())[SharedThoughtDialogViewModel::class.java]
 
         binding.confirmThoughtDialogAudio.setOnClickListener {
-            viewModelShared.hasAudio.value = true
+            viewModelShared.audio.value = R.raw.alan_watts
             hostFragmentNavController.navigate(R.id.action_recordAudioFragment_to_thought_dialog)
         }
         binding.cancelThoughtDialogAudio.setOnClickListener {

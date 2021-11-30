@@ -9,7 +9,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.example.yourstory.R
-import com.example.yourstory.databinding.RecordTextFragmentBinding
 import com.example.yourstory.databinding.TakePictureFragmentBinding
 
 class TakePictureFragment : Fragment() {
@@ -28,7 +27,7 @@ class TakePictureFragment : Fragment() {
         viewModelShared = ViewModelProvider(requireActivity())[SharedThoughtDialogViewModel::class.java]
 
         binding.confirmThoughtDialogPicture.setOnClickListener {
-            viewModelShared.hasImage.value = true
+            viewModelShared.image.value = R.drawable.beach
             hostFragmentNavController.navigate(R.id.action_takePictureFragment_to_thought_dialog)
         }
         binding.cancelThoughtDialogPicture.setOnClickListener {

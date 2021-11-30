@@ -1,21 +1,19 @@
 package com.example.yourstory.today.thought
 
 import android.Manifest
-import android.opengl.Visibility
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import com.example.yourstory.R
 import com.vmadalin.easypermissions.EasyPermissions
 import com.example.yourstory.databinding.ThoughtDialogFragmentBinding
 import com.vmadalin.easypermissions.dialogs.SettingsDialog
 import androidx.navigation.fragment.NavHostFragment.findNavController
+import com.example.yourstory.today.TodayViewModel
 
 class AddThoughtDialog : Fragment(), EasyPermissions.PermissionCallbacks {
 
@@ -26,6 +24,7 @@ class AddThoughtDialog : Fragment(), EasyPermissions.PermissionCallbacks {
     }
 
     private lateinit var viewModelShared: SharedThoughtDialogViewModel
+    private lateinit var todayViewModel: TodayViewModel
     private lateinit var hostFragmentNavController: NavController
     private var _binding: ThoughtDialogFragmentBinding? = null
     private val binding get() = _binding!!
@@ -36,6 +35,7 @@ class AddThoughtDialog : Fragment(), EasyPermissions.PermissionCallbacks {
     ): View? {
 
         _binding = ThoughtDialogFragmentBinding.inflate(inflater, container, false)
+        todayViewModel = ViewModelProvider(requireActivity())[TodayViewModel::class.java]
         viewModelShared = ViewModelProvider(requireActivity())[SharedThoughtDialogViewModel::class.java]
         hostFragmentNavController = findNavController(this)
 
@@ -68,14 +68,14 @@ class AddThoughtDialog : Fragment(), EasyPermissions.PermissionCallbacks {
         }
 
         binding.confirmThoughtDialog.setOnClickListener {
-            // TODO some action on the database
+            todayViewModel.addEntry(viewModelShared.text.value!!, viewModelShared.image.value!!, viewModelShared.location.value!!, viewModelShared.audio.value!!)
             hostFragmentNavController.navigate(R.id.action_thought_dialog_to_navigation_today)
         }
         binding.cancelThoughtDialog.setOnClickListener {
             hostFragmentNavController.navigate(R.id.action_thought_dialog_to_navigation_today)
         }
 
-        viewModelShared.hasLocation.observe(viewLifecycleOwner, { location ->
+        viewModelShared.location.observe(viewLifecycleOwner, { location ->
             if (location) {
                 binding.cancelThoughtLocationCardView.visibility = View.VISIBLE
                 binding.cancelThoughtLocationCardViewIcon.visibility = View.VISIBLE
@@ -85,11 +85,11 @@ class AddThoughtDialog : Fragment(), EasyPermissions.PermissionCallbacks {
             }
         })
         binding.cancelThoughtLocationCardViewIcon.setOnClickListener {
-            viewModelShared.hasLocation.value = false
+            viewModelShared.location.value = false
         }
 
-        viewModelShared.hasImage.observe(viewLifecycleOwner, { image ->
-            if (image) {
+        viewModelShared.image.observe(viewLifecycleOwner, { image ->
+            if (image != 0) {
                 binding.cancelThoughtImageCardView.visibility = View.VISIBLE
                 binding.cancelThoughtImageCardViewIcon.visibility = View.VISIBLE
             } else {
@@ -98,11 +98,11 @@ class AddThoughtDialog : Fragment(), EasyPermissions.PermissionCallbacks {
             }
         })
         binding.cancelThoughtImageCardViewIcon.setOnClickListener {
-            viewModelShared.hasImage.value = false
+            viewModelShared.image.value = 0
         }
 
-        viewModelShared.hasAudio.observe(viewLifecycleOwner, { audio ->
-            if (audio) {
+        viewModelShared.audio.observe(viewLifecycleOwner, { audio ->
+            if (audio != 0) {
                 binding.cancelThoughtAudioCardView.visibility = View.VISIBLE
                 binding.cancelThoughtAudioCardViewIcon.visibility = View.VISIBLE
             } else {
@@ -111,11 +111,11 @@ class AddThoughtDialog : Fragment(), EasyPermissions.PermissionCallbacks {
             }
         })
         binding.cancelThoughtAudioCardViewIcon.setOnClickListener {
-            viewModelShared.hasAudio.value = false
+            viewModelShared.audio.value = 0
         }
 
-        viewModelShared.hasText.observe(viewLifecycleOwner, { text ->
-            if (text) {
+        viewModelShared.text.observe(viewLifecycleOwner, { text ->
+            if (text != "") {
                 binding.cancelThoughtTextCardView.visibility = View.VISIBLE
                 binding.cancelThoughtTextCardViewIcon.visibility = View.VISIBLE
             } else {
@@ -124,7 +124,7 @@ class AddThoughtDialog : Fragment(), EasyPermissions.PermissionCallbacks {
             }
         })
         binding.cancelThoughtTextCardViewIcon.setOnClickListener {
-            viewModelShared.hasText.value = false
+            viewModelShared.text.value = ""
         }
 
         return binding.root

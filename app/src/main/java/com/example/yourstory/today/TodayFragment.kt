@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.yourstory.R
 import com.example.yourstory.databinding.TodayFragmentBinding
+import com.example.yourstory.today.thought.SharedThoughtDialogViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class TodayFragment : Fragment() {
@@ -47,11 +48,17 @@ class TodayFragment : Fragment() {
         if (container != null) {
             hostFramentNavController = container.findNavController()
         }
+        viewModel = ViewModelProvider(requireActivity())[TodayViewModel::class.java]
+        binding.recyclerViewTodayPage.adapter = RecyclerAdapter(viewModel.getTodayViewModel().value!!)
 
-        likertFab = binding.likertFab!!
-        thoughtFab = binding.thoughtFab!!
+        viewModel.getTodayViewModel().observe(viewLifecycleOwner, { modelData ->
+            binding.recyclerViewTodayPage.adapter = RecyclerAdapter(modelData)
+        })
 
-        binding.rootFab?.setOnClickListener {
+        likertFab = binding.likertFab
+        thoughtFab = binding.thoughtFab
+
+        binding.rootFab.setOnClickListener {
             if (!fabClicked) {
                 likertFab.visibility = View.VISIBLE
                 thoughtFab.visibility = View.VISIBLE
@@ -61,11 +68,13 @@ class TodayFragment : Fragment() {
             }
             fabClicked = !fabClicked
         }
-        binding.thoughtFab?.setOnClickListener {
+        binding.thoughtFab.setOnClickListener {
             hostFramentNavController.navigate(R.id.thought_dialog)
+            fabClicked = false
         }
-        binding.likertFab?.setOnClickListener {
+        binding.likertFab.setOnClickListener {
             hostFramentNavController.navigate(R.id.likertDialog)
+            fabClicked = false
         }
 
         return binding.root
@@ -81,13 +90,14 @@ class TodayFragment : Fragment() {
             todayAdapter = RecyclerAdapter()
         }*/
         //binding.recyclerViewTodayPage.layoutManager = LinearLayoutManager(activity)
-        binding.recyclerViewTodayPage.adapter = RecyclerAdapter()
+
+
     }
 
     /*override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         //viewModel = ViewModelProvider(this).get(TodayViewModel::class.java)
-        // TODO: Use the ViewModel
+
     }*/
 
     override fun onDestroyView() {

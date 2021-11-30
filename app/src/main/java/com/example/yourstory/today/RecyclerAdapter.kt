@@ -12,9 +12,9 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.yourstory.R
 
-class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
+class RecyclerAdapter(todayModelData: ArrayList<DiaryEntry>) : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
 
-    private var todayViewModel = TodayViewModel()
+    public var todayModelData: ArrayList<DiaryEntry> = todayModelData
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerAdapter.ViewHolder {
         var v = LayoutInflater.from(parent.context).inflate(R.layout.text_entry_diary_layout, parent, false)
@@ -22,22 +22,22 @@ class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: RecyclerAdapter.ViewHolder, position: Int) {
-        holder.diaryText.text = todayViewModel.entries.value?.get(position)!!.diaryText
-        holder.diaryImage.setImageResource( todayViewModel.entries.value?.get(position)!!.diaryImage)
+        holder.diaryText.text = todayModelData[position].diaryText
+        holder.diaryImage.setImageResource(todayModelData[position].diaryImage)
         holder.diaryImage.clipToOutline = true
         holder.diaryLocation.clipToOutline = true
         holder.diaryAudio.clipToOutline = true
-        if (todayViewModel.entries.value?.get(position)!!.diaryImage == 0) {
+        if (todayModelData[position].diaryImage == 0) {
             (holder.diaryImage.parent as ViewGroup).removeView(holder.diaryImage)
         }
-        if (!todayViewModel.entries.value?.get(position)!!.diaryLocation) {
+        if (todayModelData[position].diaryLocation) {
             (holder.diaryLocation.parent as ViewGroup).removeView(holder.diaryLocation)
         }
-        if(todayViewModel.entries.value?.get(position)!!.diaryAudio == 0) {
+        if(todayModelData[position].diaryAudio == 0) {
             (holder.diaryAudio.parent as ViewGroup).removeView(holder.diaryAudio)
         }
         else {
-            val mediaPlayer: MediaPlayer = MediaPlayer.create(holder.diaryAudio.context, todayViewModel.entries.value?.get(position)!!.diaryAudio)
+            val mediaPlayer: MediaPlayer = MediaPlayer.create(holder.diaryAudio.context, todayModelData[position].diaryAudio)
             holder.seekBar.progress = 0
             holder.seekBar.max = mediaPlayer.duration
 
@@ -84,7 +84,7 @@ class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
     }
 
     override fun getItemCount(): Int {
-        return todayViewModel.entries.value!!.size
+        return todayModelData.size
     }
 
     inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {

@@ -9,7 +9,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.example.yourstory.R
-import com.example.yourstory.databinding.RecordAudioFragmentBinding
 import com.example.yourstory.databinding.RecordTextFragmentBinding
 
 class RecordTextFragment : Fragment() {
@@ -28,7 +27,7 @@ class RecordTextFragment : Fragment() {
         viewModelShared = ViewModelProvider(requireActivity())[SharedThoughtDialogViewModel::class.java]
 
         binding.confirmThoughtDialogText.setOnClickListener {
-            viewModelShared.hasText.value = true
+            viewModelShared.text.value = "asdf"
             hostFragmentNavController.navigate(R.id.action_recordTextFragment_to_thought_dialog)
         }
         binding.cancelThoughtDialogText.setOnClickListener {
