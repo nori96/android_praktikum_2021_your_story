@@ -14,7 +14,7 @@ import com.github.mikephil.charting.utils.ColorTemplate
 
 class ReportsAdapter() : RecyclerView.Adapter<ReportsAdapter.ViewHolder>(){
 
-    var dataSet: ArrayList<ReportModel> = arrayListOf()
+    var dataSet: ArrayList<ReportListModel> = arrayListOf()
 
     /**
      * Provide a reference to the type of views that you are using

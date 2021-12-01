@@ -29,7 +29,12 @@
     <fragment android:id="@+id/navigation_diary"
         android:name="com.example.yourstory.diary.DiaryFragment"
         android:label="@string/diary"
-        tools:layout="@layout/diary_fragment"/>
+        tools:layout="@layout/diary_fragment">
+        <action
+            android:name="goToDiaryDetail"
+            android:id="@+id/action_navigation_diary_to_diaryDetailFragment"
+            app:destination="@id/diaryDetailFragment" />
+    </fragment>
     <fragment
         android:id="@+id/thought_dialog"
         android:name="com.example.yourstory.today.thought.AddThoughtDialog"
@@ -105,5 +110,14 @@
         <action
             android:id="@+id/action_recordLocationFragment_to_thought_dialog"
             app:destination="@id/thought_dialog" />
+    </fragment>
+    <fragment
+        android:id="@+id/diaryDetailFragment"
+        android:name="com.example.yourstory.diary.detail.DiaryDetailFragment"
+        android:label="diary_detail_fragment"
+        tools:layout="@layout/diary_detail_fragment" >
+        <argument
+            android:name="date"
+            app:argType="com.example.yourstory.diary.detail.Date" />
     </fragment>
 </navigation>

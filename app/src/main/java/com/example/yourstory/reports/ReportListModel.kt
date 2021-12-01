@@ -1,6 +1,6 @@
 package com.example.yourstory.reports
 
-class ReportModel {
+class ReportListModel {
 
     var date : String
     var interval : String

@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.yourstory.R
 import com.example.yourstory.databinding.ReportsFragmentBinding
@@ -40,7 +39,7 @@ class ReportsFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(this).get(ReportsViewModel::class.java)
 
-        val reportsObserver = Observer<ArrayList<ReportModel>> { newReports ->
+        val reportsObserver = Observer<ArrayList<ReportListModel>> { newReports ->
             (recyclerView.adapter as ReportsAdapter).dataSet = newReports
         }
 

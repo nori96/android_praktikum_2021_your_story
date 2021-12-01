@@ -20,7 +20,7 @@ import java.util.*
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    private lateinit var toolbar: Toolbar
+    lateinit var toolbar: Toolbar
     private lateinit var bottomNavigationView: BottomNavigationView
     private lateinit var hostFramentNavController: NavController
 
