@@ -34,7 +34,7 @@ class DiaryDetailFragment : Fragment() {
         binding = DiaryDetailFragmentBinding.inflate(layoutInflater,container,false)
 
         //Set date as the title
-        (requireActivity() as MainActivity).toolbar!!.title = args.date.toString()
+        (requireActivity() as MainActivity).toolbar.title = args.date.toString()
 
         testText = binding.testText
         testText.text = args.date.toString()
