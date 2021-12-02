@@ -10,10 +10,10 @@ import android.view.ViewGroup
 import android.widget.SeekBar
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
-import com.example.yourstory.R
+import com.example.yourstory.database.data.EmotionalState
 import com.example.yourstory.databinding.LikertDialogFragmentBinding
-import com.example.yourstory.databinding.ThoughtDialogFragmentBinding
-import com.example.yourstory.today.thought.SharedThoughtDialogViewModel
+import java.text.SimpleDateFormat
+import java.util.*
 
 class LikertDialog : Fragment() {
 
@@ -28,7 +28,6 @@ class LikertDialog : Fragment() {
     ): View? {
         _binding = LikertDialogFragmentBinding.inflate(inflater, container, false)
         likertViewModel = ViewModelProvider(requireActivity())[LikertDialogViewModel::class.java]
-
         hostFragmentNavController = NavHostFragment.findNavController(this)
         binding.joySeekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
@@ -43,6 +42,22 @@ class LikertDialog : Fragment() {
             }
 
         })
+
+        binding.confirmLikertDialog.setOnClickListener {
+            submitLikert()
+        }
         return binding.root
+    }
+
+    private fun submitLikert() {
+        var simpleDateFormat = SimpleDateFormat("yyyy.MM.dd")
+        likertViewModel.addEmotionalState(EmotionalState(0,
+            simpleDateFormat.format(Date()).toString(),
+            binding.joySeekBar.progress,
+            binding.surpriseSeekBar.progress,
+            binding.angerSeekBar.progress,
+            binding.sadnessSeekBar.progress,
+            binding.fearSeekBar.progress,
+            binding.disgustSeekBar.progress))
     }
 }

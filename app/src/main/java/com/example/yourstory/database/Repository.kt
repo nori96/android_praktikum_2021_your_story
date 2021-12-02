@@ -1,12 +1,21 @@
 package com.example.yourstory.database
 
+import android.app.Application
 import androidx.lifecycle.LiveData
 import com.example.yourstory.database.data.DiaryEntry
 import com.example.yourstory.database.data.DiaryEntryDao
 import com.example.yourstory.database.data.EmotionalState
 import com.example.yourstory.database.data.EmotionalStateDao
 
-class Repository(private val diaryEntryDao: DiaryEntryDao, private val emotionalStateDao: EmotionalStateDao){
+class Repository(application: Application){
+
+    var diaryEntryDao: DiaryEntryDao
+    var emotionalStateDao: EmotionalStateDao
+
+    init {
+        diaryEntryDao = Database.getDatabase(application).diaryEntryDao()
+        emotionalStateDao = Database.getDatabase(application).emotionalStateDao()
+    }
 
     //Diary Entry functions
 
