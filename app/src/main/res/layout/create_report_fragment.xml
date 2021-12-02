@@ -37,16 +37,21 @@
             app:layout_constraintRight_toLeftOf="@+id/create_report_bar_chart"
             app:layout_constraintTop_toTopOf="parent"
             android:layout_marginLeft="16dp"
-            android:layout_marginTop="16dp">
+            android:layout_marginTop="16dp"
+            app:cardElevation="0dp">
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
+
                 <ImageView
                     android:layout_width="32dp"
                     android:layout_height="32dp"
-                    android:layout_margin="16dp"
                     android:layout_centerInParent="true"
-                    android:src="@drawable/create_report_piechart"/>
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:src="@drawable/create_report_piechart" />
             </RelativeLayout>
         </androidx.cardview.widget.CardView>
         <androidx.cardview.widget.CardView
@@ -57,7 +62,8 @@
             app:layout_constraintRight_toLeftOf="@+id/create_reports_export"
             app:layout_constraintTop_toTopOf="parent"
             android:layout_marginLeft="16dp"
-            android:layout_marginTop="16dp">
+            android:layout_marginTop="16dp"
+            app:cardElevation="0dp">
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
@@ -78,7 +84,8 @@
             app:layout_constraintTop_toTopOf="parent"
             android:layout_marginLeft="16dp"
             android:layout_marginTop="16dp"
-            android:layout_marginRight="16dp">
+            android:layout_marginRight="16dp"
+            app:cardElevation="0dp">
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
