@@ -40,6 +40,9 @@
     <string name="likert_dialog_fear">Fear</string>
     <string name="likert_dialog_disgust">Disgust</string>
 
+    <!--Create Report-->
+    <string name="create_report_heading">Create Report</string>
+
     <!-- dialog ok cancel texts -->
     <string name="finish_dialog">Finish</string>
     <string name="cancel_dialog">Cancel</string>

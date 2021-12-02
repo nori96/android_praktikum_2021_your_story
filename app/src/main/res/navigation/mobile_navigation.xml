@@ -9,6 +9,9 @@
         android:name="com.example.yourstory.reports.ReportsFragment"
         android:label="@string/reports"
         tools:layout="@layout/reports_fragment">
+        <action
+            android:id="@+id/action_navigation_reports_to_createReportFragment"
+            app:destination="@id/createReportFragment" />
     </fragment>
 
     <fragment android:id="@+id/navigation_today"
@@ -120,4 +123,9 @@
             android:name="date"
             app:argType="com.example.yourstory.diary.detail.Date" />
     </fragment>
+    <fragment
+        android:id="@+id/createReportFragment"
+        android:name="com.example.yourstory.reports.createReports.CreateReportFragment"
+        android:label="@string/create_report_heading"
+        tools:layout="@layout/create_report_fragment" />
 </navigation>

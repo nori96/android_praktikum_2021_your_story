@@ -47,6 +47,9 @@
     <string name="likert_dialog_fear">Angst</string>
     <string name="likert_dialog_disgust">Ekel</string>
 
+    <!--Create Report-->
+    <string name="create_report_heading">Report erstellen</string>
+
     <!-- dialog ok cancel texts -->
     <string name="finish_dialog">Okay</string>
     <string name="cancel_dialog">Zurück</string>
