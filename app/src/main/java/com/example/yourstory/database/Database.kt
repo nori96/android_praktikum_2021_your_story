@@ -13,6 +13,7 @@ import java.security.AccessControlContext
 @Database(entities = [DiaryEntry::class, EmotionalState::class], version = 1, exportSchema = false)
 abstract class Database: RoomDatabase() {
 
+    //All Daos should be defined here
     abstract fun diaryEntryDao(): DiaryEntryDao
     abstract fun emotionalStateDao(): EmotionalStateDao
 

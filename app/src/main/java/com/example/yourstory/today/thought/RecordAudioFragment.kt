@@ -1,5 +1,7 @@
 package com.example.yourstory.today.thought
 
+import android.content.res.AssetManager
+import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -28,7 +30,7 @@ class RecordAudioFragment : Fragment() {
         viewModelShared = ViewModelProvider(requireActivity())[SharedThoughtDialogViewModel::class.java]
 
         binding.confirmThoughtDialogAudio.setOnClickListener {
-            viewModelShared.audio.value = R.raw.alan_watts
+            viewModelShared.audio.value = "alan_watts.mp3"
             hostFragmentNavController.navigate(R.id.action_recordAudioFragment_to_thought_dialog)
         }
         binding.cancelThoughtDialogAudio.setOnClickListener {

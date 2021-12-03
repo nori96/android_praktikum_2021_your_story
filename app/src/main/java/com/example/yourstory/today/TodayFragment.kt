@@ -8,20 +8,23 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.NavHostFragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.yourstory.R
+import com.example.yourstory.database.data.DiaryEntry
 import com.example.yourstory.databinding.TodayFragmentBinding
 import com.example.yourstory.today.thought.SharedThoughtDialogViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import java.text.SimpleDateFormat
+import java.util.*
 
 class TodayFragment : Fragment() {
 
     private lateinit var hostFramentNavController: NavController
     private lateinit var viewModel: TodayViewModel
+    private lateinit var sharedViewModel: SharedThoughtDialogViewModel
     private lateinit var likertFab: FloatingActionButton
     private lateinit var thoughtFab: FloatingActionButton
+    private lateinit var recyclerView: RecyclerView
     private var fabClicked = false
 
     private lateinit var binding: TodayFragmentBinding
@@ -37,16 +40,23 @@ class TodayFragment : Fragment() {
         if (container != null) {
             hostFramentNavController = container.findNavController()
         }
-        viewModel = ViewModelProvider(requireActivity())[TodayViewModel::class.java]
-        binding.recyclerViewTodayPage.adapter = RecyclerAdapter(viewModel.getTodayViewModel().value!!)
 
-        viewModel.getTodayViewModel().observe(viewLifecycleOwner, { modelData ->
-            binding.recyclerViewTodayPage.adapter = RecyclerAdapter(modelData)
-        })
+        //Setup the Recycler-View
+        recyclerView = binding.recyclerViewTodayPage
+        recyclerView.adapter = DiaryEntriesAdapter()
+
+        viewModel = ViewModelProvider(requireActivity())[TodayViewModel::class.java]
+        sharedViewModel = ViewModelProvider(requireActivity())[SharedThoughtDialogViewModel::class.java]
+        sharedViewModel.resetData()
+
+        viewModel.todayViewData.observe(viewLifecycleOwner, { newDiaries ->
+            (recyclerView.adapter as DiaryEntriesAdapter).setData(todayFilter(newDiaries))})
+
 
         likertFab = binding.likertFab
         thoughtFab = binding.thoughtFab
 
+        //Setup Floating-Action-Button
         binding.rootFab.setOnClickListener {
             if (!fabClicked) {
                 likertFab.visibility = View.VISIBLE
@@ -69,6 +79,17 @@ class TodayFragment : Fragment() {
         return binding.root
     }
 
+    private fun todayFilter(diaryEntries: List<DiaryEntry>?): List<DiaryEntry> {
+        var date: String = SimpleDateFormat("yyyy-MM-dd").format(Date()).toString()
+        var filteredDiaryEntries: List<DiaryEntry>
+        filteredDiaryEntries = diaryEntries!!.filter { diaryEntry -> diaryEntry.date.contains(date) }
+
+        if(filteredDiaryEntries.isEmpty()){
+            return listOf()
+        }
+        return filteredDiaryEntries
+    }
+
     override fun onViewCreated(itemView: View, savedInstanceState: Bundle?) {
         super.onViewCreated(itemView, savedInstanceState)
         /*binding.recyclerViewTodayPage.apply {
@@ -83,11 +104,11 @@ class TodayFragment : Fragment() {
 
     }
 
-    /*override fun onActivityCreated(savedInstanceState: Bundle?) {
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        //viewModel = ViewModelProvider(this).get(TodayViewModel::class.java)
+    }
 
-    }*/
+
 
     override fun onDestroyView() {
         super.onDestroyView()

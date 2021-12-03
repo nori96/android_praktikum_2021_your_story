@@ -10,16 +10,13 @@ import androidx.room.Query
 interface DiaryEntryDao {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun addDiaryEntry(diaryEntry: DiaryEntry)
+    fun addDiaryEntry(diaryEntry: DiaryEntry)
 
     @Query("SELECT * FROM diary_entries_table ORDER BY id ASC ")
     fun readAllEntriesSortedByID(): LiveData<List<DiaryEntry>>
 
     @Query("SELECT * FROM diary_entries_table ORDER BY date ASC")
     fun readAllEntriesSortedByDate(): LiveData<List<DiaryEntry>>
-
-    @Query("SELECT * FROM diary_entries_table WHERE date = :searchDate ")
-    fun readAllEntriesByDate(searchDate: String): LiveData<List<DiaryEntry>>
 
     @Query("SELECT * FROM emotional_states_table WHERE id = :emotionalStateID")
     fun getEmotionalStateOfDiaryEntry(emotionalStateID: Int): LiveData<List<EmotionalState>>

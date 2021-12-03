@@ -68,7 +68,7 @@ class AddThoughtDialog : Fragment(), EasyPermissions.PermissionCallbacks {
         }
 
         binding.confirmThoughtDialog.setOnClickListener {
-            todayViewModel.addEntry(viewModelShared.text.value!!, viewModelShared.image.value!!, viewModelShared.location.value!!, viewModelShared.audio.value!!)
+            viewModelShared.confirmDiaryEntry()
             hostFragmentNavController.navigate(R.id.action_thought_dialog_to_navigation_today)
         }
         binding.cancelThoughtDialog.setOnClickListener {
@@ -76,7 +76,7 @@ class AddThoughtDialog : Fragment(), EasyPermissions.PermissionCallbacks {
         }
 
         viewModelShared.location.observe(viewLifecycleOwner, { location ->
-            if (location) {
+            if (!location.isBlank()) {
                 binding.cancelThoughtLocationCardView.visibility = View.VISIBLE
                 binding.cancelThoughtLocationCardViewIcon.visibility = View.VISIBLE
             } else {
@@ -85,11 +85,11 @@ class AddThoughtDialog : Fragment(), EasyPermissions.PermissionCallbacks {
             }
         })
         binding.cancelThoughtLocationCardViewIcon.setOnClickListener {
-            viewModelShared.location.value = false
+            viewModelShared.location.value = ""
         }
 
         viewModelShared.image.observe(viewLifecycleOwner, { image ->
-            if (image != 0) {
+            if (!image.isEmpty()) {
                 binding.cancelThoughtImageCardView.visibility = View.VISIBLE
                 binding.cancelThoughtImageCardViewIcon.visibility = View.VISIBLE
             } else {
@@ -98,11 +98,11 @@ class AddThoughtDialog : Fragment(), EasyPermissions.PermissionCallbacks {
             }
         })
         binding.cancelThoughtImageCardViewIcon.setOnClickListener {
-            viewModelShared.image.value = 0
+            viewModelShared.image.value = ByteArray(0)
         }
 
         viewModelShared.audio.observe(viewLifecycleOwner, { audio ->
-            if (audio != 0) {
+            if (!audio.isBlank()) {
                 binding.cancelThoughtAudioCardView.visibility = View.VISIBLE
                 binding.cancelThoughtAudioCardViewIcon.visibility = View.VISIBLE
             } else {
@@ -111,11 +111,11 @@ class AddThoughtDialog : Fragment(), EasyPermissions.PermissionCallbacks {
             }
         })
         binding.cancelThoughtAudioCardViewIcon.setOnClickListener {
-            viewModelShared.audio.value = 0
+            viewModelShared.audio.value = ""
         }
 
         viewModelShared.text.observe(viewLifecycleOwner, { text ->
-            if (text != "") {
+            if (!text.isBlank()) {
                 binding.cancelThoughtTextCardView.visibility = View.VISIBLE
                 binding.cancelThoughtTextCardViewIcon.visibility = View.VISIBLE
             } else {

@@ -10,7 +10,7 @@ import androidx.room.Query
 interface EmotionalStateDao {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun addEmotionalState(emotionalState: EmotionalState)
+    fun addEmotionalState(emotionalState: EmotionalState)
 
     @Query( "SELECT * FROM emotional_states_table ORDER BY id ASC")
     fun readAllEmotionalStatesSortedByID(): LiveData<List<EmotionalState>>

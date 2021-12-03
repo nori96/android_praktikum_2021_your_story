@@ -27,7 +27,7 @@ class RecordLocationFragment : Fragment() {
         viewModelShared = ViewModelProvider(requireActivity())[SharedThoughtDialogViewModel::class.java]
 
         binding.confirmThoughtDialogLocation.setOnClickListener {
-            viewModelShared.location.value = true
+            viewModelShared.location.value = "10"
             hostFragmentNavController.navigate(R.id.action_recordLocationFragment_to_thought_dialog)
         }
 

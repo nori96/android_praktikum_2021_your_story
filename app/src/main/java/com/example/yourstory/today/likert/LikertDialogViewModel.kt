@@ -14,7 +14,6 @@ class LikertDialogViewModel(application: Application) : AndroidViewModel(applica
     private val repository: Repository
 
     init{
-        val emotionalStateDao = Database.getDatabase(application).emotionalStateDao()
         repository = Repository(application)
     }
 

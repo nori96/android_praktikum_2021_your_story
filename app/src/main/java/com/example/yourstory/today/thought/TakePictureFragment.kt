@@ -1,5 +1,6 @@
 package com.example.yourstory.today.thought
 
+import android.media.Image
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -27,7 +28,7 @@ class TakePictureFragment : Fragment() {
         viewModelShared = ViewModelProvider(requireActivity())[SharedThoughtDialogViewModel::class.java]
 
         binding.confirmThoughtDialogPicture.setOnClickListener {
-            viewModelShared.image.value = R.drawable.beach
+            viewModelShared.image.value = requireActivity().assets.open("beach.jpg").readBytes()
             hostFragmentNavController.navigate(R.id.action_takePictureFragment_to_thought_dialog)
         }
         binding.cancelThoughtDialogPicture.setOnClickListener {

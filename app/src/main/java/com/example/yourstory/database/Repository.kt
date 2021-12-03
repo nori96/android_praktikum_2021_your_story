@@ -2,6 +2,7 @@ package com.example.yourstory.database
 
 import android.app.Application
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.example.yourstory.database.data.DiaryEntry
 import com.example.yourstory.database.data.DiaryEntryDao
 import com.example.yourstory.database.data.EmotionalState
@@ -27,15 +28,11 @@ class Repository(application: Application){
         return diaryEntryDao.readAllEntriesSortedByDate()
     }
 
-    fun readAllEntriesByDate(searchDate: String): LiveData<List<DiaryEntry>>{
-        return diaryEntryDao.readAllEntriesByDate(searchDate)
-    }
-
     fun getEmotionalStateOfDiaryEntry(diaryEntry: DiaryEntry): LiveData<List<EmotionalState>>{
         return diaryEntryDao.getEmotionalStateOfDiaryEntry(diaryEntry.emotionalStateID)
     }
 
-    suspend fun addDiaryEntry(diaryEntry: DiaryEntry){
+     fun addDiaryEntry(diaryEntry: DiaryEntry){
         diaryEntryDao.addDiaryEntry(diaryEntry)
     }
 
@@ -49,7 +46,16 @@ class Repository(application: Application){
         return emotionalStateDao.readAllEmotionalStatesSortedByDate()
     }
 
-    suspend fun addEmotionalState(emotionalState: EmotionalState){
+     fun addEmotionalState(emotionalState: EmotionalState){
         emotionalStateDao.addEmotionalState(emotionalState)
+    }
+
+    fun readLastEmotionalStateID(): Int {
+        var emotionalState = emotionalStateDao.readAllEmotionalStatesSortedByDate().value?.get(0)
+        if(emotionalState == null){
+            return -1
+        }else {
+            return emotionalState.id
+        }
     }
 }

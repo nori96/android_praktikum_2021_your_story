@@ -50,7 +50,7 @@ class LikertDialog : Fragment() {
     }
 
     private fun submitLikert() {
-        var simpleDateFormat = SimpleDateFormat("yyyy.MM.dd")
+        var simpleDateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
         likertViewModel.addEmotionalState(EmotionalState(0,
             simpleDateFormat.format(Date()).toString(),
             binding.joySeekBar.progress,
