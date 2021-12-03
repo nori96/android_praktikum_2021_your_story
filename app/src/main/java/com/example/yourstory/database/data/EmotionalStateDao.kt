@@ -18,4 +18,7 @@ interface EmotionalStateDao {
     @Query( "SELECT * FROM emotional_states_table ORDER BY date ASC")
     fun readAllEmotionalStatesSortedByDate(): LiveData<List<EmotionalState>>
 
+    @Query( "SELECT * FROM emotional_states_table ORDER BY date ASC")
+    fun readAllEmotionalStatesSortedByDateWithoutLiveData(): List<EmotionalState>
+
 }

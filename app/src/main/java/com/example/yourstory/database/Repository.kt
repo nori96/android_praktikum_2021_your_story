@@ -51,11 +51,11 @@ class Repository(application: Application){
     }
 
     fun readLastEmotionalStateID(): Int {
-        var emotionalState = emotionalStateDao.readAllEmotionalStatesSortedByDate().value?.get(0)
-        if(emotionalState == null){
+        var emotionalState = emotionalStateDao.readAllEmotionalStatesSortedByDateWithoutLiveData()
+        if(emotionalState.isEmpty()){
             return -1
         }else {
-            return emotionalState.id
+            return emotionalState[0].id
         }
     }
 }

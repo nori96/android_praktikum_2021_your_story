@@ -11,6 +11,6 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.root_preferences, rootKey)
-        //TODO: Setie weiter ausgestallten (root_preferences.xml)
+        //TODO: Setie weiter ausgestalten (root_preferences.xml)
     }
 }
