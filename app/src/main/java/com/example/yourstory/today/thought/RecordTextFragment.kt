@@ -27,7 +27,7 @@ class RecordTextFragment : Fragment() {
         viewModelShared = ViewModelProvider(requireActivity())[SharedThoughtDialogViewModel::class.java]
 
         binding.confirmThoughtDialogText.setOnClickListener {
-            viewModelShared.text.value = "asdf"
+            viewModelShared.text.value = "I only wanted to send out a warning, against the needless waste created by capitalism without philosophy, the needless colonisation of planets, the needless circulation of slanted media, and needlessly tall buildings that symbolise all of this!"
             hostFragmentNavController.navigate(R.id.action_recordTextFragment_to_thought_dialog)
         }
         binding.cancelThoughtDialogText.setOnClickListener {
