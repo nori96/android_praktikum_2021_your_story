@@ -81,6 +81,9 @@ dependencies {
     implementation "androidx.core:core-ktx:1.7.0"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.4.32"
+
+    // Formatting Times
+    implementation("joda-time:joda-time:2.3")
 }
 
 apply plugin: "androidx.navigation.safeargs.kotlin"

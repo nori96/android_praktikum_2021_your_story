@@ -15,5 +15,5 @@ data class DiaryEntry (
     val image: ByteArray,
     val audio: String,
     val location: String,
-    val date: String,
+    val date: Long,
 )

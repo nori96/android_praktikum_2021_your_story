@@ -58,5 +58,12 @@
             android:src="@drawable/ic_baseline_play_arrow_24"
             android:scaleType="fitCenter">
         </ImageButton>
+        <TextView
+            android:id="@+id/entry_date"
+            android:gravity="end"
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="TextView" />
     </LinearLayout>
 </androidx.cardview.widget.CardView>

@@ -12,6 +12,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.yourstory.R
 import com.example.yourstory.database.data.DiaryEntry
+import com.example.yourstory.utils.DateEpochConverter
 import java.util.*
 
 class DiaryEntriesAdapter() : RecyclerView.Adapter<DiaryEntriesAdapter.ViewHolder>() {
@@ -32,6 +33,7 @@ class DiaryEntriesAdapter() : RecyclerView.Adapter<DiaryEntriesAdapter.ViewHolde
                BitmapFactory.decodeByteArray(imageByteArray,0,imageByteArray.size)
             )
         }
+        holder.date.text = DateEpochConverter.convertEpochToDateTime(todayModelData[position].date).toString().split("T")[1].subSequence(0,5)
         holder.diaryImage.clipToOutline = true
         holder.diaryLocation.clipToOutline = true
         holder.diaryAudio.clipToOutline = true
@@ -115,8 +117,10 @@ class DiaryEntriesAdapter() : RecyclerView.Adapter<DiaryEntriesAdapter.ViewHolde
         var diaryLocation: ImageView
         var playButton: ImageView
         var seekBar: SeekBar
+        var date: TextView
 
         init {
+            date = itemView.findViewById((R.id.entry_date))
             diaryText = itemView.findViewById(R.id.main_today_text)
             diaryImage = itemView.findViewById(R.id.main_today_image)
             diaryAudio = itemView.findViewById(R.id.main_today_audio_source)

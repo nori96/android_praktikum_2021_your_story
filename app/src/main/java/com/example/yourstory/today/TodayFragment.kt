@@ -13,6 +13,7 @@ import com.example.yourstory.R
 import com.example.yourstory.database.data.DiaryEntry
 import com.example.yourstory.databinding.TodayFragmentBinding
 import com.example.yourstory.today.thought.SharedThoughtDialogViewModel
+import com.example.yourstory.utils.DateEpochConverter
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.text.SimpleDateFormat
 import java.util.*
@@ -80,10 +81,8 @@ class TodayFragment : Fragment() {
     }
 
     private fun todayFilter(diaryEntries: List<DiaryEntry>?): List<DiaryEntry> {
-        var date: String = SimpleDateFormat("yyyy-MM-dd").format(Date()).toString()
         var filteredDiaryEntries: List<DiaryEntry>
-        filteredDiaryEntries = diaryEntries!!.filter { diaryEntry -> diaryEntry.date.contains(date) }
-
+        filteredDiaryEntries = diaryEntries!!.filter { diaryEntry -> DateEpochConverter.convertEpochToDateTime(diaryEntry.date).toString().contains(DateEpochConverter.generateIsoDateWithoutTime())}
         if(filteredDiaryEntries.isEmpty()){
             return listOf()
         }

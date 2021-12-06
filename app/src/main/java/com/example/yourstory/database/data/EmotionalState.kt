@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 data class EmotionalState(
     @PrimaryKey(autoGenerate = true)
     val id: Int,
-    val date: String,
+    val date: Long,
     val joy: Int,
     val suprise: Int,
     val anger: Int,

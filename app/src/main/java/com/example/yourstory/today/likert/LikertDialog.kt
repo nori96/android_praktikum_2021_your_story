@@ -12,8 +12,7 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.example.yourstory.database.data.EmotionalState
 import com.example.yourstory.databinding.LikertDialogFragmentBinding
-import java.text.SimpleDateFormat
-import java.util.*
+import com.example.yourstory.utils.DateEpochConverter
 
 class LikertDialog : Fragment() {
 
@@ -50,9 +49,8 @@ class LikertDialog : Fragment() {
     }
 
     private fun submitLikert() {
-        var simpleDateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
         likertViewModel.addEmotionalState(EmotionalState(0,
-            simpleDateFormat.format(Date()).toString(),
+            DateEpochConverter.generateEpochDate(),
             binding.joySeekBar.progress,
             binding.surpriseSeekBar.progress,
             binding.angerSeekBar.progress,

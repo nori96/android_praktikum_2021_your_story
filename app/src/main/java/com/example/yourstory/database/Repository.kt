@@ -7,6 +7,11 @@ import com.example.yourstory.database.data.DiaryEntry
 import com.example.yourstory.database.data.DiaryEntryDao
 import com.example.yourstory.database.data.EmotionalState
 import com.example.yourstory.database.data.EmotionalStateDao
+import com.example.yourstory.utils.DateEpochConverter
+import org.joda.time.DateTime
+import org.joda.time.DateTimeZone
+import java.time.ZoneOffset.UTC
+import java.util.*
 
 class Repository(application: Application){
 
@@ -34,6 +39,12 @@ class Repository(application: Application){
 
      fun addDiaryEntry(diaryEntry: DiaryEntry){
         diaryEntryDao.addDiaryEntry(diaryEntry)
+    }
+
+    fun readAllEntriesOfaDate(isoDate: String): LiveData<List<EmotionalState>>{
+        var epochCurrentDateStart = DateEpochConverter.convertDateTimeToEpoch(DateTime(isoDate, DateTimeZone.UTC).withTime(0, 0, 0, 0).toDateTimeISO().toString())
+        var epochCurrentDateEnd = DateEpochConverter.convertDateTimeToEpoch(DateTime(isoDate, DateTimeZone.UTC).withTime(23, 59, 59, 999).toDateTimeISO().toString())
+        return diaryEntryDao.readAllEntriesOfaDate(epochCurrentDateStart,epochCurrentDateEnd)
     }
 
     //Emotional State functions

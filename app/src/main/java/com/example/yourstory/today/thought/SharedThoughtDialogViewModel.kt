@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.yourstory.R
 import com.example.yourstory.database.Repository
 import com.example.yourstory.database.data.DiaryEntry
+import com.example.yourstory.utils.DateEpochConverter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
@@ -30,7 +31,7 @@ class SharedThoughtDialogViewModel(application: Application) : AndroidViewModel(
         viewModelScope.launch (Dispatchers.IO){
             repository.addDiaryEntry(DiaryEntry(0, repository.readLastEmotionalStateID(),
                 text.value.toString(), image.value!!, audio.value!!, location.value!!,
-                SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").format(Date()).toString()
+                DateEpochConverter.generateEpochDate()
             ))
         }
     }
