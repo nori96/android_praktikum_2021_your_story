@@ -51,7 +51,8 @@ class TodayFragment : Fragment() {
         sharedViewModel.resetData()
 
         viewModel.todayViewData.observe(viewLifecycleOwner, { newDiaries ->
-            (recyclerView.adapter as DiaryEntriesAdapter).setData(todayFilter(newDiaries))})
+            (recyclerView.adapter as DiaryEntriesAdapter).setData(todayFilter(newDiaries))
+            recyclerView.smoothScrollToPosition(newDiaries.size);})
 
 
         likertFab = binding.likertFab

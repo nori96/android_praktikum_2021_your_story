@@ -33,13 +33,14 @@ class SharedThoughtDialogViewModel(application: Application) : AndroidViewModel(
                 text.value.toString(), image.value!!, audio.value!!, location.value!!,
                 DateEpochConverter.generateEpochDate()
             ))
+            resetData()
         }
     }
 
-    public fun resetData() {
-        image.value = ByteArray(0)
-        location.value = ""
-        audio.value = ""
-        text.value = ""
+    fun resetData() {
+        image.postValue(ByteArray(0))
+        location.postValue("")
+        audio.postValue("")
+        text.postValue("")
     }
 }
