@@ -1,6 +1,7 @@
 package com.example.yourstory.today.thought
 
 import android.Manifest
+import android.graphics.Bitmap
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -14,6 +15,7 @@ import com.example.yourstory.databinding.ThoughtDialogFragmentBinding
 import com.vmadalin.easypermissions.dialogs.SettingsDialog
 import androidx.navigation.fragment.NavHostFragment.findNavController
 import com.example.yourstory.today.TodayViewModel
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class AddThoughtDialog : Fragment(), EasyPermissions.PermissionCallbacks {
 
@@ -23,6 +25,7 @@ class AddThoughtDialog : Fragment(), EasyPermissions.PermissionCallbacks {
         const val PERMISSION_CAMERA_REQUEST_CODE = 3
     }
 
+    private lateinit var materialAlertDialogBuilder: MaterialAlertDialogBuilder
     private lateinit var viewModelShared: SharedThoughtDialogViewModel
     private lateinit var todayViewModel: TodayViewModel
     private lateinit var hostFragmentNavController: NavController
@@ -38,6 +41,7 @@ class AddThoughtDialog : Fragment(), EasyPermissions.PermissionCallbacks {
         todayViewModel = ViewModelProvider(requireActivity())[TodayViewModel::class.java]
         viewModelShared = ViewModelProvider(requireActivity())[SharedThoughtDialogViewModel::class.java]
         hostFragmentNavController = findNavController(this)
+        materialAlertDialogBuilder = MaterialAlertDialogBuilder(requireContext())
 
         binding.thoughtLocationCardView.setOnClickListener {
             if (hasLocationPermission()) {
@@ -68,8 +72,17 @@ class AddThoughtDialog : Fragment(), EasyPermissions.PermissionCallbacks {
         }
 
         binding.confirmThoughtDialog.setOnClickListener {
-            viewModelShared.confirmDiaryEntry()
-            hostFragmentNavController.navigate(R.id.action_thought_dialog_to_navigation_today)
+            if(!viewModelShared.checkIfAnySelected()){
+                materialAlertDialogBuilder.setTitle(R.string.thought_empty_dialog_title)
+                materialAlertDialogBuilder.setMessage(R.string.thought_empty_dialog_text)
+                materialAlertDialogBuilder.setPositiveButton("OK"){
+                        dialog, which ->
+                }
+                materialAlertDialogBuilder.show()
+            }else {
+                viewModelShared.confirmDiaryEntry(requireContext())
+                hostFragmentNavController.navigate(R.id.action_thought_dialog_to_navigation_today)
+            }
         }
         binding.cancelThoughtDialog.setOnClickListener {
             hostFragmentNavController.navigate(R.id.action_thought_dialog_to_navigation_today)
@@ -89,7 +102,7 @@ class AddThoughtDialog : Fragment(), EasyPermissions.PermissionCallbacks {
         }
 
         viewModelShared.image.observe(viewLifecycleOwner, { image ->
-            if (!image.isEmpty()) {
+            if (image.height != 1) {
                 binding.cancelThoughtImageCardView.visibility = View.VISIBLE
                 binding.cancelThoughtImageCardViewIcon.visibility = View.VISIBLE
             } else {
@@ -98,7 +111,7 @@ class AddThoughtDialog : Fragment(), EasyPermissions.PermissionCallbacks {
             }
         })
         binding.cancelThoughtImageCardViewIcon.setOnClickListener {
-            viewModelShared.image.value = ByteArray(0)
+            viewModelShared.image.value = Bitmap.createBitmap(1,1, Bitmap.Config.ARGB_8888)
         }
 
         viewModelShared.audio.observe(viewLifecycleOwner, { audio ->

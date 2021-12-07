@@ -11,8 +11,7 @@ data class DiaryEntry (
     val id: Int,
     val emotionalStateID: Int,
     val text: String,
-    @ColumnInfo(typeAffinity = ColumnInfo.BLOB)
-    val image: ByteArray,
+    val image: String,
     val audio: String,
     val location: String,
     val date: Long,

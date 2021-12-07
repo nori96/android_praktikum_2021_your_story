@@ -57,6 +57,12 @@
     <string name="settings_notification_interval_title">Notification interval</string>
     <string name="settings_notification_interval_text">Define an interval for sending notifications</string>
 
+    <!-- Take a picture Dialog -->
+    <string name="take_a_picture_title">No Picture selected</string>
+    <string name="take_a_picture_text">You have to take a picture before submitting</string>
+    <string name="thought_empty_dialog_title">Thought is empty</string>
+    <string name="thought_empty_dialog_text">You have to specify at least one item before submitting a thought</string>
+
 
 
 </resources>

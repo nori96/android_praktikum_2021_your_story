@@ -1,5 +1,6 @@
 package com.example.yourstory.today
 
+import android.content.Context
 import android.graphics.BitmapFactory
 import android.media.MediaPlayer
 import android.os.Handler
@@ -9,29 +10,31 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.SeekBar
 import android.widget.TextView
+import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
 import com.example.yourstory.R
 import com.example.yourstory.database.data.DiaryEntry
 import com.example.yourstory.utils.DateEpochConverter
+import java.io.File
 import java.util.*
 
 class DiaryEntriesAdapter() : RecyclerView.Adapter<DiaryEntriesAdapter.ViewHolder>() {
 
     private var todayModelData: List<DiaryEntry> = listOf()
     private lateinit var view: View
+    private lateinit var context: Context
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DiaryEntriesAdapter.ViewHolder {
         view = LayoutInflater.from(parent.context).inflate(R.layout.text_entry_diary_layout, parent, false)
+        context = parent.context
         return ViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: DiaryEntriesAdapter.ViewHolder, position: Int) {
-        var imageByteArray = todayModelData[position].image
+        var imageUUID = todayModelData[position].image
         holder.diaryText.text = todayModelData[position].text
-        if(!imageByteArray.isEmpty()) {
-            holder.diaryImage.setImageBitmap(
-               BitmapFactory.decodeByteArray(imageByteArray,0,imageByteArray.size)
-            )
+        if(!imageUUID.isEmpty()) {
+            holder.diaryImage.setImageURI(File(context.filesDir,imageUUID + ".png").toUri())
         }
         holder.date.text = DateEpochConverter.convertEpochToDateTime(todayModelData[position].date).toString().split("T")[1].subSequence(0,5)
         holder.diaryImage.clipToOutline = true

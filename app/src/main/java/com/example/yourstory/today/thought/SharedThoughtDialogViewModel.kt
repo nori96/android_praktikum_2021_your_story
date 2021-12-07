@@ -1,6 +1,8 @@
 package com.example.yourstory.today.thought
 
 import android.app.Application
+import android.content.Context
+import android.graphics.Bitmap
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -18,8 +20,12 @@ class SharedThoughtDialogViewModel(application: Application) : AndroidViewModel(
 
     private val repository: Repository
 
+    // TakePictureFragment specific data
+    var pictureImage = MutableLiveData(Bitmap.createBitmap(1,1,Bitmap.Config.ARGB_8888))
+    var picSelected = MutableLiveData(false)
+
     // these values represent their null values
-    var image = MutableLiveData(ByteArray(0))
+    var image = MutableLiveData(Bitmap.createBitmap(1,1,Bitmap.Config.ARGB_8888))
     var location = MutableLiveData("")
     var audio = MutableLiveData("")
     var text = MutableLiveData("")
@@ -27,10 +33,24 @@ class SharedThoughtDialogViewModel(application: Application) : AndroidViewModel(
     init{
         repository = Repository(application)
     }
-    fun confirmDiaryEntry(){
+
+    fun checkIfAnySelected(): Boolean{
+        return !(image.value!!.height == 1 && location.value!!.isEmpty() && audio.value!!.isEmpty() && text.value!!.isEmpty())
+    }
+    fun confirmDiaryEntry(context: Context){
+        var rndmUUID = UUID.randomUUID().toString()
+
+        //Set empty string if there is no Image set
+        if(image.value!!.height.equals(1)){
+            rndmUUID = ""
+        }else{
+            var fos = context.openFileOutput("$rndmUUID.png",Context.MODE_PRIVATE)
+            image.value!!.compress(Bitmap.CompressFormat.PNG,100,fos)
+            fos.close()
+        }
         viewModelScope.launch (Dispatchers.IO){
             repository.addDiaryEntry(DiaryEntry(0, repository.readLastEmotionalStateID(),
-                text.value.toString(), image.value!!, audio.value!!, location.value!!,
+                text.value.toString(), rndmUUID, audio.value!!, location.value!!,
                 DateEpochConverter.generateEpochDate()
             ))
             resetData()
@@ -38,7 +58,12 @@ class SharedThoughtDialogViewModel(application: Application) : AndroidViewModel(
     }
 
     fun resetData() {
-        image.postValue(ByteArray(0))
+        //Reset TakePictureFragment-Data
+        pictureImage.value = Bitmap.createBitmap(1,1,Bitmap.Config.ARGB_8888)
+        picSelected.value = false
+
+        //Reset ShareViewModel-Data
+        image.postValue(Bitmap.createBitmap(1,1,Bitmap.Config.ARGB_8888))
         location.postValue("")
         audio.postValue("")
         text.postValue("")
