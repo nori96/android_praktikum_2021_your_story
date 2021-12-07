@@ -63,6 +63,8 @@
     <string name="thought_empty_dialog_title">Thought is empty</string>
     <string name="thought_empty_dialog_text">You have to specify at least one item before submitting a thought</string>
 
+    <!-- Record Text Dialog -->
+    <string name="click_to_write_a_message">Tap here to write a text.</string>
 
 
 </resources>
