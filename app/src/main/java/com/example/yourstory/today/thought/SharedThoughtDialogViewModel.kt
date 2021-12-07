@@ -59,8 +59,8 @@ class SharedThoughtDialogViewModel(application: Application) : AndroidViewModel(
 
     fun resetData() {
         //Reset TakePictureFragment-Data
-        pictureImage.value = Bitmap.createBitmap(1,1,Bitmap.Config.ARGB_8888)
-        picSelected.value = false
+        pictureImage.postValue(Bitmap.createBitmap(1,1,Bitmap.Config.ARGB_8888))
+        picSelected.postValue(false)
 
         //Reset ShareViewModel-Data
         image.postValue(Bitmap.createBitmap(1,1,Bitmap.Config.ARGB_8888))
