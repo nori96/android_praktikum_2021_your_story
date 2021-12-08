@@ -14,13 +14,15 @@ import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
 import com.example.yourstory.R
 import com.example.yourstory.database.data.DiaryEntry
+import com.example.yourstory.database.data.EmotionalState
+import com.example.yourstory.database.data.Entry
 import com.example.yourstory.utils.DateEpochConverter
 import java.io.File
 import java.util.*
 
 class DiaryEntriesAdapter() : RecyclerView.Adapter<DiaryEntriesAdapter.ViewHolder>() {
 
-    private var todayModelData: List<DiaryEntry> = listOf()
+    private var todayModelData: List<Entry> = listOf()
     private lateinit var view: View
     private lateinit var context: Context
 
@@ -31,81 +33,102 @@ class DiaryEntriesAdapter() : RecyclerView.Adapter<DiaryEntriesAdapter.ViewHolde
     }
 
     override fun onBindViewHolder(holder: DiaryEntriesAdapter.ViewHolder, position: Int) {
-        var imageUUID = todayModelData[position].image
-        holder.diaryText.text = todayModelData[position].text
-        if(!imageUUID.isEmpty()) {
-            holder.diaryImage.setImageURI(File(context.filesDir,imageUUID + ".png").toUri())
-        }
-        holder.date.text = DateEpochConverter.convertEpochToDateTime(todayModelData[position].date).toString().split("T")[1].subSequence(0,5)
-        holder.diaryImage.clipToOutline = true
-        holder.diaryLocation.clipToOutline = true
-        holder.diaryAudio.clipToOutline = true
-        if (todayModelData[position].image.isEmpty() && holder.diaryImage.parent != null) {
-            (holder.diaryImage.parent as ViewGroup).removeView(holder.diaryImage)
-        }
-        if (todayModelData[position].location.equals("") && holder.diaryLocation.parent != null) {
-            (holder.diaryLocation.parent as ViewGroup).removeView(holder.diaryLocation)
-        }
-        if(todayModelData[position].audio.equals("") && holder.diaryAudio.parent != null) {
-            (holder.diaryAudio.parent as ViewGroup).removeView(holder.diaryAudio)
-        }
-        else {
 
-            if (view.context.assets.list("")!!.contains(todayModelData[position].audio)) {
-                var assetFileDescriptor =
-                    view.context.resources.assets.openFd(todayModelData[position].audio)
-                val mediaPlayer: MediaPlayer = MediaPlayer()
-                mediaPlayer.setDataSource(
-                    assetFileDescriptor.fileDescriptor,
-                    assetFileDescriptor.startOffset,
-                    assetFileDescriptor.length
-                )
-                holder.seekBar.progress = 0
-                mediaPlayer.prepare()
-                holder.seekBar.max = mediaPlayer.duration
+        holder.date.text =
+            DateEpochConverter.convertEpochToDateTime(todayModelData[position].date).toString()
+                .split("T")[1].subSequence(0, 5)
 
-                holder.seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+        if (todayModelData[position] is DiaryEntry) {
+            val entry = todayModelData[position] as DiaryEntry
+            var imageUUID = entry.image
+            holder.diaryText.text = entry.text
+            if (!imageUUID.isEmpty()) {
+                holder.diaryImage.setImageURI(File(context.filesDir, imageUUID + ".png").toUri())
+            }
+
+            holder.diaryImage.clipToOutline = true
+            holder.diaryLocation.clipToOutline = true
+            holder.diaryAudio.clipToOutline = true
+            if (entry.image.isEmpty() && holder.diaryImage.parent != null) {
+                (holder.diaryImage.parent as ViewGroup).removeView(holder.diaryImage)
+            }
+            if (entry.location.equals("") && holder.diaryLocation.parent != null) {
+                (holder.diaryLocation.parent as ViewGroup).removeView(holder.diaryLocation)
+            }
+            if (entry.audio.equals("") && holder.diaryAudio.parent != null) {
+                (holder.diaryAudio.parent as ViewGroup).removeView(holder.diaryAudio)
+            } else {
+
+                if (view.context.assets.list("")!!.contains(entry.audio)) {
+                    var assetFileDescriptor =
+                        view.context.resources.assets.openFd(entry.audio)
+                    val mediaPlayer: MediaPlayer = MediaPlayer()
+                    mediaPlayer.setDataSource(
+                        assetFileDescriptor.fileDescriptor,
+                        assetFileDescriptor.startOffset,
+                        assetFileDescriptor.length
+                    )
+                    holder.seekBar.progress = 0
+                    mediaPlayer.prepare()
+                    holder.seekBar.max = mediaPlayer.duration
+
+                    holder.seekBar.setOnSeekBarChangeListener(object :
+                        SeekBar.OnSeekBarChangeListener {
 
 
-                    override fun onProgressChanged(
-                        seekBar: SeekBar?,
-                        progress: Int,
-                        fromUser: Boolean
-                    ) {
-                        if (fromUser) {
-                            mediaPlayer.seekTo(progress)
+                        override fun onProgressChanged(
+                            seekBar: SeekBar?,
+                            progress: Int,
+                            fromUser: Boolean
+                        ) {
+                            if (fromUser) {
+                                mediaPlayer.seekTo(progress)
+                            }
+                        }
+
+                        override fun onStartTrackingTouch(seekBar: SeekBar?) {
+                        }
+
+                        override fun onStopTrackingTouch(seekBar: SeekBar?) {
+                        }
+
+                    })
+
+                    holder.playButton.setOnClickListener {
+                        if (!mediaPlayer.isPlaying) {
+                            mediaPlayer.start()
+                            holder.playButton.setImageResource(R.drawable.pause_icon_media_player)
+                        } else {
+                            mediaPlayer.pause()
+                            holder.playButton.setImageResource(R.drawable.ic_baseline_play_arrow_24)
                         }
                     }
-
-                    override fun onStartTrackingTouch(seekBar: SeekBar?) {
+                    lateinit var runnable: Runnable
+                    var handler = Handler()
+                    runnable = Runnable {
+                        holder.seekBar.progress = mediaPlayer.currentPosition
+                        handler.postDelayed(runnable, 1000)
                     }
-
-                    override fun onStopTrackingTouch(seekBar: SeekBar?) {
-                    }
-
-                })
-
-                holder.playButton.setOnClickListener {
-                    if (!mediaPlayer.isPlaying) {
-                        mediaPlayer.start()
-                        holder.playButton.setImageResource(R.drawable.pause_icon_media_player)
-                    } else {
-                        mediaPlayer.pause()
-                        holder.playButton.setImageResource(R.drawable.ic_baseline_play_arrow_24)
-                    }
-                }
-                lateinit var runnable: Runnable
-                var handler = Handler()
-                runnable = Runnable {
-                    holder.seekBar.progress = mediaPlayer.currentPosition
                     handler.postDelayed(runnable, 1000)
-                }
-                handler.postDelayed(runnable, 1000)
-                mediaPlayer.setOnCompletionListener {
-                    holder.playButton.setImageResource(R.drawable.ic_baseline_play_arrow_24)
-                    holder.seekBar.progress = 0
+                    mediaPlayer.setOnCompletionListener {
+                        holder.playButton.setImageResource(R.drawable.ic_baseline_play_arrow_24)
+                        holder.seekBar.progress = 0
+                    }
                 }
             }
+        }
+        if (todayModelData[position] is EmotionalState) {
+             val state = todayModelData[position] as EmotionalState
+            if (holder.diaryLocation.parent is ViewGroup) {
+                (holder.diaryLocation.parent as ViewGroup).removeView(holder.diaryLocation)
+            }
+            if (holder.diaryImage.parent is ViewGroup) {
+                (holder.diaryImage.parent as ViewGroup).removeView(holder.diaryImage)
+            }
+            if (holder.diaryAudio.parent is ViewGroup) {
+                (holder.diaryAudio.parent as ViewGroup).removeView(holder.diaryAudio)
+            }
+            holder.diaryText.text = "anger: "+state.anger+" surprise: "+ state.surprise
         }
     }
 
@@ -133,8 +156,33 @@ class DiaryEntriesAdapter() : RecyclerView.Adapter<DiaryEntriesAdapter.ViewHolde
         }
     }
 
-    fun setData(diaries: List<DiaryEntry>){
-        this.todayModelData = diaries
+    @Synchronized
+    fun setData(diaries: List<Entry>){
+        if (diaries.isEmpty()) {
+            return
+        }
+        if (diaries[0] is DiaryEntry) {
+            val emotionalOnly = this.todayModelData.toMutableList()
+            val iterator = emotionalOnly.listIterator()
+            while (iterator.hasNext()) {
+                val e = iterator.next()
+                if (e is DiaryEntry) {
+                    iterator.remove()
+                }
+            }
+            this.todayModelData = (emotionalOnly + diaries).sortedBy { it.date }
+        }
+        else {
+            val diaryEntriesOnly = this.todayModelData.toMutableList()
+            val iterator = diaryEntriesOnly.listIterator()
+            while (iterator.hasNext()) {
+                val e = iterator.next()
+                if (e is EmotionalState) {
+                    iterator.remove()
+                }
+            }
+            this.todayModelData = (diaryEntriesOnly + diaries).sortedBy { it.date }
+        }
         notifyDataSetChanged()
     }
 }

@@ -90,7 +90,6 @@ apply plugin: "androidx.navigation.safeargs.kotlin"
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 
-
 repositories {
     mavenCentral()
 }
