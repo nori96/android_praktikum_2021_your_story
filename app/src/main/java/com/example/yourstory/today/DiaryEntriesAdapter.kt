@@ -91,9 +91,7 @@ class DiaryEntriesAdapter() : RecyclerView.Adapter<DiaryEntriesAdapter.ViewHolde
 
                         override fun onStopTrackingTouch(seekBar: SeekBar?) {
                         }
-
                     })
-
                     holder.playButton.setOnClickListener {
                         if (!mediaPlayer.isPlaying) {
                             mediaPlayer.start()

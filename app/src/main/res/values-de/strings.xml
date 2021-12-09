@@ -46,6 +46,7 @@
     <string name="likert_dialog_sadness">Trauer</string>
     <string name="likert_dialog_fear">Angst</string>
     <string name="likert_dialog_disgust">Ekel</string>
+    <string name="likert_intensity">Intensität</string>
 
     <!--Create Report-->
     <string name="create_report_heading">Report erstellen</string>

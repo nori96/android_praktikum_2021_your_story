@@ -17,8 +17,6 @@ import com.example.yourstory.databinding.TodayFragmentBinding
 import com.example.yourstory.today.thought.SharedThoughtDialogViewModel
 import com.example.yourstory.utils.DateEpochConverter
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import java.text.SimpleDateFormat
-import java.util.*
 
 class TodayFragment : Fragment() {
 
@@ -43,8 +41,6 @@ class TodayFragment : Fragment() {
         if (container != null) {
             hostFramentNavController = container.findNavController()
         }
-
-        //Setup the Recycler-View
         recyclerView = binding.recyclerViewTodayPage
         recyclerView.adapter = DiaryEntriesAdapter()
 
@@ -53,17 +49,13 @@ class TodayFragment : Fragment() {
         sharedViewModel.resetData()
 
         viewModel.todayDiaryEntryData.observe(viewLifecycleOwner, { newDiaryEntries ->
-            //val todayStates = todayFilterEmotionalStateEntries(viewModel.todayEmotionalStateEntryData.value) as List<Entry>
             val todayEntries = todayFilterDiaryEntries(newDiaryEntries) as List<Entry>
-            //val comb = (todayEntries+todayStates).sortedBy { it.date }
             (recyclerView.adapter as DiaryEntriesAdapter).setData(todayEntries)
             recyclerView.smoothScrollToPosition(newDiaryEntries.size)
         })
 
         viewModel.todayEmotionalStateEntryData.observe(viewLifecycleOwner, { newStates ->
-            //val todayEntries = todayFilterDiaryEntries(viewModel.todayDiaryEntryData.value) as List<Entry>
             val todayStates = todayFilterEmotionalStateEntries(newStates) as List<Entry>
-            //val comb = (todayEntries+todayStates).sortedBy { it.date }
             (recyclerView.adapter as DiaryEntriesAdapter).setData(todayStates)
             recyclerView.smoothScrollToPosition(newStates.size)
         })
