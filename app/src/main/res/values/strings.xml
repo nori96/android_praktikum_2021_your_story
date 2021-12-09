@@ -10,7 +10,7 @@
     <string name="reports">Reports</string>
     <string name="today">Today</string>
     <string name="diary">Diary</string>
-
+    <string name="today_likert_heading">Emotional State:</string>
 
     <!--thought dialog -->
     <string name="thought_dialog_top_heading">Create Thought</string>
@@ -39,6 +39,8 @@
     <string name="likert_dialog_sadness">Sadness</string>
     <string name="likert_dialog_fear">Fear</string>
     <string name="likert_dialog_disgust">Disgust</string>
+    <string name="likert_intensity">Intensity</string>
+
 
     <!--Create Report-->
     <string name="create_report_heading">Create Report</string>

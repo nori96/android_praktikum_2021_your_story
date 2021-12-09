@@ -11,12 +11,12 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.yourstory.R
 import com.example.yourstory.database.data.DiaryEntry
+import com.example.yourstory.database.data.EmotionalState
+import com.example.yourstory.database.data.Entry
 import com.example.yourstory.databinding.TodayFragmentBinding
 import com.example.yourstory.today.thought.SharedThoughtDialogViewModel
 import com.example.yourstory.utils.DateEpochConverter
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import java.text.SimpleDateFormat
-import java.util.*
 
 class TodayFragment : Fragment() {
 
@@ -41,8 +41,6 @@ class TodayFragment : Fragment() {
         if (container != null) {
             hostFramentNavController = container.findNavController()
         }
-
-        //Setup the Recycler-View
         recyclerView = binding.recyclerViewTodayPage
         recyclerView.adapter = DiaryEntriesAdapter()
 
@@ -50,11 +48,26 @@ class TodayFragment : Fragment() {
         sharedViewModel = ViewModelProvider(requireActivity())[SharedThoughtDialogViewModel::class.java]
         sharedViewModel.resetData()
 
-        viewModel.todayViewData.observe(viewLifecycleOwner, { newDiaries ->
-            (recyclerView.adapter as DiaryEntriesAdapter).setData(todayFilter(newDiaries))
-            recyclerView.smoothScrollToPosition(newDiaries.size);})
+        viewModel.todayDiaryEntryData.observe(viewLifecycleOwner, { newDiaryEntries ->
+            val todayEntries = todayFilterDiaryEntries(newDiaryEntries) as List<Entry>
+            (recyclerView.adapter as DiaryEntriesAdapter).setData(todayEntries)
+        })
+
+        viewModel.todayEmotionalStateEntryData.observe(viewLifecycleOwner, { newStates ->
+            val todayStates = todayFilterEmotionalStateEntries(newStates) as List<Entry>
+            (recyclerView.adapter as DiaryEntriesAdapter).setData(todayStates)
+        })
 
 
+        // its the same function like above...
+        /*viewModel.todayViewData.observe(viewLifecycleOwner, object: androidx.lifecycle.Observer<List<DiaryEntry>>
+        {
+            override fun onChanged(t: List<DiaryEntry>?)
+            {
+                (recyclerView.adapter as DiaryEntriesAdapter).setData(todayFilter(t))
+                t?.size?.let { recyclerView.smoothScrollToPosition(it) };
+            }
+        })*/
         likertFab = binding.likertFab
         thoughtFab = binding.thoughtFab
 
@@ -81,37 +94,22 @@ class TodayFragment : Fragment() {
         return binding.root
     }
 
-    private fun todayFilter(diaryEntries: List<DiaryEntry>?): List<DiaryEntry> {
-        var filteredDiaryEntries: List<DiaryEntry>
-        filteredDiaryEntries = diaryEntries!!.filter { diaryEntry -> DateEpochConverter.convertEpochToDateTime(diaryEntry.date).toString().contains(DateEpochConverter.generateIsoDateWithoutTime())}
+    private fun todayFilterDiaryEntries(diaryEntries: List<DiaryEntry>?): List<DiaryEntry> {
+        val filteredDiaryEntries: List<DiaryEntry> = diaryEntries!!.filter { diaryEntry ->
+            DateEpochConverter.convertEpochToDateTime(diaryEntry.date).toString().contains(DateEpochConverter.generateIsoDateWithoutTime())
+        }
         if(filteredDiaryEntries.isEmpty()){
             return listOf()
         }
         return filteredDiaryEntries
     }
-
-    override fun onViewCreated(itemView: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(itemView, savedInstanceState)
-        /*binding.recyclerViewTodayPage.apply {
-            // set a LinearLayoutManager to handle Android
-            // RecyclerView behavior
-            layoutManager = LinearLayoutManager(activity)
-            // set the custom adapter to the RecyclerView
-            todayAdapter = RecyclerAdapter()
-        }*/
-        //binding.recyclerViewTodayPage.layoutManager = LinearLayoutManager(activity)
-
-
+    private fun todayFilterEmotionalStateEntries(emotionalStateEntries: List<EmotionalState>?): List<EmotionalState> {
+        val filteredEmotionalStateEntries: List<EmotionalState> = emotionalStateEntries!!.filter { emotionalStateEntry ->
+            DateEpochConverter.convertEpochToDateTime(emotionalStateEntry.date).toString().contains(DateEpochConverter.generateIsoDateWithoutTime())
+        }
+        if(filteredEmotionalStateEntries.isEmpty()){
+            return listOf()
+        }
+        return filteredEmotionalStateEntries
     }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-    }
-
-
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-    }
-
 }

@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 import java.util.*
 
 @Entity(tableName = "diary_entries_table")
-data class DiaryEntry (
+class DiaryEntry(
     @PrimaryKey(autoGenerate = true)
     val id: Int,
     val emotionalStateID: Int,
@@ -14,5 +14,5 @@ data class DiaryEntry (
     val image: String,
     val audio: String,
     val location: String,
-    val date: Long,
-)
+    override var date: Long,
+) : Entry()

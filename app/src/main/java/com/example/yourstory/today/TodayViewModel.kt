@@ -5,17 +5,17 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import com.example.yourstory.database.Repository
 import com.example.yourstory.database.data.DiaryEntry
-import java.text.SimpleDateFormat
-import java.util.*
-import kotlin.collections.ArrayList
+import com.example.yourstory.database.data.EmotionalState
 
 class TodayViewModel(application: Application) : AndroidViewModel(application) {
 
     private val repository: Repository
-    var todayViewData : LiveData<List<DiaryEntry>>
+    var todayDiaryEntryData : LiveData<List<DiaryEntry>>
+    var todayEmotionalStateEntryData : LiveData<List<EmotionalState>>
 
     init {
         repository = Repository(application)
-        todayViewData = repository.readAllEntriesSortedByDate()
+        todayDiaryEntryData = repository.readAllEntriesSortedByDate()
+        todayEmotionalStateEntryData = repository.readAllEmotionalStatesSortedByDate()
     }
 }

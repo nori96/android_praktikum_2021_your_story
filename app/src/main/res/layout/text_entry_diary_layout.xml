@@ -82,6 +82,129 @@
                 android:layout_width="0dp"
                 android:layout_margin="16dp" />
         </androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.cardview.widget.CardView
+            android:id="@+id/emotional_state_root"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/transparent"
+            app:cardElevation="0dp">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/today_emotional_state_heading"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:paddingBottom="8dp"
+                    android:textColor="@color/black"
+                    android:textSize="28dp"
+                    android:text="@string/today_likert_heading"
+                    />
+                <ImageView
+                    android:id="@+id/emoji_today_joy"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:src="@drawable/emoji_joy"
+                    app:layout_constraintTop_toBottomOf="@+id/today_emotional_state_heading"
+                    app:layout_constraintLeft_toLeftOf="parent"/>
+                <TextView
+                    android:id="@+id/joy_today_likert"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintLeft_toLeftOf="@+id/emoji_today_joy"
+                    app:layout_constraintRight_toRightOf="@+id/emoji_today_joy"
+                    app:layout_constraintTop_toBottomOf="@+id/emoji_today_joy"
+                    android:textSize="20dp"
+                    android:textColor="@color/black"/>
+                <ImageView
+                    android:id="@+id/emoji_today_surprise"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:src="@drawable/emoji_surprised"
+                    app:layout_constraintLeft_toRightOf="@id/emoji_today_joy"
+                    app:layout_constraintRight_toLeftOf="@+id/emoji_today_anger"
+                    app:layout_constraintTop_toBottomOf="@+id/today_emotional_state_heading"/>
+                <TextView
+                    android:id="@+id/surprise_today_likert"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintLeft_toLeftOf="@+id/emoji_today_surprise"
+                    app:layout_constraintRight_toRightOf="@+id/emoji_today_surprise"
+                    app:layout_constraintTop_toBottomOf="@+id/emoji_today_surprise"
+                    android:textSize="20dp"
+                    android:textColor="@color/black"/>
+                <ImageView
+                    android:id="@+id/emoji_today_anger"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:src="@drawable/emoji_anger"
+                    app:layout_constraintLeft_toRightOf="@+id/emoji_today_surprise"
+                    app:layout_constraintRight_toLeftOf="@+id/emoji_today_sadness"
+                    app:layout_constraintTop_toBottomOf="@+id/today_emotional_state_heading"/>
+                <TextView
+                    android:id="@+id/anger_today_likert"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintLeft_toLeftOf="@+id/emoji_today_anger"
+                    app:layout_constraintRight_toRightOf="@+id/emoji_today_anger"
+                    app:layout_constraintTop_toBottomOf="@+id/emoji_today_anger"
+                    android:textSize="20dp"
+                    android:textColor="@color/black"/>
+                <ImageView
+                    android:id="@+id/emoji_today_sadness"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:src="@drawable/emoji_sadness"
+                    app:layout_constraintLeft_toRightOf="@+id/emoji_today_anger"
+                    app:layout_constraintRight_toLeftOf="@+id/emoji_today_fear"
+                    app:layout_constraintTop_toBottomOf="@+id/today_emotional_state_heading"/>
+                <TextView
+                    android:id="@+id/sadness_today_likert"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintLeft_toLeftOf="@+id/emoji_today_sadness"
+                    app:layout_constraintRight_toRightOf="@+id/emoji_today_sadness"
+                    app:layout_constraintTop_toBottomOf="@+id/emoji_today_sadness"
+                    android:textSize="20dp"
+                    android:textColor="@color/black"/>
+                <ImageView
+                    android:id="@+id/emoji_today_fear"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:src="@drawable/emoji_fear"
+                    app:layout_constraintLeft_toRightOf="@+id/emoji_today_sadness"
+                    app:layout_constraintRight_toLeftOf="@+id/emoji_today_disgust"
+                    app:layout_constraintTop_toBottomOf="@+id/today_emotional_state_heading"/>
+                <TextView
+                    android:id="@+id/fear_today_likert"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintLeft_toLeftOf="@+id/emoji_today_fear"
+                    app:layout_constraintRight_toRightOf="@+id/emoji_today_fear"
+                    app:layout_constraintTop_toBottomOf="@+id/emoji_today_fear"
+                    android:textSize="20dp"
+                    android:textColor="@color/black"/>
+                <ImageView
+                    android:id="@+id/emoji_today_disgust"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:src="@drawable/emoji_disgust"
+                    app:layout_constraintTop_toBottomOf="@+id/today_emotional_state_heading"
+                    app:layout_constraintRight_toRightOf="parent"/>
+                <TextView
+                    android:id="@+id/disgust_today_likert"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintLeft_toLeftOf="@+id/emoji_today_disgust"
+                    app:layout_constraintRight_toRightOf="@+id/emoji_today_disgust"
+                    app:layout_constraintTop_toBottomOf="@+id/emoji_today_disgust"
+                    android:textSize="20dp"
+                    android:textColor="@color/black"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
+
 
         <TextView
             android:id="@+id/entry_date"
@@ -90,5 +213,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="TextView" />
+
     </LinearLayout>
 </androidx.cardview.widget.CardView>
