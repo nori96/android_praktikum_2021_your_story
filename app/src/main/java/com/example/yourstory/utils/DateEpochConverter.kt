@@ -6,8 +6,6 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class DateEpochConverter {
-
-
     companion object {
         fun convertDateTimeToEpoch(isoString: String): Long {
             var dateTime = DateTime(isoString, DateTimeZone.UTC)

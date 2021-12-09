@@ -51,13 +51,11 @@ class TodayFragment : Fragment() {
         viewModel.todayDiaryEntryData.observe(viewLifecycleOwner, { newDiaryEntries ->
             val todayEntries = todayFilterDiaryEntries(newDiaryEntries) as List<Entry>
             (recyclerView.adapter as DiaryEntriesAdapter).setData(todayEntries)
-            recyclerView.smoothScrollToPosition(newDiaryEntries.size)
         })
 
         viewModel.todayEmotionalStateEntryData.observe(viewLifecycleOwner, { newStates ->
             val todayStates = todayFilterEmotionalStateEntries(newStates) as List<Entry>
             (recyclerView.adapter as DiaryEntriesAdapter).setData(todayStates)
-            recyclerView.smoothScrollToPosition(newStates.size)
         })
 
 

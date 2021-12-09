@@ -26,6 +26,12 @@ class DiaryEntriesAdapter() : RecyclerView.Adapter<DiaryEntriesAdapter.ViewHolde
     private var todayModelData: List<Entry> = listOf()
     private lateinit var view: View
     private lateinit var context: Context
+    private lateinit var mRecyclerView: RecyclerView
+
+    override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
+        super.onAttachedToRecyclerView(recyclerView)
+        mRecyclerView = recyclerView
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DiaryEntriesAdapter.ViewHolder {
         view = LayoutInflater.from(parent.context).inflate(R.layout.text_entry_diary_layout, parent, false)
@@ -186,7 +192,7 @@ class DiaryEntriesAdapter() : RecyclerView.Adapter<DiaryEntriesAdapter.ViewHolde
                     iterator.remove()
                 }
             }
-            this.todayModelData = (emotionalOnly + diaries).sortedBy { it.date }
+            this.todayModelData = (emotionalOnly + diaries).sortedBy { it.date }.reversed()
         }
         else {
             val diaryEntriesOnly = this.todayModelData.toMutableList()
@@ -197,7 +203,7 @@ class DiaryEntriesAdapter() : RecyclerView.Adapter<DiaryEntriesAdapter.ViewHolde
                     iterator.remove()
                 }
             }
-            this.todayModelData = (diaryEntriesOnly + diaries).sortedBy { it.date }
+            this.todayModelData = ((diaryEntriesOnly + diaries).sortedBy { it.date }).reversed()
         }
         notifyDataSetChanged()
     }
