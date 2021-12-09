@@ -97,7 +97,7 @@ class DiaryViewModel(application: Application) : AndroidViewModel(application) {
                 for (emoElement in emotionalStates) {
                     joyAverage += emoElement.joy
                     angerAverage += emoElement.anger
-                    surpriseAverage += emoElement.suprise
+                    surpriseAverage += emoElement.surprise
                     sadnessAverage += emoElement.sadness
                     disgustAverage += emoElement.disgust
                     fearAverage += emoElement.fear
