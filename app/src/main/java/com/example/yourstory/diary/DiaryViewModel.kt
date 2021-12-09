@@ -1,26 +1,124 @@
 package com.example.yourstory.diary
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.yourstory.database.Repository
+import com.example.yourstory.database.data.DiaryEntry
+import com.example.yourstory.database.data.EmotionalState
 import com.example.yourstory.diary.detail.Date
+import com.example.yourstory.utils.DateEpochConverter
+import org.joda.time.DateTime
 
-class DiaryViewModel : ViewModel() {
+class DiaryViewModel(application: Application) : AndroidViewModel(application) {
     // TODO: Implement the ViewModel
 
-    private var _currentMonth = "April"
-    private var _currentYear = "2021"
-    private var _diaries = MutableLiveData<ArrayList<DiaryListModel>>(
-        arrayListOf(
-            DiaryListModel(Date("03","04","21"),11,1f,2f,3f,4f,5f,5f),
-            DiaryListModel(Date("04","04","21"),22,2f,5f,1f,4f,3f,1f),
-            DiaryListModel(Date("05","04","21"),5,3f,1f,1f,2f,3f,2f)
-        )
-    )
 
-    val currentMonth: String
-        get() = _currentMonth
-    val currentYear: String
-        get() = _currentYear
-    val reports: MutableLiveData<ArrayList<DiaryListModel>>
-        get() = _diaries
+    private var _currentMonth = DateEpochConverter.monthIntToString(application,DateTime.now().monthOfYear)
+    private var _currentYear = DateTime.now().year
+    private val repository: Repository
+    var diaryEntriesAsListModel = MutableLiveData<ArrayList<DiaryListModel>>()
+    var diaryEntries : LiveData<List<DiaryEntry>>
+    var emotionalStateEntries: LiveData<List<EmotionalState>>
+
+    var emotionalStateEntriesCopy = listOf<EmotionalState>()
+    var diaryEntriesCopy = listOf<DiaryEntry>()
+
+    init {
+        repository = Repository(application)
+        diaryEntries = repository.readAllEntriesOfaMonth(DateTime.now().toString())
+        emotionalStateEntries = repository.readEmotionalStatesOfAMonth(DateTime.now().toString())
+
+        diaryEntries.observeForever { newDiaryEntries ->
+            diaryEntriesCopy = newDiaryEntries
+            convertDiaryEntriesToListModel()
+        }
+
+        emotionalStateEntries.observeForever{
+            newEmotionalStates -> emotionalStateEntriesCopy = newEmotionalStates
+            convertDiaryEntriesToListModel()
+        }
+
+    }
+
+    private fun convertDiaryEntriesToListModel() {
+        var dayToEntriesMap = HashMap<String,ArrayList<DiaryEntry>>()
+        var dayToEmoStateMap = HashMap<String,ArrayList<EmotionalState>>()
+
+        var newEntriesList = arrayListOf<DiaryListModel>()
+
+        //Fill Map for Entries
+        for (diaryEntry in diaryEntriesCopy){
+            val day = DateEpochConverter.convertEpochToDateTime(diaryEntry.date).toString().split("T")[0]
+            if(dayToEntriesMap.containsKey(day)){
+                var entryList = dayToEntriesMap[day]
+                entryList!!.add(diaryEntry)
+            }else{
+                dayToEntriesMap.put(day, arrayListOf(diaryEntry))
+            }
+        }
+
+        //Fill Map for Emotional States
+        for(emotionalState in emotionalStateEntriesCopy){
+            val day = DateEpochConverter.convertEpochToDateTime(emotionalState.date).toString().split("T")[0]
+            if(dayToEmoStateMap.containsKey(day)){
+                var emoStateList = dayToEmoStateMap[day]
+                emoStateList!!.add(emotionalState)
+            }else{
+                dayToEmoStateMap.put(day, arrayListOf(emotionalState))
+            }
+        }
+
+
+        for((day,entries) in dayToEntriesMap) {
+            //No Emotional State Exists
+            if (!dayToEmoStateMap.containsKey(day)) {
+                newEntriesList.add(
+                    DiaryListModel(
+                        Date(
+                            day.split("-")[2],
+                            day.split("-")[1],
+                            day.split("-")[0]
+                        ), entries.size, 0F, 0F, 0F, 0F, 0F, 0F
+                    )
+                )
+            } else {
+                //Emotional State exist
+                var emotionalStates = dayToEmoStateMap.get(day)
+                var emotionalStatesSize = emotionalStates!!.size
+                var joyAverage = 0
+                var angerAverage = 0
+                var surpriseAverage = 0
+                var sadnessAverage = 0
+                var disgustAverage = 0
+                var fearAverage = 0
+                for (emoElement in emotionalStates) {
+                    joyAverage += emoElement.joy
+                    angerAverage += emoElement.anger
+                    surpriseAverage += emoElement.suprise
+                    sadnessAverage += emoElement.sadness
+                    disgustAverage += emoElement.disgust
+                    fearAverage += emoElement.fear
+                }
+                newEntriesList.add(
+                    DiaryListModel(
+                        Date(
+                            day.split("-")[2],
+                            day.split("-")[1],
+                            day.split("-")[0]
+                        ), entries.size + emotionalStatesSize,
+                        (joyAverage / emotionalStatesSize).toFloat(),
+                        (angerAverage / emotionalStatesSize).toFloat(),
+                        (surpriseAverage / emotionalStatesSize).toFloat(),
+                        (sadnessAverage / emotionalStatesSize).toFloat(),
+                        (disgustAverage / emotionalStatesSize).toFloat(),
+                        (fearAverage / emotionalStatesSize).toFloat()
+                    )
+                )
+            }
+        }
+        diaryEntriesAsListModel.value = newEntriesList
+    }
 }

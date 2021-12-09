@@ -41,10 +41,17 @@ class Repository(application: Application){
         diaryEntryDao.addDiaryEntry(diaryEntry)
     }
 
-    fun readAllEntriesOfaDate(isoDate: String): LiveData<List<EmotionalState>>{
-        var epochCurrentDateStart = DateEpochConverter.convertDateTimeToEpoch(DateTime(isoDate, DateTimeZone.UTC).withTime(0, 0, 0, 0).toDateTimeISO().toString())
-        var epochCurrentDateEnd = DateEpochConverter.convertDateTimeToEpoch(DateTime(isoDate, DateTimeZone.UTC).withTime(23, 59, 59, 999).toDateTimeISO().toString())
-        return diaryEntryDao.readAllEntriesOfaDate(epochCurrentDateStart,epochCurrentDateEnd)
+    fun readAllEntriesOfaDate(isoDate: String): LiveData<List<DiaryEntry>>{
+        val epochCurrentDateStart = DateEpochConverter.convertDateTimeToEpoch(DateTime(isoDate, DateTimeZone.UTC).withTime(0, 0, 0, 0).toDateTimeISO().toString())
+        val epochCurrentDateEnd = DateEpochConverter.convertDateTimeToEpoch(DateTime(isoDate, DateTimeZone.UTC).withTime(23, 59, 59, 999).toDateTimeISO().toString())
+        return diaryEntryDao.readAllEntriesBetweenDates(epochCurrentDateStart,epochCurrentDateEnd)
+    }
+
+    fun readAllEntriesOfaMonth(isoDate: String): LiveData<List<DiaryEntry>>{
+            var startEpoch = DateEpochConverter.convertDateTimeToEpoch(DateTime(isoDate).dayOfMonth().withMinimumValue().withTime(0,0,0,0).toString())
+            var endEpoch = DateEpochConverter.convertDateTimeToEpoch(DateTime(isoDate).dayOfMonth().withMaximumValue().withTime(23,59,59,999).toString())
+
+        return diaryEntryDao.readAllEntriesBetweenDates(startEpoch,endEpoch)
     }
 
     //Emotional State functions
@@ -59,6 +66,13 @@ class Repository(application: Application){
 
      fun addEmotionalState(emotionalState: EmotionalState){
         emotionalStateDao.addEmotionalState(emotionalState)
+    }
+
+    fun readEmotionalStatesOfAMonth(isoDate: String): LiveData<List<EmotionalState>> {
+        var startEpoch = DateEpochConverter.convertDateTimeToEpoch(DateTime(isoDate).dayOfMonth().withMinimumValue().withTime(0,0,0,0).toString())
+        var endEpoch = DateEpochConverter.convertDateTimeToEpoch(DateTime(isoDate).dayOfMonth().withMaximumValue().withTime(23,59,59,999).toString())
+
+        return emotionalStateDao.readAllEmotionalSatesBetweenDates(startEpoch,endEpoch)
     }
 
     fun readLastEmotionalStateID(): Int {

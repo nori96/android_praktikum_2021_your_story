@@ -11,4 +11,5 @@ class DiaryListModel(
     var sadnessAverage: Float,
     var disgustAverage: Float,
     var fearAverage: Float
-)
+) {
+}

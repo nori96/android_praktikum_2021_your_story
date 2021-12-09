@@ -1,6 +1,8 @@
 package com.example.yourstory.today.thought
 
 import android.content.res.AssetManager
+import android.media.MediaRecorder
+import android.media.MediaRecorder.AudioSource.MIC
 import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -20,14 +22,22 @@ class RecordAudioFragment : Fragment() {
     private lateinit var hostFragmentNavController: NavController
     private var _binding: RecordAudioFragmentBinding? = null
     private val binding get() = _binding!!
+    private lateinit var mediaRecorder: MediaRecorder
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         _binding = RecordAudioFragmentBinding.inflate(inflater, container, false)
         hostFragmentNavController = NavHostFragment.findNavController(this)
         viewModelShared = ViewModelProvider(requireActivity())[SharedThoughtDialogViewModel::class.java]
+
+        mediaRecorder = MediaRecorder()
+        mediaRecorder.setAudioSource(MIC)
+
+
+
 
         binding.confirmThoughtDialogAudio.setOnClickListener {
             viewModelShared.audio.value = "alan_watts.mp3"

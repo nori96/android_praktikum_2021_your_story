@@ -1,7 +1,11 @@
 package com.example.yourstory.utils
 
+import android.content.Context
+import android.content.res.Resources
+import com.example.yourstory.R
 import org.joda.time.DateTime
 import org.joda.time.DateTimeZone
+import org.joda.time.MonthDay
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -28,6 +32,24 @@ class DateEpochConverter {
 
         fun generateEpochDate(): Long{
             return convertDateTimeToEpoch(generateIsoDate())
+        }
+
+        fun monthIntToString(context: Context,month: Int): String{
+            when(month){
+                1 -> return context.getString(R.string.month_january)
+                2 -> return context.getString(R.string.month_february)
+                3 -> return context.getString(R.string.month_march)
+                4 -> return context.getString(R.string.month_april)
+                5 -> return context.getString(R.string.month_may)
+                6 -> return context.getString(R.string.month_june)
+                7 -> return context.getString(R.string.month_july)
+                8 -> return context.getString(R.string.month_august)
+                9 -> return context.getString(R.string.month_september)
+                10 -> return context.getString(R.string.month_october)
+                11 -> return context.getString(R.string.month_november)
+                12 -> return context.getString(R.string.month_december)
+            }
+            return "ERROR"
         }
     }
 }

@@ -21,4 +21,7 @@ interface EmotionalStateDao {
     @Query( "SELECT * FROM emotional_states_table ORDER BY date ASC")
     fun readAllEmotionalStatesSortedByDateWithoutLiveData(): List<EmotionalState>
 
+    @Query("SELECT * FROM emotional_states_table WHERE date BETWEEN :from AND :to")
+    fun readAllEmotionalSatesBetweenDates(from:Long, to:Long): LiveData<List<EmotionalState>>
+
 }

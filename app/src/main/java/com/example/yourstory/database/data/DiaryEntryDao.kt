@@ -22,6 +22,6 @@ interface DiaryEntryDao {
     fun getEmotionalStateOfDiaryEntry(emotionalStateID: Int): LiveData<List<EmotionalState>>
 
 
-    @Query("SELECT * FROM emotional_states_table WHERE date BETWEEN :from AND :to")
-    fun readAllEntriesOfaDate(from:Long, to:Long): LiveData<List<EmotionalState>>
+    @Query("SELECT * FROM diary_entries_table WHERE date BETWEEN :from AND :to")
+    fun readAllEntriesBetweenDates(from:Long, to:Long): LiveData<List<DiaryEntry>>
 }
