@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.SeekBar
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
 import com.example.yourstory.R
@@ -32,13 +33,21 @@ class DiaryEntriesAdapter() : RecyclerView.Adapter<DiaryEntriesAdapter.ViewHolde
         return ViewHolder(view)
     }
 
+
     override fun onBindViewHolder(holder: DiaryEntriesAdapter.ViewHolder, position: Int) {
+        // TODO pretty bad because its against the recycling in recyclerview, but its not allowed to delete nodes when it should stay recyclable
+        holder.setIsRecyclable(false)
 
         holder.date.text =
             DateEpochConverter.convertEpochToDateTime(todayModelData[position].date).toString()
                 .split("T")[1].subSequence(0, 5)
 
         if (todayModelData[position] is DiaryEntry) {
+
+            if (holder.emotionalStateRoot.parent is ViewGroup) {
+               (holder.emotionalStateRoot.parent as ViewGroup).removeView(holder.emotionalStateRoot)
+            }
+
             val entry = todayModelData[position] as DiaryEntry
             var imageUUID = entry.image
             holder.diaryText.text = entry.text
@@ -116,7 +125,7 @@ class DiaryEntriesAdapter() : RecyclerView.Adapter<DiaryEntriesAdapter.ViewHolde
             }
         }
         if (todayModelData[position] is EmotionalState) {
-             val state = todayModelData[position] as EmotionalState
+            val state = todayModelData[position] as EmotionalState
             if (holder.diaryLocation.parent is ViewGroup) {
                 (holder.diaryLocation.parent as ViewGroup).removeView(holder.diaryLocation)
             }
@@ -126,7 +135,16 @@ class DiaryEntriesAdapter() : RecyclerView.Adapter<DiaryEntriesAdapter.ViewHolde
             if (holder.diaryAudio.parent is ViewGroup) {
                 (holder.diaryAudio.parent as ViewGroup).removeView(holder.diaryAudio)
             }
-            holder.diaryText.text = "anger: "+state.anger+" surprise: "+ state.surprise
+            if (holder.diaryText.parent is ViewGroup) {
+                (holder.diaryText.parent as ViewGroup).removeView(holder.diaryText)
+            }
+            holder.joyLikert.text = state.joy.toString()
+            holder.surpriseLikert.text = state.surprise.toString()
+            holder.angerLikert.text = state.anger.toString()
+            holder.sadnessLikert.text = state.sadness.toString()
+            holder.fearLikert.text = state.fear.toString()
+            holder.disgustLikert.text = state.disgust.toString()
+            //holder.diaryText.text = "anger: "+state.anger+" surprise: "+ state.surprise
         }
     }
 
@@ -135,23 +153,23 @@ class DiaryEntriesAdapter() : RecyclerView.Adapter<DiaryEntriesAdapter.ViewHolde
     }
 
     inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
-        var diaryText: TextView
-        var diaryImage: ImageView
-        var diaryAudio: View
-        var diaryLocation: ImageView
-        var playButton: ImageView
-        var seekBar: SeekBar
-        var date: TextView
+        // entry nodes
+        val diaryText: TextView = itemView.findViewById(R.id.main_today_text)
+        val diaryImage: ImageView = itemView.findViewById(R.id.main_today_image)
+        val diaryAudio: View = itemView.findViewById(R.id.main_today_audio_source)
+        val diaryLocation: ImageView = itemView.findViewById(R.id.main_today_location)
+        val playButton: ImageView = itemView.findViewById(R.id.entry_diary_play_button)
+        val seekBar: SeekBar = itemView.findViewById(R.id.entry_diary_seek_bar)
+        val date: TextView = itemView.findViewById((R.id.entry_date))
 
-        init {
-            date = itemView.findViewById((R.id.entry_date))
-            diaryText = itemView.findViewById(R.id.main_today_text)
-            diaryImage = itemView.findViewById(R.id.main_today_image)
-            diaryAudio = itemView.findViewById(R.id.main_today_audio_source)
-            diaryLocation = itemView.findViewById(R.id.main_today_location)
-            playButton = itemView.findViewById(R.id.entry_diary_play_button)
-            seekBar = itemView.findViewById(R.id.entry_diary_seek_bar)
-        }
+        // emotional state nodes
+        val joyLikert: TextView = itemView.findViewById(R.id.joy_today_likert)
+        val surpriseLikert: TextView = itemView.findViewById(R.id.surprise_today_likert)
+        val angerLikert: TextView = itemView.findViewById(R.id.anger_today_likert)
+        val sadnessLikert: TextView = itemView.findViewById(R.id.sadness_today_likert)
+        val fearLikert: TextView = itemView.findViewById(R.id.fear_today_likert)
+        val disgustLikert: TextView = itemView.findViewById(R.id.disgust_today_likert)
+        val emotionalStateRoot: CardView = itemView.findViewById(R.id.emotional_state_root)
     }
 
     @Synchronized

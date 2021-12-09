@@ -18,6 +18,7 @@
     <string name="settings_enable_notifications">Benachrichtigungen erlauben</string>
     <string name="settings_notification_interval_title">Notification interval</string>
     <string name="settings_notification_interval_text">Define an interval for sending notifications</string>
+    <string name="today_likert_heading">Emotionaler Zustand:</string>
 
     <!--thought dialog -->
     <string name="thought_dialog_top_heading">Gedanken erstellen</string>
