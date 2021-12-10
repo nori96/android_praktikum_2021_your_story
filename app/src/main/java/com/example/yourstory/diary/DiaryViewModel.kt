@@ -88,12 +88,12 @@ class DiaryViewModel(application: Application) : AndroidViewModel(application) {
                 //Emotional State exist
                 var emotionalStates = dayToEmoStateMap.get(day)
                 var emotionalStatesSize = emotionalStates!!.size
-                var joyAverage = 0
-                var angerAverage = 0
-                var surpriseAverage = 0
-                var sadnessAverage = 0
-                var disgustAverage = 0
-                var fearAverage = 0
+                var joyAverage = 0F
+                var angerAverage = 0F
+                var surpriseAverage = 0F
+                var sadnessAverage = 0F
+                var disgustAverage = 0F
+                var fearAverage = 0F
                 for (emoElement in emotionalStates) {
                     joyAverage += emoElement.joy
                     angerAverage += emoElement.anger
@@ -102,6 +102,8 @@ class DiaryViewModel(application: Application) : AndroidViewModel(application) {
                     disgustAverage += emoElement.disgust
                     fearAverage += emoElement.fear
                 }
+                //TODO: Einträge Spalten und Average rausnehmen 1 EmotionalState ohne Entrys Fall behandeln
+                //TODO: Ekel ist Gelb irgendwie?
                 newEntriesList.add(
                     DiaryListModel(
                         Date(
@@ -109,12 +111,12 @@ class DiaryViewModel(application: Application) : AndroidViewModel(application) {
                             day.split("-")[1],
                             day.split("-")[0]
                         ), entries.size + emotionalStatesSize,
-                        (joyAverage / emotionalStatesSize).toFloat(),
-                        (angerAverage / emotionalStatesSize).toFloat(),
-                        (surpriseAverage / emotionalStatesSize).toFloat(),
-                        (sadnessAverage / emotionalStatesSize).toFloat(),
-                        (disgustAverage / emotionalStatesSize).toFloat(),
-                        (fearAverage / emotionalStatesSize).toFloat()
+                        (joyAverage / emotionalStatesSize),
+                        (angerAverage / emotionalStatesSize),
+                        (surpriseAverage / emotionalStatesSize),
+                        (sadnessAverage / emotionalStatesSize),
+                        (disgustAverage / emotionalStatesSize),
+                        (fearAverage / emotionalStatesSize)
                     )
                 )
             }
