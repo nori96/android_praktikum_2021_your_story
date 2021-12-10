@@ -74,13 +74,12 @@ class DiaryAdapter(var onDiaryClickListener: OnDiaryClickListener) : RecyclerVie
             var pieEntries = arrayListOf<PieEntry>()
 
             //initialize data
-            var typeAmountMap = HashMap<String, Float>()
-            typeAmountMap.put("Joy", diaryListModelItem.joyAverage)
-            typeAmountMap.put("Anger", diaryListModelItem.angerAverage)
-            typeAmountMap.put("Surprise", diaryListModelItem.supriseAverage)
-            typeAmountMap.put("Sadness", diaryListModelItem.sadnessAverage)
-            typeAmountMap.put("Disgust", diaryListModelItem.disgustAverage)
-            typeAmountMap.put("Fear", diaryListModelItem.fearAverage)
+            pieEntries.add(PieEntry(diaryListModelItem.joyAverage, "Joy"))
+            pieEntries.add(PieEntry(diaryListModelItem.angerAverage, "Anger"))
+            pieEntries.add(PieEntry(diaryListModelItem.supriseAverage, "Surprise"))
+            pieEntries.add(PieEntry(diaryListModelItem.sadnessAverage, "Sadness"))
+            pieEntries.add(PieEntry(diaryListModelItem.disgustAverage, "Disgust"))
+            pieEntries.add(PieEntry(diaryListModelItem.fearAverage, "Fear"))
 
             //initializing colors for the entries
             var colors = arrayListOf<Int>()
@@ -91,10 +90,6 @@ class DiaryAdapter(var onDiaryClickListener: OnDiaryClickListener) : RecyclerVie
             colors.add(ColorTemplate.rgb("#869200"))
             colors.add(ColorTemplate.rgb("#B960FF"))
 
-            //input data and fit data into pie chart entry
-            for ((name, average) in typeAmountMap) {
-                pieEntries.add(PieEntry(average, name))
-            }
 
             //collecting the entries with label name
             var pieDataSet = PieDataSet(pieEntries, "Emotions")

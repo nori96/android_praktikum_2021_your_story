@@ -103,7 +103,6 @@ class DiaryViewModel(application: Application) : AndroidViewModel(application) {
                     fearAverage += emoElement.fear
                 }
                 //TODO: Einträge Spalten und Average rausnehmen 1 EmotionalState ohne Entrys Fall behandeln
-                //TODO: Ekel ist Gelb irgendwie?
                 newEntriesList.add(
                     DiaryListModel(
                         Date(
