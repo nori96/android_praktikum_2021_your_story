@@ -24,4 +24,7 @@ interface DiaryEntryDao {
 
     @Query("SELECT * FROM diary_entries_table WHERE date BETWEEN :from AND :to")
     fun readAllEntriesBetweenDates(from:Long, to:Long): LiveData<List<DiaryEntry>>
+
+    @Query("SELECT * FROM diary_entries_table WHERE date = (SELECT MIN(date) FROM diary_entries_table)")
+    fun readOldestEntry(): DiaryEntry
 }

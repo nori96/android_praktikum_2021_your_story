@@ -54,6 +54,10 @@ class Repository(application: Application){
         return diaryEntryDao.readAllEntriesBetweenDates(startEpoch,endEpoch)
     }
 
+    fun readOldestEntry(): DiaryEntry {
+        return diaryEntryDao.readOldestEntry()
+    }
+
     //Emotional State functions
 
     fun readAllEmotionalStatesSortedByID(): LiveData<List<EmotionalState>>{
@@ -82,5 +86,9 @@ class Repository(application: Application){
         }else {
             return emotionalState[0].id
         }
+    }
+
+    fun readoldestEmotionalStateDate(): EmotionalState{
+        return emotionalStateDao.readOldestEmotionalState()
     }
 }
