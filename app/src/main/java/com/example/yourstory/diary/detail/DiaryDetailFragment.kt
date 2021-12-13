@@ -8,17 +8,20 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.RecyclerView
 import com.example.yourstory.MainActivity
 import com.example.yourstory.R
+import com.example.yourstory.database.data.Entry
 import com.example.yourstory.databinding.ActivityMainBinding
 import com.example.yourstory.databinding.DiaryDetailFragmentBinding
+import com.example.yourstory.today.DiaryEntriesAdapter
 
 class DiaryDetailFragment : Fragment() {
 
+    private lateinit var recyclerView: RecyclerView
     private val args: DiaryDetailFragmentArgs by navArgs()
     private lateinit var viewModel: DiaryDetailViewModel
     private lateinit var binding: DiaryDetailFragmentBinding
-    lateinit var testText: TextView
 
     companion object {
         fun newInstance() = DiaryDetailFragment()
@@ -32,19 +35,31 @@ class DiaryDetailFragment : Fragment() {
     ): View? {
 
         binding = DiaryDetailFragmentBinding.inflate(layoutInflater,container,false)
+        viewModel = ViewModelProvider(this)[DiaryDetailViewModel::class.java]
+        viewModel.setDate(args.date.toString())
+
+        recyclerView = binding.recyclerViewDiaryDetailPage
+        recyclerView.adapter = DiaryEntriesAdapter()
+
+        viewModel.todayDiaryEntryData.observe(viewLifecycleOwner, { newDiaryEntries ->
+            val todayEntries = newDiaryEntries as List<Entry>
+            (recyclerView.adapter as DiaryEntriesAdapter).setData(todayEntries)
+        })
+
+        viewModel.todayEmotionalStateEntryData.observe(viewLifecycleOwner, { newStates ->
+            val todayStates = newStates as List<Entry>
+            (recyclerView.adapter as DiaryEntriesAdapter).setData(todayStates)
+        })
 
         //Set date as the title
-        (requireActivity() as MainActivity).toolbar.title = args.date.toString()
-
-        testText = binding.testText
-        testText.text = args.date.toString()
+        (requireActivity() as MainActivity).binding.toolbar.title = args.date.toString()
 
         return binding.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(DiaryDetailViewModel::class.java)
+
         // TODO: Use the ViewModel
     }
 

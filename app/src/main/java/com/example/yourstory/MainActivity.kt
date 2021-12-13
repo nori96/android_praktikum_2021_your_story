@@ -21,8 +21,7 @@ import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityMainBinding
-    lateinit var toolbar: Toolbar
+    public lateinit var binding: ActivityMainBinding
     private lateinit var bottomNavigationView: BottomNavigationView
     private lateinit var hostFramentNavController: NavController
 
@@ -32,12 +31,11 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
-        toolbar = binding.toolbar
 
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
 
-        toolbar.inflateMenu(R.menu.toolbar_settings_menu)
+        binding.toolbar.inflateMenu(R.menu.toolbar_settings_menu)
 
         bottomNavigationView  = binding.bottomNavigation;
 
