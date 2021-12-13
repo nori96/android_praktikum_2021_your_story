@@ -88,6 +88,12 @@ class Repository(application: Application){
         }
     }
 
+    fun readAllEmotionalStatesOfADate(isoDate: String): LiveData<List<EmotionalState>>{
+        val epochCurrentDateStart = DateEpochConverter.convertDateTimeToEpoch(DateTime(isoDate, DateTimeZone.UTC).withTime(0, 0, 0, 0).toString())
+        val epochCurrentDateEnd = DateEpochConverter.convertDateTimeToEpoch(DateTime(isoDate, DateTimeZone.UTC).withTime(23, 59, 59, 999).toString())
+        return emotionalStateDao.readAllEmotionalSatesBetweenDates(epochCurrentDateStart,epochCurrentDateEnd)
+    }
+
     fun readoldestEmotionalStateDate(): EmotionalState{
         return emotionalStateDao.readOldestEmotionalState()
     }

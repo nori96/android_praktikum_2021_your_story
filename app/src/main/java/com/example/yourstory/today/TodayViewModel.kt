@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import com.example.yourstory.database.Repository
 import com.example.yourstory.database.data.DiaryEntry
 import com.example.yourstory.database.data.EmotionalState
+import org.joda.time.DateTime
 
 class TodayViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -15,7 +16,7 @@ class TodayViewModel(application: Application) : AndroidViewModel(application) {
 
     init {
         repository = Repository(application)
-        todayDiaryEntryData = repository.readAllEntriesSortedByDate()
-        todayEmotionalStateEntryData = repository.readAllEmotionalStatesSortedByDate()
+        todayDiaryEntryData = repository.readAllEntriesOfaDate(DateTime.now().toString())
+        todayEmotionalStateEntryData = repository.readAllEmotionalStatesOfADate(DateTime.now().toString())
     }
 }

@@ -44,28 +44,22 @@ class TodayFragment : Fragment() {
         recyclerView = binding.recyclerViewTodayPage
         recyclerView.adapter = DiaryEntriesAdapter()
 
+        //Prepare Viewmodels
         viewModel = ViewModelProvider(requireActivity())[TodayViewModel::class.java]
         sharedViewModel = ViewModelProvider(requireActivity())[SharedThoughtDialogViewModel::class.java]
         sharedViewModel.resetData()
 
+        //Setup Observers
         viewModel.todayDiaryEntryData.observe(viewLifecycleOwner, { newDiaryEntries ->
-            val todayEntries = todayFilterDiaryEntries(newDiaryEntries) as List<Entry>
+            val todayEntries = newDiaryEntries as List<Entry>
             (recyclerView.adapter as DiaryEntriesAdapter).setData(todayEntries)
         })
 
         viewModel.todayEmotionalStateEntryData.observe(viewLifecycleOwner, { newStates ->
-            val todayStates = todayFilterEmotionalStateEntries(newStates) as List<Entry>
+            val todayStates = newStates as List<Entry>
             (recyclerView.adapter as DiaryEntriesAdapter).setData(todayStates)
         })
-        // its the same function like above...
-        /*viewModel.todayViewData.observe(viewLifecycleOwner, object: androidx.lifecycle.Observer<List<DiaryEntry>>
-        {
-            override fun onChanged(t: List<DiaryEntry>?)
-            {
-                (recyclerView.adapter as DiaryEntriesAdapter).setData(todayFilter(t))
-                t?.size?.let { recyclerView.smoothScrollToPosition(it) };
-            }
-        })*/
+
         likertFab = binding.likertFab
         thoughtFab = binding.thoughtFab
 
@@ -90,24 +84,5 @@ class TodayFragment : Fragment() {
         }
 
         return binding.root
-    }
-
-    private fun todayFilterDiaryEntries(diaryEntries: List<DiaryEntry>?): List<DiaryEntry> {
-        val filteredDiaryEntries: List<DiaryEntry> = diaryEntries!!.filter { diaryEntry ->
-            DateEpochConverter.convertEpochToDateTime(diaryEntry.date).toString().contains(DateEpochConverter.generateIsoDateWithoutTime())
-        }
-        if(filteredDiaryEntries.isEmpty()){
-            return listOf()
-        }
-        return filteredDiaryEntries
-    }
-    private fun todayFilterEmotionalStateEntries(emotionalStateEntries: List<EmotionalState>?): List<EmotionalState> {
-        val filteredEmotionalStateEntries: List<EmotionalState> = emotionalStateEntries!!.filter { emotionalStateEntry ->
-            DateEpochConverter.convertEpochToDateTime(emotionalStateEntry.date).toString().contains(DateEpochConverter.generateIsoDateWithoutTime())
-        }
-        if(filteredEmotionalStateEntries.isEmpty()){
-            return listOf()
-        }
-        return filteredEmotionalStateEntries
     }
 }
