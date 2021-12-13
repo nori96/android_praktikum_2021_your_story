@@ -57,8 +57,6 @@ class TodayFragment : Fragment() {
             val todayStates = todayFilterEmotionalStateEntries(newStates) as List<Entry>
             (recyclerView.adapter as DiaryEntriesAdapter).setData(todayStates)
         })
-
-
         // its the same function like above...
         /*viewModel.todayViewData.observe(viewLifecycleOwner, object: androidx.lifecycle.Observer<List<DiaryEntry>>
         {

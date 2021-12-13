@@ -150,6 +150,13 @@ class DiaryEntriesAdapter() : RecyclerView.Adapter<DiaryEntriesAdapter.ViewHolde
             holder.sadnessLikert.text = state.sadness.toString()
             holder.fearLikert.text = state.fear.toString()
             holder.disgustLikert.text = state.disgust.toString()
+            holder.joyEmoji.alpha = (0.2 + ((state.joy.toFloat()) * 0.8)).toFloat()
+            holder.surpriseEmoji.alpha = (0.2 + ((state.surprise.toFloat()/5) * 0.8)).toFloat()
+            holder.angerEmoji.alpha = (0.2 + ((state.anger.toFloat()/5) * 0.8)).toFloat()
+            holder.sadnessEmoji.alpha = (0.2 + ((state.sadness.toFloat()/5) * 0.8)).toFloat()
+            holder.fearEmoji.alpha = (0.2 + ((state.fear.toFloat()/5) * 0.8)).toFloat()
+            holder.disgustEmoji.alpha = (0.2 + ((state.disgust.toFloat()/5) * 0.8)).toFloat()
+
             //holder.diaryText.text = "anger: "+state.anger+" surprise: "+ state.surprise
         }
     }
@@ -176,6 +183,12 @@ class DiaryEntriesAdapter() : RecyclerView.Adapter<DiaryEntriesAdapter.ViewHolde
         val fearLikert: TextView = itemView.findViewById(R.id.fear_today_likert)
         val disgustLikert: TextView = itemView.findViewById(R.id.disgust_today_likert)
         val emotionalStateRoot: CardView = itemView.findViewById(R.id.emotional_state_root)
+        val joyEmoji: ImageView = itemView.findViewById(R.id.emoji_today_joy)
+        val surpriseEmoji: ImageView = itemView.findViewById(R.id.emoji_today_surprise)
+        val angerEmoji: ImageView = itemView.findViewById(R.id.emoji_today_anger)
+        val sadnessEmoji: ImageView = itemView.findViewById(R.id.emoji_today_sadness)
+        val fearEmoji: ImageView = itemView.findViewById(R.id.emoji_today_fear)
+        val disgustEmoji: ImageView = itemView.findViewById(R.id.emoji_today_disgust)
     }
 
     @Synchronized
