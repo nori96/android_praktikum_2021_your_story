@@ -17,7 +17,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
-//TODO: Limit Spinner to existing Entries
+//TODO: Limit Month Spinner to Existing Dates in Line 50
 class DiaryViewModel(application: Application) : AndroidViewModel(application) {
 
     var currentMonth = DateTime.now().monthOfYear().get()
@@ -40,10 +40,6 @@ class DiaryViewModel(application: Application) : AndroidViewModel(application) {
     init {
         repository = Repository(application)
 
-        viewModelScope.launch (Dispatchers.IO){
-            calculateOldestEntry()
-        }
-
         fetchFilteredData()
 
         //init Spinner Data
@@ -52,13 +48,14 @@ class DiaryViewModel(application: Application) : AndroidViewModel(application) {
         }
 
         //Sets the years of the Spinner to the oldest Entry
-        for(idx in 0.. DateTime.now().year - yearOfOldestDbEntry){
+        for(idx in 0.. 5){
             var prevYear = Calendar.getInstance()
             prevYear.add(Calendar.YEAR,idx * -1)
             years_items.value!!.add(prevYear.get(Calendar.YEAR).toString())
         }
     }
 
+    /*
     fun calculateOldestEntry() {
         val dateOfLastEmotionalState = repository.readoldestEmotionalStateDate()
         val dateOfLastEntry = repository.readOldestEntry()
@@ -80,6 +77,7 @@ class DiaryViewModel(application: Application) : AndroidViewModel(application) {
             yearOfOldestDbEntry = DateEpochConverter.convertEpochToDateTime(dateOfLastEntry.date).year
         }
     }
+     */
 
     private fun convertDiaryEntriesToListModel() {
         var dayToEntriesMap = HashMap<String,ArrayList<DiaryEntry>>()
