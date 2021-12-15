@@ -72,4 +72,9 @@
     <string name="month_october">Oktober</string>
     <string name="month_november">November</string>
     <string name="month_december">Dezember</string>
+    <string name="settings_location_summary">Erlauben, Intervall</string>
+    <string name="notification_description">Erlauben, Intervall</string>
+    <string name="settings_diary_description">Sicherrung, Importieren, Exportieren</string>
+    <string name="location_settings">GPS - Einstellungen</string>
+    <string name="notifiaction_settings">Benachrichtigungen - Einstellungen</string>
 </resources>

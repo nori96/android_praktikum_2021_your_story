@@ -49,7 +49,7 @@
     <string name="finish_dialog">Finish</string>
     <string name="cancel_dialog">Cancel</string>
     <!-- Preference Titles -->
-    <string name="location_title">location</string>
+    <string name="location_title">Location</string>
     <string name="settings_allow_data_collection_title">Movement Profiling</string>
     <string name="settings_allow_data_collection_summary">Allow data collection to generate a movement profile.</string>
     <string name="settings_scanning_interval_title">Interval for scanning</string>
@@ -81,6 +81,16 @@
     <string name="month_october">October</string>
     <string name="month_november">November</string>
     <string name="month_december">December</string>
+    <string name="settings_location_summary">Toggle, Intervall</string>
+    <string name="notification_description">Toggle, Intervall</string>
+    <string name="settings_diary_description">Backup, Export, Import</string>
+    <!-- Preference Titles -->
+
+    <!-- Messages Preferences -->
+
+    <!-- Sync Preferences -->
+    <string name="location_settings">GPS Settings</string>
+    <string name="notifiaction_settings">Notification Settings</string>
 
 
 </resources>

@@ -2,7 +2,6 @@ package com.example.yourstory.reports
 
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -13,7 +12,6 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.yourstory.R
 import com.example.yourstory.databinding.ReportsFragmentBinding
-import com.example.yourstory.databinding.TodayFragmentBinding
 
 class ReportsFragment : Fragment() {
 
