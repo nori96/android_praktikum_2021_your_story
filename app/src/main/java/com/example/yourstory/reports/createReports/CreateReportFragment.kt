@@ -2,11 +2,12 @@ package com.example.yourstory.reports.createReports
 
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.NavController
+import androidx.navigation.findNavController
 import com.example.yourstory.R
 import com.example.yourstory.database.data.EmotionalState
 import com.example.yourstory.databinding.CreateReportFragmentBinding
@@ -25,6 +26,7 @@ class CreateReportFragment : Fragment() {
 
     private lateinit var viewModel: CreateReportViewModel
     private lateinit var binding: CreateReportFragmentBinding
+    private lateinit var hostFragmentNavController: NavController
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,7 +34,9 @@ class CreateReportFragment : Fragment() {
     ): View? {
         binding = CreateReportFragmentBinding.inflate(inflater, container, false)
         viewModel = ViewModelProvider(this)[CreateReportViewModel::class.java]
-
+        if (container != null) {
+            hostFragmentNavController = container.findNavController()
+        }
         binding.createReportSelectCalendar.setOnClickListener {
             resetSelection()
             binding.createReportSelectCalendar.cardElevation = 30f
@@ -163,6 +167,12 @@ class CreateReportFragment : Fragment() {
         viewModel.lastSelectedDate.observe(viewLifecycleOwner, {
             viewModel.setObservableArea()
         })
+        binding.cancelCreateReportDialog.setOnClickListener {
+            hostFragmentNavController.navigate(R.id.action_createReportFragment_to_navigation_reports)
+        }
+        binding.confirmCreateReportDialog.setOnClickListener {
+            hostFragmentNavController.navigate(R.id.action_createReportFragment_to_navigation_reports)
+        }
 
         return binding.root
     }

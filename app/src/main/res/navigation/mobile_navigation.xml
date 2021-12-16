@@ -120,7 +120,11 @@
         android:id="@+id/createReportFragment"
         android:name="com.example.yourstory.reports.createReports.CreateReportFragment"
         android:label="@string/create_report_heading"
-        tools:layout="@layout/create_report_fragment" />
+        tools:layout="@layout/create_report_fragment" >
+        <action
+            android:id="@+id/action_createReportFragment_to_navigation_reports"
+            app:destination="@id/navigation_reports" />
+    </fragment>
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.example.yourstory.settings.SettingsFragment"
