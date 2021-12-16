@@ -132,6 +132,9 @@
         <action
             android:id="@+id/action_settingsFragment_to_settingsNotificationFragment"
             app:destination="@id/settingsNotificationFragment" />
+        <action
+            android:id="@+id/action_settingsFragment_to_settingsFragmentBackup"
+            app:destination="@id/settingsFragmentBackup" />
     </fragment>
     <action android:id="@+id/action_global_settingsFragment" app:destination="@id/settingsFragment" />
     <action android:id="@+id/action_global_helpFragment" app:destination="@id/helpFragment" />
@@ -143,4 +146,9 @@
         android:id="@+id/settingsNotificationFragment"
         android:name="com.example.yourstory.settings.SettingsNotificationFragment"
         android:label="@string/notifiaction_settings" />
+    <fragment
+        android:id="@+id/settingsFragmentBackup"
+        android:name="com.example.yourstory.settings.SettingsBackupFragment"
+        android:label="@string/diary_settings"
+        tools:layout="@layout/settings_backup_fragment" />
 </navigation>

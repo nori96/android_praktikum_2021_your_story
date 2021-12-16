@@ -91,6 +91,7 @@
     <!-- Sync Preferences -->
     <string name="location_settings">GPS Settings</string>
     <string name="notifiaction_settings">Notification Settings</string>
+    <string name="diary_settings">Diary Settings</string>
 
 
 </resources>

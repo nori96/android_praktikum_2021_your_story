@@ -15,8 +15,8 @@
 
         <ImageView
             android:id="@+id/imageView_location"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_marginStart="32dp"
             android:layout_marginTop="8dp"
             android:src="@drawable/tought_dialog_location"
@@ -27,12 +27,12 @@
 
         <TextView
             android:id="@+id/textView8"
-            android:textColor="@color/green_selected"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="8dp"
             android:text="@string/location_title"
+            android:textColor="@color/green_selected"
             app:layout_constraintStart_toEndOf="@+id/imageView_location"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -45,6 +45,17 @@
             android:text="@string/settings_location_summary"
             app:layout_constraintStart_toEndOf="@+id/imageView_location"
             app:layout_constraintTop_toBottomOf="@+id/textView8" />
+
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:src="@drawable/ic_baseline_arrow_forward_ios_24"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -63,8 +74,8 @@
 
         <ImageView
             android:id="@+id/imageView_notification"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_marginStart="32dp"
             android:src="@drawable/ic_baseline_notifications_24"
             android:tint="@color/green_selected"
@@ -77,10 +88,9 @@
             android:id="@+id/textView10"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/green_selected"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="5dp"
             android:text="@string/notification"
+            android:textColor="@color/green_selected"
             app:layout_constraintStart_toEndOf="@+id/imageView_notification"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -93,6 +103,17 @@
             android:text="@string/notification_description"
             app:layout_constraintStart_toEndOf="@+id/imageView_notification"
             app:layout_constraintTop_toBottomOf="@+id/textView10" />
+
+        <ImageView
+            android:id="@+id/imageView4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:src="@drawable/ic_baseline_arrow_forward_ios_24"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <View
@@ -111,8 +132,8 @@
         <ImageView
             android:id="@+id/imageView_diary"
             android:padding="4dp"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_marginStart="32dp"
             android:src="@drawable/diary_filled"
             android:tint="@color/green_selected"
@@ -125,7 +146,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="5dp"
             android:text="@string/diary"
             android:textColor="@color/green_selected"
             app:layout_constraintStart_toEndOf="@+id/imageView_diary"
@@ -140,5 +160,15 @@
             android:textColor="@color/non_clickable_grey"
             app:layout_constraintStart_toEndOf="@+id/imageView_diary"
             app:layout_constraintTop_toBottomOf="@+id/textView12" />
+
+        <ImageView
+            android:id="@+id/imageView5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:src="@drawable/ic_baseline_arrow_forward_ios_24"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </LinearLayout>

@@ -36,6 +36,10 @@ class SettingsFragment : Fragment() {
             hostFramentNavController.navigate(R.id.action_settingsFragment_to_settingsNotificationFragment)
         }
 
+        binding.diaryItem.setOnClickListener{
+            hostFramentNavController.navigate(R.id.action_settingsFragment_to_settingsFragmentBackup)
+        }
+
         return binding.root
     }
 }
