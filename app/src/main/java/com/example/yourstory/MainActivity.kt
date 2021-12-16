@@ -1,14 +1,10 @@
 package com.example.yourstory
 
-import android.content.res.Configuration
-import android.graphics.Bitmap
+
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
 import android.view.Menu
 import android.view.MenuItem
-import androidx.appcompat.widget.Toolbar
-import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -16,12 +12,11 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.yourstory.databinding.ActivityMainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import java.nio.ByteBuffer
-import java.util.*
+
 
 class MainActivity : AppCompatActivity() {
 
-    public lateinit var binding: ActivityMainBinding
+    lateinit var binding: ActivityMainBinding
     private lateinit var bottomNavigationView: BottomNavigationView
     private lateinit var hostFramentNavController: NavController
 
@@ -33,9 +28,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
 
         setContentView(binding.root)
-        setSupportActionBar(binding.toolbar)
-
-        binding.toolbar.inflateMenu(R.menu.toolbar_settings_menu)
+        setSupportActionBar(binding.customToolbar)
 
         bottomNavigationView  = binding.bottomNavigation;
 
@@ -64,12 +57,12 @@ class MainActivity : AppCompatActivity() {
         }
         R.id.action_settings -> {
             // User chose the "Settings" item, show the app settings UI...
-            hostFramentNavController.navigate(R.id.settingsFragment)
+            hostFramentNavController.navigate(R.id.action_global_settingsFragment)
             true
         }
 
         R.id.action_help -> {
-            hostFramentNavController.navigate(R.id.helpFragment)
+            hostFramentNavController.navigate(R.id.action_global_helpFragment)
             true
         }
 

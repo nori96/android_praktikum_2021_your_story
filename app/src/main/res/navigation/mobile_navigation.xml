@@ -24,9 +24,6 @@
         <action
             android:id="@+id/action_navigation_today_to_likertDialog"
             app:destination="@id/likertDialog" />
-        <action
-            android:id="@+id/action_navigation_today_to_settingsFragment"
-            app:destination="@id/settingsFragment" />
     </fragment>
 
     <fragment android:id="@+id/navigation_diary"
@@ -34,8 +31,8 @@
         android:label="@string/diary"
         tools:layout="@layout/diary_fragment">
         <action
-            android:name="goToDiaryDetail"
             android:id="@+id/action_navigation_diary_to_diaryDetailFragment"
+            android:name="goToDiaryDetail"
             app:destination="@id/diaryDetailFragment" />
     </fragment>
     <fragment
@@ -74,10 +71,6 @@
         android:name="com.example.yourstory.help.HelpFragment"
         android:label="@string/help"
         tools:layout="@layout/help_fragment" />
-    <fragment
-        android:id="@+id/settingsFragment"
-        android:name="com.example.yourstory.settings.SettingsFragment"
-        android:label="@string/settings" />
     <fragment
         android:id="@+id/takePictureFragment"
         android:name="com.example.yourstory.today.thought.TakePictureFragment"
@@ -128,4 +121,26 @@
         android:name="com.example.yourstory.reports.createReports.CreateReportFragment"
         android:label="@string/create_report_heading"
         tools:layout="@layout/create_report_fragment" />
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.example.yourstory.settings.SettingsFragment"
+        android:label="@string/settings"
+        tools:layout="@layout/settings_fragment" >
+        <action
+            android:id="@+id/action_settingsFragment_to_settingsLocationFragment"
+            app:destination="@id/settingsLocationFragment" />
+        <action
+            android:id="@+id/action_settingsFragment_to_settingsNotificationFragment"
+            app:destination="@id/settingsNotificationFragment" />
+    </fragment>
+    <action android:id="@+id/action_global_settingsFragment" app:destination="@id/settingsFragment" />
+    <action android:id="@+id/action_global_helpFragment" app:destination="@id/helpFragment" />
+    <fragment
+        android:id="@+id/settingsLocationFragment"
+        android:name="com.example.yourstory.settings.SettingsLocationFragment"
+        android:label="@string/location_settings" />
+    <fragment
+        android:id="@+id/settingsNotificationFragment"
+        android:name="com.example.yourstory.settings.SettingsNotificationFragment"
+        android:label="@string/notifiaction_settings" />
 </navigation>

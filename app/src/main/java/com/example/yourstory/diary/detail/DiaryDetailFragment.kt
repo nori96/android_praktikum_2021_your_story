@@ -7,6 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.RecyclerView
 import com.example.yourstory.MainActivity
@@ -15,6 +17,7 @@ import com.example.yourstory.database.data.Entry
 import com.example.yourstory.databinding.ActivityMainBinding
 import com.example.yourstory.databinding.DiaryDetailFragmentBinding
 import com.example.yourstory.today.DiaryEntriesAdapter
+import kotlinx.android.synthetic.main.activity_main.*
 
 class DiaryDetailFragment : Fragment() {
 
@@ -35,6 +38,7 @@ class DiaryDetailFragment : Fragment() {
     ): View? {
 
         binding = DiaryDetailFragmentBinding.inflate(layoutInflater,container,false)
+
         viewModel = ViewModelProvider(this)[DiaryDetailViewModel::class.java]
         viewModel.setDate(args.date.toString())
 
@@ -51,15 +55,12 @@ class DiaryDetailFragment : Fragment() {
             (recyclerView.adapter as DiaryEntriesAdapter).setData(todayStates)
         })
 
-        //Set date as the title
-        (requireActivity() as MainActivity).binding.toolbar.title = args.date.toString()
-
         return binding.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-
+        requireActivity().custom_toolbar.title = args.date.toString()
         // TODO: Use the ViewModel
     }
 
