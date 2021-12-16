@@ -4,18 +4,16 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.example.yourstory.database.data.DiaryEntry
-import com.example.yourstory.database.data.DiaryEntryDao
-import com.example.yourstory.database.data.EmotionalState
-import com.example.yourstory.database.data.EmotionalStateDao
+import com.example.yourstory.database.data.*
 import java.security.AccessControlContext
 
-@Database(entities = [DiaryEntry::class, EmotionalState::class], version = 1, exportSchema = false)
+@Database(entities = [DiaryEntry::class, EmotionalState::class, ReportEntry::class], version = 1, exportSchema = false)
 abstract class Database: RoomDatabase() {
 
     //All Daos should be defined here
     abstract fun diaryEntryDao(): DiaryEntryDao
     abstract fun emotionalStateDao(): EmotionalStateDao
+    abstract fun reportEntryDao(): ReportEntryDao
 
     companion object{
         @Volatile

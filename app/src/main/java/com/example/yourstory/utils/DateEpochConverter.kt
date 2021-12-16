@@ -15,9 +15,12 @@ class DateEpochConverter {
             var dateTime = DateTime(isoString, DateTimeZone.UTC)
             return dateTime.millis / 1000
         }
-
+        fun getCurrentEpoch() : Long {
+            return DateTime().withZone(DateTimeZone.forID( "Europe/London" )).millis / 1000
+        }
         fun convertEpochToDateTime(epochString: Long): DateTime {
-            return DateTime(epochString * 1000, DateTimeZone.UTC)
+            // TODO shold return with local time zone
+            return DateTime(epochString * 1000).withZone(DateTimeZone.forID( "Europe/Berlin" ))
         }
 
         fun generateIsoDate(): String{

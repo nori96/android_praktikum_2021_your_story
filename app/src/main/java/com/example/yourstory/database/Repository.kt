@@ -3,10 +3,7 @@ package com.example.yourstory.database
 import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.yourstory.database.data.DiaryEntry
-import com.example.yourstory.database.data.DiaryEntryDao
-import com.example.yourstory.database.data.EmotionalState
-import com.example.yourstory.database.data.EmotionalStateDao
+import com.example.yourstory.database.data.*
 import com.example.yourstory.utils.DateEpochConverter
 import org.joda.time.DateTime
 import org.joda.time.DateTimeZone
@@ -17,10 +14,12 @@ class Repository(application: Application){
 
     var diaryEntryDao: DiaryEntryDao
     var emotionalStateDao: EmotionalStateDao
+    var reportEntryDao: ReportEntryDao
 
     init {
         diaryEntryDao = Database.getDatabase(application).diaryEntryDao()
         emotionalStateDao = Database.getDatabase(application).emotionalStateDao()
+        reportEntryDao = Database.getDatabase(application).reportEntryDao()
     }
 
     //Diary Entry functions
@@ -39,6 +38,13 @@ class Repository(application: Application){
 
      fun addDiaryEntry(diaryEntry: DiaryEntry){
         diaryEntryDao.addDiaryEntry(diaryEntry)
+    }
+
+    fun addReportEntry(reportEntry: ReportEntry) {
+        reportEntryDao.addReport(reportEntry)
+    }
+    fun readAllReportEntries() : LiveData<List<ReportEntry>>{
+        return reportEntryDao.readAllReportsSortedByDate()
     }
 
     fun readAllEntriesOfaDate(isoDate: String): LiveData<List<DiaryEntry>>{

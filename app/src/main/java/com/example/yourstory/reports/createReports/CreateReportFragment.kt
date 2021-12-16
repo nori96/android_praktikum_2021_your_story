@@ -2,21 +2,28 @@ package com.example.yourstory.reports.createReports
 
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import com.example.yourstory.R
+import com.example.yourstory.database.data.DiaryEntry
 import com.example.yourstory.database.data.EmotionalState
+import com.example.yourstory.database.data.ReportEntry
 import com.example.yourstory.databinding.CreateReportFragmentBinding
 import com.example.yourstory.utils.DateEpochConverter
+import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.utils.ColorTemplate
 import com.savvi.rangedatepicker.CalendarPickerView
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.joda.time.DateTime
 import org.joda.time.DateTimeZone
 import java.util.*
@@ -171,6 +178,7 @@ class CreateReportFragment : Fragment() {
             hostFragmentNavController.navigate(R.id.action_createReportFragment_to_navigation_reports)
         }
         binding.confirmCreateReportDialog.setOnClickListener {
+            viewModel.insertCurrentReport()
             hostFragmentNavController.navigate(R.id.action_createReportFragment_to_navigation_reports)
         }
 
@@ -190,9 +198,10 @@ class CreateReportFragment : Fragment() {
 
     private fun setDateRanges() {
         if (datesAreSelected()) {
+            Log.i("asdf",binding.createReportsCalendarRangePicker.selectedDates[0].toString())
+
             viewModel.firstSelectedDate.value = DateEpochConverter.convertDateTimeToEpoch (
-                DateTime(binding.createReportsCalendarRangePicker.selectedDates[0],
-                    DateTimeZone.forTimeZone(TimeZone.getTimeZone("GMT+1")))
+                DateTime(binding.createReportsCalendarRangePicker.selectedDates[0])
                     .withTime(0, 0, 0, 0).toDateTimeISO().toString()
             )
             /*Log.i("asdf", binding.createReportsCalendarRangePicker.selectedDates.last().toString())
@@ -230,6 +239,8 @@ class CreateReportFragment : Fragment() {
         var sadnessAverage = 0F
         var disgustAverage = 0F
         var fearAverage = 0F
+
+        // averaging values
         for (emotionalState in data) {
             joyAverage += emotionalState.joy
             angerAverage += emotionalState.anger
@@ -238,6 +249,22 @@ class CreateReportFragment : Fragment() {
             disgustAverage += emotionalState.disgust
             fearAverage += emotionalState.fear
         }
+        if (data.isNotEmpty()) {
+            joyAverage /= data.size
+            angerAverage /= data.size
+            surpriseAverage /= data.size
+            sadnessAverage /= data.size
+            disgustAverage /= data.size
+            fearAverage /= data.size
+        }
+
+        viewModel.joyAverage.value = joyAverage
+        viewModel.angerAverage.value = angerAverage
+        viewModel.surpriseAverage.value = surpriseAverage
+        viewModel.sadnessAverage.value = sadnessAverage
+        viewModel.disgustAverage.value = disgustAverage
+        viewModel.fearAverage.value = fearAverage
+
         if ((angerAverage == 0F || !viewModel.angerSelected.value!!) &&
             (disgustAverage == 0F || !viewModel.disgustSelected.value!!) &&
             (fearAverage == 0F || !viewModel.fearSelected.value!!) &&
@@ -261,6 +288,7 @@ class CreateReportFragment : Fragment() {
             binding.createReportPieChartGraph.setDrawEntryLabels(false)
             binding.createReportPieChartGraph.legend.isEnabled = false
             binding.createReportPieChartGraph.isDrawHoleEnabled = false
+
         } else {
             val pieEntries = arrayListOf<PieEntry>()
             val colors = arrayListOf<Int>()
@@ -301,5 +329,6 @@ class CreateReportFragment : Fragment() {
             binding.createReportPieChartGraph.isDrawHoleEnabled = true
         }
         binding.createReportPieChartGraph.invalidate()
+        binding.createReportPieChartGraph.animateX(1000, Easing.EaseOutBack)
     }
 }
