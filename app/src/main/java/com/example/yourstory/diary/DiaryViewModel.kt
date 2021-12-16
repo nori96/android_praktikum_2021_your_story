@@ -29,7 +29,7 @@ class DiaryViewModel(application: Application) : AndroidViewModel(application) {
 
     var yearOfOldestDbEntry = DateTime.now().year().get()
 
-    private val repository: Repository
+    private val repository: Repository = Repository(application)
     var diaryEntriesAsListModel = MutableLiveData<ArrayList<DiaryListModel>>()
     lateinit var diaryEntries : LiveData<List<DiaryEntry>>
     lateinit var emotionalStateEntries: LiveData<List<EmotionalState>>
@@ -38,7 +38,6 @@ class DiaryViewModel(application: Application) : AndroidViewModel(application) {
     var diaryEntriesCopy = listOf<DiaryEntry>()
 
     init {
-        repository = Repository(application)
 
         fetchFilteredData()
 

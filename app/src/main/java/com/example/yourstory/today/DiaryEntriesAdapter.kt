@@ -150,14 +150,12 @@ class DiaryEntriesAdapter() : RecyclerView.Adapter<DiaryEntriesAdapter.ViewHolde
             holder.sadnessLikert.text = state.sadness.toString()
             holder.fearLikert.text = state.fear.toString()
             holder.disgustLikert.text = state.disgust.toString()
-            holder.joyEmoji.alpha = (0.2 + ((state.joy.toFloat()) * 0.8)).toFloat()
+            holder.joyEmoji.alpha = (0.2 + ((state.joy.toFloat()/5) * 0.8)).toFloat()
             holder.surpriseEmoji.alpha = (0.2 + ((state.surprise.toFloat()/5) * 0.8)).toFloat()
             holder.angerEmoji.alpha = (0.2 + ((state.anger.toFloat()/5) * 0.8)).toFloat()
             holder.sadnessEmoji.alpha = (0.2 + ((state.sadness.toFloat()/5) * 0.8)).toFloat()
             holder.fearEmoji.alpha = (0.2 + ((state.fear.toFloat()/5) * 0.8)).toFloat()
             holder.disgustEmoji.alpha = (0.2 + ((state.disgust.toFloat()/5) * 0.8)).toFloat()
-
-            //holder.diaryText.text = "anger: "+state.anger+" surprise: "+ state.surprise
         }
     }
 

@@ -48,7 +48,12 @@ class DiaryAdapter(var onDiaryClickListener: OnDiaryClickListener) : RecyclerVie
         var diaryListModelItem = dataSet[position]
 
         //No Likert-Rating was Done
-        if(dataSet[position].angerAverage == 0F && dataSet[position].disgustAverage == 0F && dataSet[position].fearAverage == 0F && dataSet[position].joyAverage == 0F && dataSet[position].sadnessAverage == 0F && dataSet[position].supriseAverage == 0F){
+        if (dataSet[position].angerAverage == 0F &&
+            dataSet[position].disgustAverage == 0F &&
+            dataSet[position].fearAverage == 0F &&
+            dataSet[position].joyAverage == 0F &&
+            dataSet[position].sadnessAverage == 0F &&
+            dataSet[position].supriseAverage == 0F){
             var pieEntries = arrayListOf<PieEntry>()
             var typeAmountMap = HashMap<String,Float>()
             typeAmountMap.put("Empty",1F)
