@@ -66,15 +66,11 @@ class DiaryFragment : Fragment(), DiaryAdapter.OnDiaryClickListener, AdapterView
 
 
 
-        viewModel.diaryEntriesAsListModel.observe(viewLifecycleOwner,{
+        viewModel.diaryEntriesAsListModel.observe(viewLifecycleOwner, {
             newDiaryEntrys -> (recyclerView.adapter as DiaryAdapter).setData(newDiaryEntrys)
         })
 
         return binding.root
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
     }
 
     override fun onNoteClick(position: Int) {

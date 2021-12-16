@@ -78,6 +78,9 @@ class Repository(application: Application){
 
         return emotionalStateDao.readAllEmotionalSatesBetweenDates(startEpoch,endEpoch)
     }
+    fun readAllEmotionalStatesBetweenDates(start: Long, end: Long): LiveData<List<EmotionalState>> {
+        return emotionalStateDao.readAllEmotionalSatesBetweenDates(start, end)
+    }
 
     fun readLastEmotionalStateID(): Int {
         var emotionalState = emotionalStateDao.readAllEmotionalStatesSortedByDateWithoutLiveData()
