@@ -2,12 +2,8 @@ package com.example.yourstory.database
 
 import android.app.Application
 import androidx.lifecycle.LiveData
-import com.example.yourstory.database.data.DiaryEntry
-import com.example.yourstory.database.data.DiaryEntryDao
-import com.example.yourstory.database.data.EmotionalState
-import com.example.yourstory.database.data.EmotionalStateDao
+import com.example.yourstory.database.data.*
 import com.example.yourstory.utils.DateEpochConverter
-import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.api.client.http.FileContent
 import com.google.api.services.drive.Drive
@@ -21,12 +17,12 @@ class Repository(var application: Application){
     var googleAccount: GoogleSignInAccount
     var diaryEntryDao: DiaryEntryDao
     var emotionalStateDao: EmotionalStateDao
-
+    var reportEntryDao: ReportEntryDao
 
     init {
         diaryEntryDao = Database.getDatabase(application).diaryEntryDao()
         emotionalStateDao = Database.getDatabase(application).emotionalStateDao()
-        googleAccount = GoogleSignIn.getLastSignedInAccount(application)!!
+        reportEntryDao = Database.getDatabase(application).reportEntryDao()
     }
 
     companion object{
@@ -57,6 +53,7 @@ class Repository(var application: Application){
             .setQ("mimeType=application/vnd.sqlite3")
             .execute()
         return false
+        reportEntryDao = Database.getDatabase(application).reportEntryDao()
     }
 
     //Diary Entry functions
@@ -75,6 +72,13 @@ class Repository(var application: Application){
 
      fun addDiaryEntry(diaryEntry: DiaryEntry){
         diaryEntryDao.addDiaryEntry(diaryEntry)
+    }
+
+    fun addReportEntry(reportEntry: ReportEntry) {
+        reportEntryDao.addReport(reportEntry)
+    }
+    fun readAllReportEntries() : LiveData<List<ReportEntry>>{
+        return reportEntryDao.readAllReportsSortedByDate()
     }
 
     fun readAllEntriesOfaDate(isoDate: String): LiveData<List<DiaryEntry>>{
@@ -136,6 +140,4 @@ class Repository(var application: Application){
     fun readoldestEmotionalStateDate(): EmotionalState{
         return emotionalStateDao.readOldestEmotionalState()
     }
-
-
 }

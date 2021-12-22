@@ -94,9 +94,7 @@ class SettingsBackupFragment : Fragment() {
             .requestScopes(Scope(DriveScopes.DRIVE_FILE))
             .requestEmail()
             .build()
-
         var client = GoogleSignIn.getClient(requireActivity(),signInOptions)
-
         startActivityForResult(client.signInIntent,400)
     }
 
@@ -115,7 +113,7 @@ class SettingsBackupFragment : Fragment() {
 
         when(requestCode){
             400 -> {
-                if(resultCode == RESULT_OK){
+                if(resultCode == RESULT_OK) {
                     handleSignInIntent(data)
                 }
             }

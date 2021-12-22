@@ -11,14 +11,16 @@ import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.yourstory.R
+import com.example.yourstory.database.data.Entry
 import com.example.yourstory.databinding.ReportsFragmentBinding
+import com.example.yourstory.today.DiaryEntriesAdapter
 
 class ReportsFragment : Fragment() {
 
     private lateinit var binding: ReportsFragmentBinding
     lateinit var recyclerView: RecyclerView
     private lateinit var viewModel : ReportsViewModel
-    private lateinit var hostFramentNavController: NavController
+    private lateinit var hostFragmentNavController: NavController
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -26,24 +28,19 @@ class ReportsFragment : Fragment() {
     ): View? {
         binding = ReportsFragmentBinding.inflate(inflater, container, false)
         if (container != null) {
-            hostFramentNavController = container.findNavController()
+            hostFragmentNavController = container.findNavController()
         }
+        viewModel = ViewModelProvider(this).get(ReportsViewModel::class.java)
+
+        viewModel.reportsEntriesData.observe(viewLifecycleOwner, { newReports ->
+            (recyclerView.adapter as ReportsAdapter).setData(newReports)
+        })
+
         recyclerView = binding.reportRecyclerView
         recyclerView.adapter = ReportsAdapter()
         binding.fabReports?.setOnClickListener {
-            hostFramentNavController.navigate(R.id.action_navigation_reports_to_createReportFragment)
+            hostFragmentNavController.navigate(R.id.action_navigation_reports_to_createReportFragment)
         }
         return binding.root
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(ReportsViewModel::class.java)
-
-        val reportsObserver = Observer<ArrayList<ReportListModel>> { newReports ->
-            (recyclerView.adapter as ReportsAdapter).dataSet = newReports
-        }
-
-        viewModel.reports.observe(viewLifecycleOwner,reportsObserver)
     }
 }
