@@ -154,5 +154,5 @@
         android:id="@+id/settingsFragmentBackup"
         android:name="com.example.yourstory.settings.SettingsBackupFragment"
         android:label="@string/diary_settings"
-        tools:layout="@layout/settings_backup_fragment" />
+        tools:layout="@layout/settings_backup_not_logged_in_fragment" />
 </navigation>

@@ -36,5 +36,4 @@ class CreateReportViewModel(application: Application) : AndroidViewModel(applica
             viewExposedStates.value = newObservableStates
         }
     }
-
 }

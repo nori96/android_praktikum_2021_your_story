@@ -10,12 +10,9 @@ import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.yourstory.R
-import com.example.yourstory.database.data.DiaryEntry
-import com.example.yourstory.database.data.EmotionalState
 import com.example.yourstory.database.data.Entry
 import com.example.yourstory.databinding.TodayFragmentBinding
 import com.example.yourstory.today.thought.SharedThoughtDialogViewModel
-import com.example.yourstory.utils.DateEpochConverter
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class TodayFragment : Fragment() {
