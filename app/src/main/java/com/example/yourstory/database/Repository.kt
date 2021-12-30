@@ -14,7 +14,7 @@ import java.util.*
 
 class Repository(var application: Application){
 
-    var googleAccount: GoogleSignInAccount
+    var googleAccount: GoogleSignInAccount = GoogleSignInAccount.createDefault()
     var diaryEntryDao: DiaryEntryDao
     var emotionalStateDao: EmotionalStateDao
     var reportEntryDao: ReportEntryDao
