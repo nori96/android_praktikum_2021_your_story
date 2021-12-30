@@ -78,4 +78,6 @@
     <string name="location_settings">GPS - Einstellungen</string>
     <string name="notifiaction_settings">Benachrichtigungen - Einstellungen</string>
     <string name="diary_settings">Tagebuch Einstellungen</string>
+    <string name="login_to_google_to_allow_uploading_and_downloading_backups">Melden Sie sich bei Google an, um Sicherungen von Tagebüchern runterzuladen oder hochzuladen zu können.</string>
+    <string name="login_with_google">Mit Google anmelden</string>
 </resources>

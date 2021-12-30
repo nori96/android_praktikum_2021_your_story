@@ -92,6 +92,8 @@
     <string name="location_settings">GPS Settings</string>
     <string name="notifiaction_settings">Notification Settings</string>
     <string name="diary_settings">Diary Settings</string>
+    <string name="login_to_google_to_allow_uploading_and_downloading_backups">Login into you\'re Google-Account to enable downloading and uploading backups.</string>
+    <string name="login_with_google">Login with Google</string>
 
 
 </resources>

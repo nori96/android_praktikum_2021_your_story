@@ -4,14 +4,11 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
 import com.example.yourstory.database.Repository
 import com.example.yourstory.database.data.DiaryEntry
 import com.example.yourstory.database.data.EmotionalState
 import com.example.yourstory.diary.detail.Date
 import com.example.yourstory.utils.DateEpochConverter
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import org.joda.time.DateTime
 import java.util.*
 import kotlin.collections.ArrayList

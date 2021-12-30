@@ -2,16 +2,19 @@ package com.example.yourstory.database
 
 import android.app.Application
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.example.yourstory.database.data.*
 import com.example.yourstory.utils.DateEpochConverter
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.api.client.http.FileContent
+import com.google.api.services.drive.Drive
 import org.joda.time.DateTime
 import org.joda.time.DateTimeZone
-import java.time.ZoneOffset.UTC
+import java.io.File
 import java.util.*
 
-class Repository(application: Application){
+class Repository(var application: Application){
 
+    var googleAccount: GoogleSignInAccount
     var diaryEntryDao: DiaryEntryDao
     var emotionalStateDao: EmotionalStateDao
     var reportEntryDao: ReportEntryDao
@@ -19,6 +22,37 @@ class Repository(application: Application){
     init {
         diaryEntryDao = Database.getDatabase(application).diaryEntryDao()
         emotionalStateDao = Database.getDatabase(application).emotionalStateDao()
+        reportEntryDao = Database.getDatabase(application).reportEntryDao()
+    }
+
+    companion object{
+        lateinit var googleDriveService: Drive
+    }
+
+    //Google Drive
+    //TODO: Implement Drive-Access here
+
+
+    fun uploadDataBaseToDrive(){
+            if(!checkIfAppFolderExists()){
+                initAppDriverFolders()
+            }
+            googleDriveService.files().create(com.google.api.services.drive.model.File().setName("yourstory_database_" + UUID.randomUUID()).setCreatedTime(
+                com.google.api.client.util.DateTime(DateTime.now().toString())
+            ),
+                FileContent(null, File(Database.getDatabase(application).openHelper.writableDatabase.path))
+            ).execute()
+    }
+
+    private fun initAppDriverFolders() {
+        googleDriveService
+    }
+
+    private fun checkIfAppFolderExists(): Boolean {
+        googleDriveService.files().list()
+            .setQ("mimeType=application/vnd.sqlite3")
+            .execute()
+        return false
         reportEntryDao = Database.getDatabase(application).reportEntryDao()
     }
 
