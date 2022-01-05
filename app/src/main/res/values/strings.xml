@@ -44,7 +44,15 @@
 
     <!--Create Report-->
     <string name="create_report_heading">Create Report</string>
-
+    <string name="create_report_select_dates_heading">Specify dates</string>
+    <string name="create_report_select_dates_main_text">Please specify a date range to build potential diagrams.</string>
+    <string name="create_report_confirm_dialog">Okay</string>
+    <string name="create_report_joy_abbreviation">J</string>
+    <string name="create_report_anger_abbreviation">A</string>
+    <string name="create_report_surprise_abbreviation">S</string>
+    <string name="create_report_sadness_abbreviation">S</string>
+    <string name="create_report_disgust_abbreviation">D</string>
+    <string name="create_report_fear_abbreviation">F</string>
     <!-- dialog ok cancel texts -->
     <string name="finish_dialog">Finish</string>
     <string name="cancel_dialog">Cancel</string>

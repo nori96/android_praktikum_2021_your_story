@@ -35,10 +35,13 @@ class ReportsAdapter : RecyclerView.Adapter<ReportsAdapter.ViewHolder>(){
 
             barChart = reportView.findViewById(R.id.barChart)
             barChart.setFitBars(true)
-            barChart.isAutoScaleMinMaxEnabled
             barChart.description.text = ""
+
             barChart.isClickable = false
             barChart.isDoubleTapToZoomEnabled = false
+
+            barChart.axisLeft.setDrawTopYLabelEntry(true)
+            barChart.axisLeft.setLabelCount(3, false)
             barChart.axisRight.setDrawLabels(false)
             barChart.legend.isEnabled = false
             barChart.setDrawValueAboveBar(true)
