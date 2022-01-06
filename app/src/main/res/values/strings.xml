@@ -53,6 +53,7 @@
     <string name="create_report_sadness_abbreviation">S</string>
     <string name="create_report_disgust_abbreviation">D</string>
     <string name="create_report_fear_abbreviation">F</string>
+    <string name="create_report_date">Date Range: </string>
     <!-- dialog ok cancel texts -->
     <string name="finish_dialog">Finish</string>
     <string name="cancel_dialog">Cancel</string>

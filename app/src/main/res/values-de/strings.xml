@@ -60,6 +60,7 @@
     <string name="create_report_sadness_abbreviation">T</string>
     <string name="create_report_disgust_abbreviation">E</string>
     <string name="create_report_fear_abbreviation">A</string>
+    <string name="create_report_date">Zeitspanne: </string>
 
     <!-- dialog ok cancel texts -->
     <string name="finish_dialog">Okay</string>

@@ -33,6 +33,8 @@ import com.github.mikephil.charting.formatter.IAxisValueFormatter
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.github.mikephil.charting.formatter.ValueFormatter
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import org.joda.time.format.DateTimeFormat
+import org.joda.time.format.DateTimeFormatter
 
 
 class CreateReportFragment : Fragment() {
@@ -120,6 +122,7 @@ class CreateReportFragment : Fragment() {
             updateAverageData(newData)
             setPieChartData()
             setBarChartData()
+            setConfirmPageData()
         })
 
         viewModel.lastSelectedDate.observe(viewLifecycleOwner, {
@@ -133,14 +136,13 @@ class CreateReportFragment : Fragment() {
             viewModel.insertCurrentReport()
             hostFragmentNavController.navigate(R.id.action_createReportFragment_to_navigation_reports)
         }
+
         binding.createReportBarChartGraph.setFitBars(true)
         binding.createReportBarChartGraph.description.text = ""
-
         binding.createReportBarChartGraph.isClickable = false
         binding.createReportBarChartGraph.isDoubleTapToZoomEnabled = false
         binding.createReportBarChartGraph.axisLeft.axisMinimum = 0f
         binding.createReportBarChartGraph.axisLeft.setDrawTopYLabelEntry(true)
-        //binding.createReportBarChartGraph.axisLeft.setLabelCount(3, false)
         binding.createReportBarChartGraph.axisRight.setDrawLabels(false)
         binding.createReportBarChartGraph.legend.isEnabled = false
         binding.createReportBarChartGraph.setDrawValueAboveBar(true)
@@ -152,7 +154,6 @@ class CreateReportFragment : Fragment() {
         binding.createReportBarChartGraph.xAxis.setDrawGridLines(false)
         binding.createReportBarChartGraph.xAxis.disableGridDashedLine()
         binding.createReportBarChartGraph.xAxis.position = XAxis.XAxisPosition.BOTTOM
-
 
         return binding.root
     }
@@ -287,6 +288,8 @@ class CreateReportFragment : Fragment() {
             }
         })
     }
+
+
 
     // used for resetting state before a state switch, just a helper function
     private fun resetSelection() {
@@ -446,7 +449,7 @@ class CreateReportFragment : Fragment() {
                 pieEntries.add(PieEntry(viewModel.fearAverage.value!!, "Fear"))
                 colors.add(ColorTemplate.rgb("#B960FF"))
             }
-            val pieDataSet = PieDataSet(pieEntries, "Emotions")
+            val pieDataSet = PieDataSet(pieEntries, "")
             pieDataSet.valueTextSize = 20f;
             pieDataSet.colors = colors
             val pieData = PieData(pieDataSet)
@@ -460,6 +463,82 @@ class CreateReportFragment : Fragment() {
         }
         binding.createReportPieChartGraph.invalidate()
         binding.createReportPieChartGraph.animateX(1000, Easing.EaseOutBack)
+    }
+
+    private fun setConfirmPageData() {
+        binding.createReportFirstConfirmLabel.text = ""
+        binding.createReportFirstConfirmValue.text = ""
+        binding.createReportSecondConfirmLabel.text = ""
+        binding.createReportSecondConfirmValue.text = ""
+        binding.createReportThirdConfirmLabel.text = ""
+        binding.createReportThirdConfirmValue.text = ""
+        binding.createReportFourthConfirmLabel.text = ""
+        binding.createReportFourthConfirmValue.text = ""
+        binding.createReportFifthConfirmLabel.text = ""
+        binding.createReportFifthConfirmValue.text = ""
+        binding.createReportSixthConfirmLabel.text = ""
+        binding.createReportSixthConfirmValue.text = ""
+
+        val fmt: DateTimeFormatter = DateTimeFormat.forPattern("dd.MM.yyyy")
+        val time = fmt.print(DateEpochConverter.convertEpochToDateTime(viewModel.firstSelectedDate.value!!))+
+                " - " +
+                fmt.print(DateEpochConverter.convertEpochToDateTime(viewModel.lastSelectedDate.value!!))
+        binding.createReportDateConfirmValue.text = time
+
+        var counter = 0
+        if (viewModel.joyAverage.value!! > 0 && viewModel.joySelected.value!!) {
+            setConfirmPageDataInCorrespondingColumn(counter, viewModel.joyAverage.value!!, resources.getString(R.string.likert_dialog_joy))
+            counter += 1
+        }
+        if (viewModel.angerAverage.value!! > 0 && viewModel.angerSelected.value!!) {
+            setConfirmPageDataInCorrespondingColumn(counter, viewModel.angerAverage.value!!, resources.getString(R.string.likert_dialog_anger))
+            counter += 1
+        }
+        if (viewModel.surpriseAverage.value!! > 0 && viewModel.surpriseSelected.value!!) {
+            setConfirmPageDataInCorrespondingColumn(counter, viewModel.surpriseAverage.value!!, resources.getString(R.string.likert_dialog_surprise))
+            counter += 1
+        }
+        if (viewModel.sadnessAverage.value!! > 0 && viewModel.sadnessSelected.value!!) {
+            setConfirmPageDataInCorrespondingColumn(counter, viewModel.sadnessAverage.value!!, resources.getString(R.string.likert_dialog_sadness))
+            counter += 1
+        }
+        if (viewModel.disgustAverage.value!! > 0 && viewModel.disgustSelected.value!!) {
+            setConfirmPageDataInCorrespondingColumn(counter, viewModel.disgustAverage.value!!, resources.getString(R.string.likert_dialog_disgust))
+            counter += 1
+        }
+        if (viewModel.fearAverage.value!! > 0 && viewModel.fearSelected.value!!) {
+            setConfirmPageDataInCorrespondingColumn(counter, viewModel.fearAverage.value!!, resources.getString(R.string.likert_dialog_fear))
+            counter += 1
+        }
+    }
+
+    private fun setConfirmPageDataInCorrespondingColumn(index: Int, value: Float, label: String) {
+        when (index) {
+            0 -> {
+                binding.createReportFirstConfirmLabel.text = label
+                binding.createReportFirstConfirmValue.text = value.toString()
+            }
+            1 -> {
+                binding.createReportSecondConfirmLabel.text = label
+                binding.createReportSecondConfirmValue.text = value.toString()
+            }
+            2 -> {
+                binding.createReportThirdConfirmLabel.text = label
+                binding.createReportThirdConfirmValue.text = value.toString()
+            }
+            3 -> {
+                binding.createReportFourthConfirmLabel.text = label
+                binding.createReportFourthConfirmValue.text = value.toString()
+            }
+            4 -> {
+                binding.createReportFifthConfirmLabel.text = label
+                binding.createReportFifthConfirmValue.text = value.toString()
+            }
+            5 -> {
+                binding.createReportSixthConfirmLabel.text = label
+                binding.createReportSixthConfirmValue.text = value.toString()
+            }
+        }
     }
 
     private fun updateAverageData(data: List<EmotionalState>) {
