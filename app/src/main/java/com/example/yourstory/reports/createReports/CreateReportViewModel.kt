@@ -34,6 +34,8 @@ class CreateReportViewModel(application: Application) : AndroidViewModel(applica
     var disgustAverage = MutableLiveData(0f)
     var fearAverage = MutableLiveData(0f)
 
+    var tabSelected = MutableLiveData(0)
+
     private val repository = Repository(application)
     var emotionalStatesObserver : LiveData<List<EmotionalState>> =
         repository.readAllEmotionalStatesBetweenDates(firstSelectedDate.value!!, lastSelectedDate.value!!)
@@ -48,7 +50,6 @@ class CreateReportViewModel(application: Application) : AndroidViewModel(applica
     }
     fun insertCurrentReport() {
         viewModelScope.launch (Dispatchers.IO) {
-            //Log.i("asdf",firstSelectedDate.value!!.toString())
             val fmt: DateTimeFormatter = DateTimeFormat.forPattern("dd.MM.yyyy")
             repository.addReportEntry(ReportEntry(0,
                 DateEpochConverter.getCurrentEpoch(),

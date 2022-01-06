@@ -57,19 +57,12 @@ class CreateReportFragment : Fragment() {
         selectDatesAlertDialogBuilder = MaterialAlertDialogBuilder(requireContext())
 
         binding.createReportSelectCalendar.setOnClickListener {
-            resetSelection()
-            binding.createReportSelectCalendar.cardElevation = 30f
-            binding.createReportsDateContent.visibility = View.VISIBLE
-            viewModel.firstSelectedDate.value = 0
-            viewModel.lastSelectedDate.value = 0
+            viewModel.tabSelected.value = 0
         }
         binding.createReportPieChart.setOnClickListener {
             setDateRanges()
             if (areDatesProperlySet()) {
-                setDateRanges()
-                resetSelection()
-                binding.createReportPieChart.cardElevation = 30f
-                binding.createReportsPieChartContent.visibility = View.VISIBLE
+                viewModel.tabSelected.value = 1
             } else {
                 showDatesNotSelectedReport()
             }
@@ -77,21 +70,15 @@ class CreateReportFragment : Fragment() {
         binding.createReportBarChart.setOnClickListener {
             setDateRanges()
             if (areDatesProperlySet()) {
-                setDateRanges()
-                resetSelection()
-                binding.createReportBarChart.cardElevation = 30f
-                binding.createReportsBarChartContent.visibility = View.VISIBLE
+                viewModel.tabSelected.value = 2
             } else {
                 showDatesNotSelectedReport()
             }
         }
         binding.createReportsExport.setOnClickListener {
-            setDateRanges()
             if (areDatesProperlySet()) {
                 setDateRanges()
-                resetSelection()
-                binding.createReportsExport.cardElevation = 30f
-                binding.createReportsExportContent.visibility = View.VISIBLE
+                viewModel.tabSelected.value = 3
             } else {
                 showDatesNotSelectedReport()
             }
@@ -117,12 +104,22 @@ class CreateReportFragment : Fragment() {
         setupDisgustButton()
         setupFearButton()
 
-        // changes when setObservableArea() gets executed, a mechanism which we use to force redrawing all the time
+        // changes when setObservableArea() gets executed, a mechanism which we use to force redrawing all the time when changes occur
         viewModel.viewExposedStates.observe(viewLifecycleOwner, { newData ->
             updateAverageData(newData)
             setPieChartData()
             setBarChartData()
             setConfirmPageData()
+        })
+
+        // set always correct tab
+        viewModel.tabSelected.observe(viewLifecycleOwner, {
+            when (viewModel.tabSelected.value) {
+                0 -> goToDateSelectionPage()
+                1 -> goToPieChartPage()
+                2 -> goToBarChartPage()
+                3 -> goToConfirmPage()
+            }
         })
 
         viewModel.lastSelectedDate.observe(viewLifecycleOwner, {
@@ -166,6 +163,32 @@ class CreateReportFragment : Fragment() {
         selectDatesAlertDialogBuilder.setPositiveButton(R.string.create_report_confirm_dialog) { _, _ ->
         }
         selectDatesAlertDialogBuilder.show()
+    }
+
+    private fun goToDateSelectionPage () {
+        resetSelection()
+        binding.createReportSelectCalendar.cardElevation = 30f
+        binding.createReportsDateContent.visibility = View.VISIBLE
+        viewModel.firstSelectedDate.value = 0
+        viewModel.lastSelectedDate.value = 0
+    }
+
+    private fun goToPieChartPage() {
+        resetSelection()
+        binding.createReportPieChart.cardElevation = 30f
+        binding.createReportsPieChartContent.visibility = View.VISIBLE
+    }
+
+    private fun goToBarChartPage() {
+        resetSelection()
+        binding.createReportBarChart.cardElevation = 30f
+        binding.createReportsBarChartContent.visibility = View.VISIBLE
+    }
+
+    private fun goToConfirmPage() {
+        resetSelection()
+        binding.createReportsExport.cardElevation = 30f
+        binding.createReportsExportContent.visibility = View.VISIBLE
     }
 
     // following six methods setup the functionality of the different mood buttons in relationship to the view model
