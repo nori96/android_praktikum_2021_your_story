@@ -34,6 +34,8 @@ class CreateReportViewModel(application: Application) : AndroidViewModel(applica
     var disgustAverage = MutableLiveData(0f)
     var fearAverage = MutableLiveData(0f)
 
+    var tabSelected = MutableLiveData(0)
+
     private val repository = Repository(application)
     var emotionalStatesObserver : LiveData<List<EmotionalState>> =
         repository.readAllEmotionalStatesBetweenDates(firstSelectedDate.value!!, lastSelectedDate.value!!)
@@ -48,7 +50,6 @@ class CreateReportViewModel(application: Application) : AndroidViewModel(applica
     }
     fun insertCurrentReport() {
         viewModelScope.launch (Dispatchers.IO) {
-            Log.i("asdf",firstSelectedDate.value!!.toString())
             val fmt: DateTimeFormatter = DateTimeFormat.forPattern("dd.MM.yyyy")
             repository.addReportEntry(ReportEntry(0,
                 DateEpochConverter.getCurrentEpoch(),
@@ -69,24 +70,30 @@ class CreateReportViewModel(application: Application) : AndroidViewModel(applica
     fun calculateEmotionalAverage() : Float {
         var counter = 0
         var emotionality = 0f
-        if (joyAverage.value!! > 0 && joySelected.value!!)
+        if (joyAverage.value!! > 0 && joySelected.value!!) {
             counter +=1
             emotionality += joyAverage.value!!
-        if (angerAverage.value!! > 0 && angerSelected.value!!)
+        }
+        if (angerAverage.value!! > 0 && angerSelected.value!!) {
             counter +=1
             emotionality += angerAverage.value!!
-        if (surpriseAverage.value!! > 0 && surpriseSelected.value!!)
+        }
+        if (surpriseAverage.value!! > 0 && surpriseSelected.value!!) {
             counter +=1
             emotionality += surpriseAverage.value!!
-        if (sadnessAverage.value!! > 0 && sadnessSelected.value!!)
+        }
+        if (sadnessAverage.value!! > 0 && sadnessSelected.value!!) {
             counter +=1
             emotionality += sadnessAverage.value!!
-        if (disgustAverage.value!! > 0 && disgustSelected.value!!)
+        }
+        if (disgustAverage.value!! > 0 && disgustSelected.value!!) {
             counter +=1
             emotionality += disgustAverage.value!!
-        if (fearAverage.value!! > 0 && fearSelected.value!!)
+        }
+        if (fearAverage.value!! > 0 && fearSelected.value!!){
             counter +=1
             emotionality += fearAverage.value!!
+        }
         return emotionality / counter
     }
 

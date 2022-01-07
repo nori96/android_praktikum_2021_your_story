@@ -51,6 +51,16 @@
 
     <!--Create Report-->
     <string name="create_report_heading">Report erstellen</string>
+    <string name="create_report_select_dates_heading">Zeitabschnitt festlegen</string>
+    <string name="create_report_select_dates_main_text">Bitte legen Sie einen Zeitabschnitt fest, um potentielle Diagramme zu generieren.</string>
+    <string name="create_report_confirm_dialog">Okay</string>
+    <string name="create_report_joy_abbreviation">F</string>
+    <string name="create_report_anger_abbreviation">W</string>
+    <string name="create_report_surprise_abbreviation">Ü</string>
+    <string name="create_report_sadness_abbreviation">T</string>
+    <string name="create_report_disgust_abbreviation">E</string>
+    <string name="create_report_fear_abbreviation">A</string>
+    <string name="create_report_date">Zeitspanne: </string>
 
     <!-- dialog ok cancel texts -->
     <string name="finish_dialog">Okay</string>
