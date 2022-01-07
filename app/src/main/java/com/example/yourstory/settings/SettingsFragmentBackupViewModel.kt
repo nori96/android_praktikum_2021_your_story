@@ -29,14 +29,8 @@ class SettingsFragmentBackupViewModel(application: Application) : AndroidViewMod
         viewModelScope.launch(Dispatchers.IO) {
 
             if (Repository.googleDriveService != null) {
-                latestDBMetadata.postValue(repository.getLatestDBMetadata())
+               // latestDBMetadata.postValue(repository.getLatestDBMetadata())
             }
-        }
-    }
-
-    fun migrateDatabase(){
-        viewModelScope.launch(Dispatchers.IO) {
-            Database.migrateDatabase(getApplication(), latestDBFile.value!!)
         }
     }
 

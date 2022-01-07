@@ -14,11 +14,9 @@ import com.google.api.services.drive.Drive
 import com.google.api.services.drive.DriveScopes
 import org.joda.time.DateTime
 import org.joda.time.DateTimeZone
-import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
 import java.io.OutputStream
-import java.lang.ref.Reference
 import java.util.*
 
 class Repository(var application: Application){
@@ -29,6 +27,10 @@ class Repository(var application: Application){
     var reportEntryDao: ReportEntryDao
 
     init {
+        var file = getBackupDatabase()
+        if(file != null){
+            Database.prepopulateDatabase(application,file)
+        }
         diaryEntryDao = Database.getDatabase(application).diaryEntryDao()
         emotionalStateDao = Database.getDatabase(application).emotionalStateDao()
         reportEntryDao = Database.getDatabase(application).reportEntryDao()
@@ -42,12 +44,21 @@ class Repository(var application: Application){
          var googleDriveService: Drive? = null
     }
 
+    private fun getBackupDatabase(): File? {
+        var file = application.getDatabasePath("database_backup")
+        if(!file.exists()){
+            return null
+        }else{
+            return file
+        }
+    }
+
     //Google Drive
 
     fun signInToGoogle(googleSignInAccount: GoogleSignInAccount){
         googleAccount = googleSignInAccount
 
-        var credential = GoogleAccountCredential.usingOAuth2(application.applicationContext, setOf(DriveScopes.DRIVE_FILE))
+        var credential = GoogleAccountCredential.usingOAuth2(application.applicationContext, setOf(DriveScopes.DRIVE_FILE,DriveScopes.DRIVE_APPDATA))
         credential.selectedAccount = googleSignInAccount.account
 
         googleDriveService = Drive.Builder(
@@ -75,12 +86,10 @@ class Repository(var application: Application){
             .setFields("id")
             .execute()
 
-        var file = getLatestDBMetadata()
-
     }
 
     fun downloadLatestDB(fileID: String): File {
-        var database = File(Database.getDatabase(application.baseContext).openHelper.writableDatabase.path + "_" + fileID)
+        var database = File(Database.getDatabase(application.baseContext).openHelper.writableDatabase.path + "_backup")
         database.createNewFile()
 
         var outputStream = FileOutputStream(database) as OutputStream
@@ -100,7 +109,6 @@ class Repository(var application: Application){
         if(files.files.isEmpty()){
             return null
         }
-        System.out.println("Test")
         return files.files.first()
     }
 

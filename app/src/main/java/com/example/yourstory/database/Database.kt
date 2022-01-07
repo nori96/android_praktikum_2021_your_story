@@ -36,11 +36,20 @@ abstract class Database: RoomDatabase() {
             }
         }
 
-        fun migrateDatabase(context: Context,database: File){
-            INSTANCE = Room.databaseBuilder(
-                context.applicationContext, com.example.yourstory.database.Database::class.java, "database",)
-                .createFromFile(database)
-                .build()
+        fun prepopulateDatabase(context: Context,database: File){
+            val tempInstance = INSTANCE
+            if(tempInstance != null){
+                return
+            }
+            synchronized(this) {
+                INSTANCE = Room.databaseBuilder(
+                    context.applicationContext,
+                    com.example.yourstory.database.Database::class.java,
+                    "database",
+                )
+                    .createFromFile(database)
+                    .build()
+            }
         }
     }
 }

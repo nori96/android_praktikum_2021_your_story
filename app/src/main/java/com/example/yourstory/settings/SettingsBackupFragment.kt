@@ -117,7 +117,6 @@ class SettingsBackupFragment : Fragment() {
                         dialog, which ->
                 }
                 materialAlertDialogBuilder.show()
-                viewModel.migrateDatabase()
             }
         })
 
@@ -126,6 +125,7 @@ class SettingsBackupFragment : Fragment() {
 
     private fun signOut() {
         GoogleSignIn.getClient(requireActivity(),GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestScopes(Scope(DriveScopes.DRIVE_FILE))
             .requestScopes(Scope(DriveScopes.DRIVE_APPDATA))
             .requestEmail()
             .build()).signOut().addOnCompleteListener(requireActivity()) {
@@ -136,10 +136,12 @@ class SettingsBackupFragment : Fragment() {
 
     private fun requestSignIn() {
         var signInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestScopes(Scope(DriveScopes.DRIVE_FILE))
             .requestEmail()
+            .requestScopes(Scope(DriveScopes.DRIVE_FILE))
+            .requestScopes(Scope(DriveScopes.DRIVE_APPDATA))
             .build()
         client = GoogleSignIn.getClient(requireActivity(), signInOptions)
+
         startActivityForResult(client.signInIntent,400)
     }
 
@@ -171,5 +173,4 @@ class SettingsBackupFragment : Fragment() {
                 this.requireView().invalidate()
             }
     }
-
 }
