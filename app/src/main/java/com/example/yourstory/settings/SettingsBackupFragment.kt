@@ -21,15 +21,20 @@ import com.example.yourstory.databinding.SettingsBackupNotLoggedInFragmentBindin
 import com.fasterxml.jackson.core.JsonFactory
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.SignInButton
 import com.google.android.gms.common.api.Scope
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.api.client.extensions.android.http.AndroidHttp
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential
 import com.google.api.client.http.FileContent
 import com.google.api.client.json.jackson2.JacksonFactory
 import com.google.api.services.drive.Drive
 import com.google.api.services.drive.DriveScopes
+import org.joda.time.DateTime
+import org.joda.time.DateTimeZone
 import java.io.File
 
 class SettingsBackupFragment : Fragment() {
@@ -38,10 +43,12 @@ class SettingsBackupFragment : Fragment() {
         fun newInstance() = SettingsBackupFragment()
     }
 
+    private  lateinit var client: GoogleSignInClient
     private lateinit var hostFramentNavController: NavController
     private lateinit var viewModel: SettingsFragmentBackupViewModel
     private lateinit var binding_not_logged_in: SettingsBackupNotLoggedInFragmentBinding
     private lateinit var binding_logged_in: SettingsBackupLoggedInFragmentBinding
+    lateinit var materialAlertDialogBuilder: MaterialAlertDialogBuilder
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -54,7 +61,8 @@ class SettingsBackupFragment : Fragment() {
             hostFramentNavController = container.findNavController()
         }
 
-        if(viewModel.repository.googleAccount == null){
+        //Check if a Google Account exists.
+        if(viewModel.repository.getGoogleAccount() == null){
             binding_not_logged_in = SettingsBackupNotLoggedInFragmentBinding.inflate(layoutInflater)
 
             binding_not_logged_in.signInButton.setOnClickListener{
@@ -67,26 +75,63 @@ class SettingsBackupFragment : Fragment() {
 
             return binding_not_logged_in.root
         }
+
         binding_logged_in = SettingsBackupLoggedInFragmentBinding.inflate(layoutInflater)
         binding_logged_in.textViewName.text = viewModel.getGoogleDisplayName()
         binding_logged_in.textViewEmail.text = viewModel.getGoogleEmail()
 
-        initDriveServiceWithGoogleAccount()
+        binding_logged_in.signOutButton.setSize(SignInButton.SIZE_WIDE)
+        (binding_logged_in.signOutButton.getChildAt(0) as TextView).text = getString(R.string.logout_google)
+        (binding_logged_in.signOutButton.getChildAt(0) as TextView).setTextColor(Color.GRAY)
 
-        //viewModel.initAppFolder()
-        viewModel.uploadDataBase()
+        //Init Google-SignIn Button
+        binding_logged_in.signOutButton.setOnClickListener{
+            signOut()
+        }
+
+        //Init upload Button
+        binding_logged_in.buttonUpload.setOnClickListener{
+            viewModel.uploadDataBase()
+        }
+
+        binding_logged_in.buttonDownload.setOnClickListener{
+            viewModel.downloadDatabase()
+        }
+
+        //Init observing if a backup exists
+        viewModel.latestDBMetadata.observe(viewLifecycleOwner,{
+            if(it == null){
+                binding_logged_in.textViewBackupDate.text = "No backup found."
+                binding_logged_in.buttonDownload.isEnabled = false;
+            }else{
+                binding_logged_in.textViewBackupDate.text = it.createdTime.toString().split("T")[0] + "  " + it.createdTime.toString().split("T")[1].split(".")[0]
+                binding_logged_in.buttonDownload.isEnabled = true;
+            }
+        })
+
+        viewModel.latestDBFile.observe(viewLifecycleOwner,{
+            if(it != null){
+                materialAlertDialogBuilder.setTitle("Download succeeded")
+                materialAlertDialogBuilder.setMessage("Downloading the backup succeeded")
+                materialAlertDialogBuilder.setPositiveButton("OK"){
+                        dialog, which ->
+                }
+                materialAlertDialogBuilder.show()
+                viewModel.migrateDatabase()
+            }
+        })
 
         return binding_logged_in.root
     }
 
-    private fun initDriveServiceWithGoogleAccount() {
-        var credential = GoogleAccountCredential.usingOAuth2(requireActivity(), setOf(DriveScopes.DRIVE_FILE))
-        credential.selectedAccount = viewModel.repository.googleAccount.account
-
-        Repository.googleDriveService = Drive.Builder(
-            AndroidHttp.newCompatibleTransport(),
-            JacksonFactory.getDefaultInstance(),
-            credential).setApplicationName("Your Story").build()
+    private fun signOut() {
+        GoogleSignIn.getClient(requireActivity(),GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestScopes(Scope(DriveScopes.DRIVE_APPDATA))
+            .requestEmail()
+            .build()).signOut().addOnCompleteListener(requireActivity()) {
+            viewModel.repository.signOutFromGoogle()
+        }
+        hostFramentNavController.navigate(R.id.settingsFragmentBackup)
     }
 
     private fun requestSignIn() {
@@ -94,18 +139,13 @@ class SettingsBackupFragment : Fragment() {
             .requestScopes(Scope(DriveScopes.DRIVE_FILE))
             .requestEmail()
             .build()
-        var client = GoogleSignIn.getClient(requireActivity(),signInOptions)
+        client = GoogleSignIn.getClient(requireActivity(), signInOptions)
         startActivityForResult(client.signInIntent,400)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-
-        // TODO: Use the ViewModel
-    }
-
-    fun uploadDatabase(view: View){
-
+        materialAlertDialogBuilder = MaterialAlertDialogBuilder(requireContext())
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -124,7 +164,7 @@ class SettingsBackupFragment : Fragment() {
         GoogleSignIn.getSignedInAccountFromIntent(data)
             .addOnSuccessListener {
 
-                viewModel.repository.googleAccount = it
+                viewModel.setGoogleAccountAndInitDrive(it)
                 hostFramentNavController.navigate(R.id.settingsFragmentBackup)
             }
             .addOnFailureListener{

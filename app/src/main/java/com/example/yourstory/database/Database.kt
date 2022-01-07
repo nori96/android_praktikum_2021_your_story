@@ -5,6 +5,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.yourstory.database.data.*
+import java.io.File
 import java.security.AccessControlContext
 
 @Database(entities = [DiaryEntry::class, EmotionalState::class, ReportEntry::class], version = 1, exportSchema = false)
@@ -33,6 +34,13 @@ abstract class Database: RoomDatabase() {
                 INSTANCE = instance
                 return instance
             }
+        }
+
+        fun migrateDatabase(context: Context,database: File){
+            INSTANCE = Room.databaseBuilder(
+                context.applicationContext, com.example.yourstory.database.Database::class.java, "database",)
+                .createFromFile(database)
+                .build()
         }
     }
 }

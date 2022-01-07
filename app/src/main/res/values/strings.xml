@@ -94,6 +94,8 @@
     <string name="diary_settings">Diary Settings</string>
     <string name="login_to_google_to_allow_uploading_and_downloading_backups">Login into you\'re Google-Account to enable downloading and uploading backups.</string>
     <string name="login_with_google">Login with Google</string>
+    <string name="logout_google">Logout</string>
+    <string name="latest_backup">Latest backup:</string>
 
 
 </resources>

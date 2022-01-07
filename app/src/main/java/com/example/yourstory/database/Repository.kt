@@ -4,17 +4,26 @@ import android.app.Application
 import androidx.lifecycle.LiveData
 import com.example.yourstory.database.data.*
 import com.example.yourstory.utils.DateEpochConverter
+import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.api.client.extensions.android.http.AndroidHttp
+import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential
 import com.google.api.client.http.FileContent
+import com.google.api.client.json.jackson2.JacksonFactory
 import com.google.api.services.drive.Drive
+import com.google.api.services.drive.DriveScopes
 import org.joda.time.DateTime
 import org.joda.time.DateTimeZone
+import java.io.ByteArrayOutputStream
 import java.io.File
+import java.io.FileOutputStream
+import java.io.OutputStream
+import java.lang.ref.Reference
 import java.util.*
 
 class Repository(var application: Application){
 
-    var googleAccount: GoogleSignInAccount
+    private var googleAccount: GoogleSignInAccount?
     var diaryEntryDao: DiaryEntryDao
     var emotionalStateDao: EmotionalStateDao
     var reportEntryDao: ReportEntryDao
@@ -23,37 +32,100 @@ class Repository(var application: Application){
         diaryEntryDao = Database.getDatabase(application).diaryEntryDao()
         emotionalStateDao = Database.getDatabase(application).emotionalStateDao()
         reportEntryDao = Database.getDatabase(application).reportEntryDao()
+        googleAccount = GoogleSignIn.getLastSignedInAccount(application)
+        if(googleAccount != null){
+            signInToGoogle(googleAccount!!)
+        }
     }
 
     companion object{
-        lateinit var googleDriveService: Drive
+         var googleDriveService: Drive? = null
     }
 
     //Google Drive
-    //TODO: Implement Drive-Access here
 
+    fun signInToGoogle(googleSignInAccount: GoogleSignInAccount){
+        googleAccount = googleSignInAccount
+
+        var credential = GoogleAccountCredential.usingOAuth2(application.applicationContext, setOf(DriveScopes.DRIVE_FILE))
+        credential.selectedAccount = googleSignInAccount.account
+
+        googleDriveService = Drive.Builder(
+            AndroidHttp.newCompatibleTransport(),
+            JacksonFactory.getDefaultInstance(),
+            credential).setApplicationName("Your Story").build()
+    }
 
     fun uploadDataBaseToDrive(){
-            if(!checkIfAppFolderExists()){
-                initAppDriverFolders()
-            }
-            googleDriveService.files().create(com.google.api.services.drive.model.File().setName("yourstory_database_" + UUID.randomUUID()).setCreatedTime(
-                com.google.api.client.util.DateTime(DateTime.now().toString())
-            ),
-                FileContent(null, File(Database.getDatabase(application).openHelper.writableDatabase.path))
-            ).execute()
-    }
+        if(googleAccount != null && googleDriveService == null){
+            signInToGoogle(googleAccount!!)
+        }
 
-    private fun initAppDriverFolders() {
-        googleDriveService
-    }
+        val fileMetadata = com.google.api.services.drive.model.File()
+        fileMetadata.name = "yourstory_database_" + UUID.randomUUID()
+        fileMetadata.parents = listOf("appDataFolder")
+        fileMetadata.createdTime = com.google.api.client.util.DateTime(DateTime.now().toString())
 
-    private fun checkIfAppFolderExists(): Boolean {
-        googleDriveService.files().list()
-            .setQ("mimeType=application/vnd.sqlite3")
+        var filecontent = FileContent(
+            "application/database",
+            File(Database.getDatabase(application).openHelper.writableDatabase.path)
+        )
+
+        googleDriveService!!.files().create(fileMetadata,filecontent)
+            .setFields("id")
             .execute()
-        return false
-        reportEntryDao = Database.getDatabase(application).reportEntryDao()
+
+        var file = getLatestDBMetadata()
+
+    }
+
+    fun downloadLatestDB(fileID: String): File {
+        var database = File(Database.getDatabase(application.baseContext).openHelper.writableDatabase.path + "_" + fileID)
+        database.createNewFile()
+
+        var outputStream = FileOutputStream(database) as OutputStream
+        googleDriveService!!.files().get(fileID)
+            .executeAndDownloadTo(outputStream)
+        outputStream.flush()
+        outputStream.close()
+        return database
+    }
+
+    fun getLatestDBMetadata(): com.google.api.services.drive.model.File? {
+        var files = googleDriveService!!.files().list()
+            .setSpaces("appDataFolder")
+            .setFields("nextPageToken, files (id,name,createdTime)")
+            .setPageSize(10)
+            .execute()
+        if(files.files.isEmpty()){
+            return null
+        }
+        System.out.println("Test")
+        return files.files.first()
+    }
+
+    fun checkIfDataBaseExist(): Boolean{
+        if(googleDriveService == null){
+            return false
+        }
+        var files = googleDriveService!!.files().list()
+            .setSpaces("appDataFolder")
+            .setFields("nextPageToken, files (id,name,createdTime)")
+            .setPageSize(10)
+            .execute()
+        return files.files.isNotEmpty()
+    }
+
+    //Google
+    fun getGoogleAccount() : GoogleSignInAccount?{
+        if(googleAccount == null){
+            return null;
+        }
+        return googleAccount
+    }
+
+    fun signOutFromGoogle(){
+        googleAccount = null;
     }
 
     //Diary Entry functions
