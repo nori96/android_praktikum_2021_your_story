@@ -51,107 +51,99 @@ class DiaryViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    /*
-    fun calculateOldestEntry() {
-        val dateOfLastEmotionalState = repository.readoldestEmotionalStateDate()
-        val dateOfLastEntry = repository.readOldestEntry()
-        if(dateOfLastEmotionalState == null && dateOfLastEntry == null){
-            yearOfOldestDbEntry = DateTime.now().year
-            return
-        }
-        if(dateOfLastEmotionalState == null){
-            yearOfOldestDbEntry = DateEpochConverter.convertEpochToDateTime(dateOfLastEntry.date).year
-            return
-        }
-        if(dateOfLastEntry == null){
-            yearOfOldestDbEntry = DateEpochConverter.convertEpochToDateTime(dateOfLastEmotionalState.date).year
-            return
-        }
-        if(dateOfLastEmotionalState.date < dateOfLastEntry.date){
-            yearOfOldestDbEntry = DateEpochConverter.convertEpochToDateTime(dateOfLastEmotionalState.date).year
-        }else{
-            yearOfOldestDbEntry = DateEpochConverter.convertEpochToDateTime(dateOfLastEntry.date).year
-        }
-    }
-     */
-
     private fun convertDiaryEntriesToListModel() {
-        var dayToEntriesMap = HashMap<String,ArrayList<DiaryEntry>>()
-        var dayToEmoStateMap = HashMap<String,ArrayList<EmotionalState>>()
 
         var newEntriesList = arrayListOf<DiaryListModel>()
 
-        //Fill Map for Entries
+        var dates = arrayListOf<Long>()
+
+        //Filling dates
         for (diaryEntry in diaryEntriesCopy){
-            val day = DateEpochConverter.convertEpochToDateTime(diaryEntry.date).toString().split("T")[0]
-            if(dayToEntriesMap.containsKey(day)){
-                var entryList = dayToEntriesMap[day]
-                entryList!!.add(diaryEntry)
-            }else{
-                dayToEntriesMap.put(day, arrayListOf(diaryEntry))
+           val day = DateEpochConverter.convertDateTimeToEpoch(DateEpochConverter.convertEpochToDateTime(diaryEntry.date).withTime(0,0,0,0).toString())
+            if(!dates.contains(day)){
+                dates.add(day)
             }
         }
-
-        //Fill Map for Emotional States
         for(emotionalState in emotionalStateEntriesCopy){
-            val day = DateEpochConverter.convertEpochToDateTime(emotionalState.date).toString().split("T")[0]
-            if(dayToEmoStateMap.containsKey(day)){
-                var emoStateList = dayToEmoStateMap[day]
-                emoStateList!!.add(emotionalState)
-            }else{
-                dayToEmoStateMap.put(day, arrayListOf(emotionalState))
+            val day = DateEpochConverter.convertDateTimeToEpoch(DateEpochConverter.convertEpochToDateTime(emotionalState.date).withTime(0,0,0,0).toString())
+            if(!dates.contains(day)){
+                dates.add(day)
             }
         }
 
+        //Sort Entries so, the oldest Entry will be on top
+        Collections.sort(dates,Collections.reverseOrder())
 
-        for((day,entries) in dayToEntriesMap) {
-            //No Emotional State Exists
-            if (!dayToEmoStateMap.containsKey(day)) {
+        for (dateInEpochTime in dates){
+            var dateInDateTime = DateEpochConverter.convertEpochToDateTime(dateInEpochTime)
+
+            //create bounds in epoch
+            var lowerBound = DateEpochConverter.convertDateTimeToEpoch(DateEpochConverter.convertEpochToDateTime(dateInEpochTime).withTime(0,0,0,0).toString())
+            var upperBound = DateEpochConverter.convertDateTimeToEpoch(DateEpochConverter.convertEpochToDateTime(dateInEpochTime).withTime(23,59,59,999).toString())
+
+            //Get all emotional-states and diary-entries of the date
+            var emotionalStatesOfTheDay = emotionalStateEntriesCopy.filter { emotionalState ->
+                emotionalState.date in (lowerBound + 1) until upperBound
+            }
+            var diaryEntriesOfTheDay = diaryEntriesCopy.filter { diaryEntry ->
+                diaryEntry.date in (lowerBound + 1) until upperBound
+            }
+
+
+
+            var year = dateInDateTime.year().get()
+            var month = dateInDateTime.monthOfYear
+            var day = dateInDateTime.dayOfMonth
+
+            //No Emotional-States for the day
+            if(emotionalStatesOfTheDay.isEmpty()) {
                 newEntriesList.add(
                     DiaryListModel(
-                        Date(
-                            day.split("-")[2],
-                            day.split("-")[1],
-                            day.split("-")[0]
-                        ), entries.size, 0F, 0F, 0F, 0F, 0F, 0F
+                        Date(day.toString(), month.toString(), year.toString()),
+                        emotionalStatesOfTheDay.size + diaryEntriesOfTheDay.size,
+                        0F,
+                        0F,
+                        0F,
+                        0F,
+                        0F,
+                        0F,
                     )
                 )
-            } else {
-                //Emotional State exist
-                var emotionalStates = dayToEmoStateMap.get(day)
-                var emotionalStatesSize = emotionalStates!!.size
+            }else{
+
+                //Calculate Averages
                 var joyAverage = 0F
                 var angerAverage = 0F
                 var surpriseAverage = 0F
                 var sadnessAverage = 0F
                 var disgustAverage = 0F
                 var fearAverage = 0F
-                for (emoElement in emotionalStates) {
-                    joyAverage += emoElement.joy
-                    angerAverage += emoElement.anger
-                    surpriseAverage += emoElement.surprise
-                    sadnessAverage += emoElement.sadness
-                    disgustAverage += emoElement.disgust
-                    fearAverage += emoElement.fear
+
+                for (emotionalState in emotionalStatesOfTheDay){
+                    joyAverage += emotionalState.joy
+                    angerAverage += emotionalState.anger
+                    surpriseAverage += emotionalState.surprise
+                    sadnessAverage += emotionalState.sadness
+                    disgustAverage += emotionalState.disgust
+                    fearAverage += emotionalState.fear
                 }
-                //TODO: Einträge Spalten und Average rausnehmen 1 EmotionalState ohne Entrys Fall behandeln
+
                 newEntriesList.add(
                     DiaryListModel(
-                        Date(
-                            day.split("-")[2],
-                            day.split("-")[1],
-                            day.split("-")[0]
-                        ), entries.size + emotionalStatesSize,
-                        (joyAverage / emotionalStatesSize),
-                        (angerAverage / emotionalStatesSize),
-                        (surpriseAverage / emotionalStatesSize),
-                        (sadnessAverage / emotionalStatesSize),
-                        (disgustAverage / emotionalStatesSize),
-                        (fearAverage / emotionalStatesSize)
+                        Date(day.toString(), month.toString(), year.toString()),
+                        emotionalStatesOfTheDay.size + diaryEntriesOfTheDay.size,
+                        joyAverage,
+                        angerAverage,
+                        surpriseAverage,
+                        sadnessAverage,
+                        disgustAverage,
+                        fearAverage,
                     )
                 )
+
             }
         }
+
         diaryEntriesAsListModel.value = newEntriesList
     }
 

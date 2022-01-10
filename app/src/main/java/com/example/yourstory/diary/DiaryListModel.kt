@@ -7,7 +7,7 @@ class DiaryListModel(
     var entries: Int,
     var joyAverage: Float,
     var angerAverage: Float,
-    var supriseAverage: Float,
+    var surpriseAverage: Float,
     var sadnessAverage: Float,
     var disgustAverage: Float,
     var fearAverage: Float

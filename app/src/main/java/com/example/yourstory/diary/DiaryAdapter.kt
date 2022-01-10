@@ -53,7 +53,7 @@ class DiaryAdapter(var onDiaryClickListener: OnDiaryClickListener) : RecyclerVie
             dataSet[position].fearAverage == 0F &&
             dataSet[position].joyAverage == 0F &&
             dataSet[position].sadnessAverage == 0F &&
-            dataSet[position].supriseAverage == 0F){
+            dataSet[position].surpriseAverage == 0F){
             var pieEntries = arrayListOf<PieEntry>()
             var typeAmountMap = HashMap<String,Float>()
             typeAmountMap.put("Empty",1F)
@@ -81,7 +81,7 @@ class DiaryAdapter(var onDiaryClickListener: OnDiaryClickListener) : RecyclerVie
             //initialize data
             pieEntries.add(PieEntry(diaryListModelItem.joyAverage, "Joy"))
             pieEntries.add(PieEntry(diaryListModelItem.angerAverage, "Anger"))
-            pieEntries.add(PieEntry(diaryListModelItem.supriseAverage, "Surprise"))
+            pieEntries.add(PieEntry(diaryListModelItem.surpriseAverage, "Surprise"))
             pieEntries.add(PieEntry(diaryListModelItem.sadnessAverage, "Sadness"))
             pieEntries.add(PieEntry(diaryListModelItem.disgustAverage, "Disgust"))
             pieEntries.add(PieEntry(diaryListModelItem.fearAverage, "Fear"))
