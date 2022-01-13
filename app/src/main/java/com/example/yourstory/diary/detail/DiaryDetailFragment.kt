@@ -40,10 +40,11 @@ class DiaryDetailFragment : Fragment() {
         binding = DiaryDetailFragmentBinding.inflate(layoutInflater,container,false)
 
         viewModel = ViewModelProvider(this)[DiaryDetailViewModel::class.java]
-        viewModel.setDate(args.date.toString())
 
         recyclerView = binding.recyclerViewDiaryDetailPage
         recyclerView.adapter = DiaryEntriesAdapter()
+
+        viewModel.setDate(args.date.toString())
 
         viewModel.todayDiaryEntryData.observe(viewLifecycleOwner, { newDiaryEntries ->
             val todayEntries = newDiaryEntries as List<Entry>
