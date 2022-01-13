@@ -15,6 +15,7 @@ import com.example.yourstory.databinding.ThoughtDialogFragmentBinding
 import com.vmadalin.easypermissions.dialogs.SettingsDialog
 import androidx.navigation.fragment.NavHostFragment.findNavController
 import com.example.yourstory.today.TodayViewModel
+import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class AddThoughtDialog : Fragment(), EasyPermissions.PermissionCallbacks {
@@ -89,7 +90,7 @@ class AddThoughtDialog : Fragment(), EasyPermissions.PermissionCallbacks {
         }
 
         viewModelShared.location.observe(viewLifecycleOwner, { location ->
-            if (!location.isBlank()) {
+            if (location != LatLng(0.0,0.0)) {
                 binding.cancelThoughtLocationCardView.visibility = View.VISIBLE
                 binding.cancelThoughtLocationCardViewIcon.visibility = View.VISIBLE
             } else {
@@ -98,7 +99,7 @@ class AddThoughtDialog : Fragment(), EasyPermissions.PermissionCallbacks {
             }
         })
         binding.cancelThoughtLocationCardViewIcon.setOnClickListener {
-            viewModelShared.location.value = ""
+            viewModelShared.location.value = LatLng(0.0,0.0)
         }
 
         viewModelShared.image.observe(viewLifecycleOwner, { image ->

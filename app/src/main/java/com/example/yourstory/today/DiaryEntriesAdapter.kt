@@ -67,7 +67,7 @@ class DiaryEntriesAdapter() : RecyclerView.Adapter<DiaryEntriesAdapter.ViewHolde
             if (entry.image.isEmpty() && holder.diaryImage.parent != null) {
                 (holder.diaryImage.parent as ViewGroup).removeView(holder.diaryImage)
             }
-            if (entry.location.equals("") && holder.diaryLocation.parent != null) {
+            if (entry.locationLat == 0.0 && entry.locationLong == 0.0 && holder.diaryLocation.parent != null) {
                 (holder.diaryLocation.parent as ViewGroup).removeView(holder.diaryLocation)
             }
             if (entry.audio.equals("") && holder.diaryAudio.parent != null) {
