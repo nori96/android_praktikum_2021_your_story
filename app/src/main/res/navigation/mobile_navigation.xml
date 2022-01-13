@@ -11,7 +11,8 @@
         tools:layout="@layout/reports_fragment">
         <action
             android:id="@+id/action_navigation_reports_to_createReportFragment"
-            app:destination="@id/createReportFragment" />
+            app:destination="@id/createReportFragment"
+            app:launchSingleTop="true" />
     </fragment>
 
     <fragment android:id="@+id/navigation_today"
@@ -20,10 +21,12 @@
         tools:layout="@layout/today_fragment">
         <action
             android:id="@+id/action_navigation_today_to_thought_dialog"
-            app:destination="@id/thought_dialog" />
+            app:destination="@id/thought_dialog"
+            app:launchSingleTop="true" />
         <action
             android:id="@+id/action_navigation_today_to_likertDialog"
-            app:destination="@id/likertDialog" />
+            app:destination="@id/likertDialog"
+            app:launchSingleTop="true" />
     </fragment>
 
     <fragment android:id="@+id/navigation_diary"
@@ -33,7 +36,8 @@
         <action
             android:id="@+id/action_navigation_diary_to_diaryDetailFragment"
             android:name="goToDiaryDetail"
-            app:destination="@id/diaryDetailFragment" />
+            app:destination="@id/diaryDetailFragment"
+            app:launchSingleTop="true" />
     </fragment>
     <fragment
         android:id="@+id/thought_dialog"
@@ -42,19 +46,24 @@
         tools:layout="@layout/thought_dialog_fragment" >
         <action
             android:id="@+id/action_thought_dialog_to_takePictureFragment"
-            app:destination="@id/takePictureFragment" />
+            app:destination="@id/takePictureFragment"
+            app:launchSingleTop="true" />
         <action
             android:id="@+id/action_thought_dialog_to_recordAudioFragment"
-            app:destination="@id/recordAudioFragment" />
+            app:destination="@id/recordAudioFragment"
+            app:launchSingleTop="true" />
         <action
             android:id="@+id/action_thought_dialog_to_recordTextFragment"
-            app:destination="@id/recordTextFragment" />
+            app:destination="@id/recordTextFragment"
+            app:launchSingleTop="true" />
         <action
             android:id="@+id/action_thought_dialog_to_recordLocationFragment"
-            app:destination="@id/recordLocationFragment" />
+            app:destination="@id/recordLocationFragment"
+            app:launchSingleTop="true" />
         <action
             android:id="@+id/action_thought_dialog_to_navigation_today"
-            app:destination="@id/navigation_today" />
+            app:destination="@id/navigation_today"
+            app:launchSingleTop="true" />
     </fragment>
     <fragment
         android:id="@+id/likertDialog"
@@ -63,7 +72,8 @@
         tools:layout="@layout/likert_dialog_fragment" >
         <action
             android:id="@+id/action_likertDialog_to_navigation_today"
-            app:destination="@id/navigation_today" />
+            app:destination="@id/navigation_today"
+            app:launchSingleTop="true" />
     </fragment>
 
     <fragment
@@ -78,7 +88,8 @@
         tools:layout="@layout/take_picture_fragment" >
         <action
             android:id="@+id/action_takePictureFragment_to_thought_dialog"
-            app:destination="@id/thought_dialog" />
+            app:destination="@id/thought_dialog"
+            app:launchSingleTop="true" />
     </fragment>
     <fragment
         android:id="@+id/recordAudioFragment"
@@ -87,7 +98,8 @@
         tools:layout="@layout/record_audio_fragment" >
         <action
             android:id="@+id/action_recordAudioFragment_to_thought_dialog"
-            app:destination="@id/thought_dialog" />
+            app:destination="@id/thought_dialog"
+            app:launchSingleTop="true" />
     </fragment>
     <fragment
         android:id="@+id/recordTextFragment"
@@ -96,7 +108,8 @@
         tools:layout="@layout/record_text_fragment" >
         <action
             android:id="@+id/action_recordTextFragment_to_thought_dialog"
-            app:destination="@id/thought_dialog" />
+            app:destination="@id/thought_dialog"
+            app:launchSingleTop="true" />
     </fragment>
     <fragment
         android:id="@+id/recordLocationFragment"
@@ -105,7 +118,8 @@
         tools:layout="@layout/record_location_fragment" >
         <action
             android:id="@+id/action_recordLocationFragment_to_thought_dialog"
-            app:destination="@id/thought_dialog" />
+            app:destination="@id/thought_dialog"
+            app:launchSingleTop="true" />
     </fragment>
     <fragment
         android:id="@+id/diaryDetailFragment"
@@ -123,7 +137,8 @@
         tools:layout="@layout/create_report_fragment" >
         <action
             android:id="@+id/action_createReportFragment_to_navigation_reports"
-            app:destination="@id/navigation_reports" />
+            app:destination="@id/navigation_reports"
+            app:launchSingleTop="true" />
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
@@ -132,16 +147,28 @@
         tools:layout="@layout/settings_fragment" >
         <action
             android:id="@+id/action_settingsFragment_to_settingsLocationFragment"
-            app:destination="@id/settingsLocationFragment" />
+            app:destination="@id/settingsLocationFragment"
+            app:launchSingleTop="true" />
         <action
             android:id="@+id/action_settingsFragment_to_settingsNotificationFragment"
-            app:destination="@id/settingsNotificationFragment" />
+            app:destination="@id/settingsNotificationFragment"
+            app:launchSingleTop="true" />
         <action
             android:id="@+id/action_settingsFragment_to_settingsFragmentBackup"
-            app:destination="@id/settingsFragmentBackup" />
+            app:destination="@id/settingsFragmentBackup"
+            app:launchSingleTop="true"
+            app:popUpToInclusive="true" />
     </fragment>
-    <action android:id="@+id/action_global_settingsFragment" app:destination="@id/settingsFragment" />
-    <action android:id="@+id/action_global_helpFragment" app:destination="@id/helpFragment" />
+    <action
+        android:id="@+id/action_global_settingsFragment"
+        app:destination="@id/settingsFragment"
+        app:launchSingleTop="true"
+        app:popUpToInclusive="true" />
+    <action
+        android:id="@+id/action_global_helpFragment"
+        app:destination="@id/helpFragment"
+        app:launchSingleTop="true"
+        app:popUpToInclusive="true" />
     <fragment
         android:id="@+id/settingsLocationFragment"
         android:name="com.example.yourstory.settings.SettingsLocationFragment"
