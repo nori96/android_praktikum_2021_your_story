@@ -152,7 +152,8 @@ class AddThoughtDialog : Fragment(), EasyPermissions.PermissionCallbacks {
             this,
             resources.getString(R.string.thought_dialog_permission_location),
             PERMISSION_LOCATION_REQUEST_CODE,
-            Manifest.permission.ACCESS_FINE_LOCATION
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACCESS_COARSE_LOCATION
         )
     }
 
@@ -177,7 +178,10 @@ class AddThoughtDialog : Fragment(), EasyPermissions.PermissionCallbacks {
     private fun hasLocationPermission() =
         EasyPermissions.hasPermissions(
             requireContext(),
-            Manifest.permission.ACCESS_FINE_LOCATION)
+            Manifest.permission.ACCESS_FINE_LOCATION) &&
+        EasyPermissions.hasPermissions(
+            requireContext(),
+            Manifest.permission.ACCESS_COARSE_LOCATION)
 
     private fun hasMicrophonePermission() =
         EasyPermissions.hasPermissions(
