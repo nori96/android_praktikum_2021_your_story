@@ -17,7 +17,6 @@
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
             android:paddingRight="32dp"
-            android:paddingLeft="16dp"
             android:text="@string/likert_dialog_start"
             android:textColor="@color/black"
             android:textSize="20dp"
@@ -29,7 +28,8 @@
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@+id/start_likert_dialog"
             app:layout_constraintLeft_toLeftOf="parent"
-            android:layout_margin="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginLeft="16dp"
             android:text="@string/likert_intensity"
             android:textColor="@color/black"
             android:textSize="20dp"/>
@@ -230,7 +230,7 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@id/likert_dialog_intensity_text"
             app:layout_constraintBottom_toTopOf="@id/likert_dialog_surprise_text"
-            android:layout_margin="16dp"
+            android:layout_marginLeft="16dp"
             android:text="@string/likert_dialog_joy"
             android:textColor="@color/black"
             android:textSize="20dp"/>
@@ -254,7 +254,7 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@id/likert_dialog_joy_text"
             app:layout_constraintBottom_toTopOf="@id/likert_dialog_anger_text"
-            android:layout_margin="16dp"
+            android:layout_marginLeft="16dp"
             android:text="@string/likert_dialog_surprise"
             android:textColor="@color/black"
             android:textSize="20dp"/>
@@ -276,7 +276,7 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@id/likert_dialog_surprise_text"
             app:layout_constraintBottom_toTopOf="@id/likert_dialog_sadness_text"
-            android:layout_margin="16dp"
+            android:layout_marginLeft="16dp"
             android:text="@string/likert_dialog_anger"
             android:textColor="@color/black"
             android:textSize="20dp"/>
@@ -298,8 +298,8 @@
             android:layout_height="wrap_content"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@id/likert_dialog_anger_text"
-            app:layout_constraintBottom_toTopOf="@id/likert_dialog_fear_text"
-            android:layout_margin="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginLeft="16dp"
             android:text="@string/likert_dialog_sadness"
             android:textColor="@color/black"
             android:textSize="20dp"/>
