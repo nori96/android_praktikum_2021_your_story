@@ -68,8 +68,8 @@ class CreateReportFragment : Fragment() {
             }
         }
         binding.createReportsExport.setOnClickListener {
+            setDateRanges()
             if (areDatesProperlySet()) {
-                setDateRanges()
                 viewModel.tabSelected.value = 3
             } else {
                 showDatesNotSelectedReport()
@@ -91,7 +91,6 @@ class CreateReportFragment : Fragment() {
             override fun onDateUnselected(date: Date?) {
 
             }
-            //viewModel.selectedDates.value = binding.createReportsCalendarRangePicker.selectedDates
         })
 
         if (viewModel.selectedDates.value!!.size < 2) {
