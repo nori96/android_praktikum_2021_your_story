@@ -42,7 +42,7 @@ class DiaryDetailFragment : Fragment() {
         viewModel = ViewModelProvider(this)[DiaryDetailViewModel::class.java]
 
         recyclerView = binding.recyclerViewDiaryDetailPage
-        recyclerView.adapter = DiaryEntriesAdapter()
+        recyclerView.adapter = DiaryEntriesAdapter(viewLifecycleOwner)
 
         viewModel.setDate(args.date.toString())
 

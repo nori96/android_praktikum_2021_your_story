@@ -39,7 +39,7 @@ class TodayFragment : Fragment() {
             hostFramentNavController = container.findNavController()
         }
         recyclerView = binding.recyclerViewTodayPage
-        recyclerView.adapter = DiaryEntriesAdapter()
+        recyclerView.adapter = DiaryEntriesAdapter(viewLifecycleOwner)
 
         //Prepare Viewmodels
         viewModel = ViewModelProvider(requireActivity())[TodayViewModel::class.java]

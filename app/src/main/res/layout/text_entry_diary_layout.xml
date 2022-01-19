@@ -37,19 +37,28 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:cropToPadding="true" />
-            <ImageView
+            <androidx.cardview.widget.CardView
                 android:id="@+id/main_today_location"
                 android:layout_width="0dp"
                 android:layout_weight="2"
                 android:layout_height="100dp"
                 android:layout_marginTop="10dp"
-                android:background="@drawable/round_outline"
-                android:clipToOutline="true"
-                android:scaleType="centerCrop"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:cropToPadding="true"
-                android:src="@drawable/googlemaps"/>
+                app:cardCornerRadius="10dp" >
+                <com.google.android.gms.maps.MapView
+                    android:id="@+id/main_today_map_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+                <!--map:uiCompass="true"
+                map:uiRotateGestures="true"
+                map:uiScrollGestures="true"
+                map:uiTiltGestures="true"
+                map:uiZoomGestures="true"
+                map:uiZoomControls="true"
+                map:liteMode="true"
+                map:uiMapToolbar="true"-->
+            </androidx.cardview.widget.CardView>
         </LinearLayout>
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/main_today_audio_source"

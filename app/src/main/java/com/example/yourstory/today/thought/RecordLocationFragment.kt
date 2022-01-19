@@ -81,7 +81,7 @@ class RecordLocationFragment : Fragment(), OnMapReadyCallback {
         val fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
         fusedLocationClient.lastLocation
             .addOnSuccessListener { location: Location? ->
-                userLocation = LatLng(location!!.latitude, location!!.longitude)
+                userLocation = LatLng(location!!.latitude, location.longitude)
                 p0.addMarker(
                     MarkerOptions()
                         .position(userLocation)
