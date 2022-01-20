@@ -27,10 +27,6 @@ class Repository(var application: Application){
     var reportEntryDao: ReportEntryDao
 
     init {
-        var file = getBackupDatabase()
-        if(file != null){
-            Database.prepopulateDatabase(application,file)
-        }
         diaryEntryDao = Database.getDatabase(application).diaryEntryDao()
         emotionalStateDao = Database.getDatabase(application).emotionalStateDao()
         reportEntryDao = Database.getDatabase(application).reportEntryDao()
@@ -42,15 +38,6 @@ class Repository(var application: Application){
 
     companion object{
          var googleDriveService: Drive? = null
-    }
-
-    private fun getBackupDatabase(): File? {
-        var file = application.getDatabasePath("database_backup")
-        if(!file.exists()){
-            return null
-        }else{
-            return file
-        }
     }
 
     //Google Drive
@@ -79,7 +66,7 @@ class Repository(var application: Application){
 
         var filecontent = FileContent(
             "application/database",
-            File(Database.getDatabase(application).openHelper.writableDatabase.path)
+           File(Database.getDatabase(application).openHelper.writableDatabase.path)
         )
 
         googleDriveService!!.files().create(fileMetadata,filecontent)

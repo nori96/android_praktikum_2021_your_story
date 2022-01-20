@@ -1,6 +1,7 @@
 package com.example.yourstory
 
 
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
@@ -10,21 +11,33 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import androidx.preference.PreferenceManager
+import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
 import com.example.yourstory.databinding.ActivityMainBinding
+import com.example.yourstory.notification.NotificationWorker
+import com.example.yourstory.utils.Constants
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import java.util.concurrent.TimeUnit
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceChangeListener {
 
     lateinit var binding: ActivityMainBinding
     private lateinit var bottomNavigationView: BottomNavigationView
     private lateinit var hostFramentNavController: NavController
-
-    private var fabClicked = false
+    var notificationEnabled = false
+    var notificationInterval = 12;
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        //Setup Methods
+        initNotifications()
+
+
 
         binding = ActivityMainBinding.inflate(layoutInflater)
 
@@ -43,6 +56,38 @@ class MainActivity : AppCompatActivity() {
 
         setupActionBarWithNavController(hostFramentNavController,appBarConfiguration)
         bottomNavigationView.setupWithNavController(hostFramentNavController)
+
+        //Navigate based on the clicked Navigation button
+        if (intent.hasExtra("notification_intent")){
+            var intent_number = intent.extras!!.get("notification_intent")
+            if(intent_number == Constants.NOTIFICATION_ENTRY_CLICKED_CODE){
+                hostFramentNavController.navigate(R.id.thought_dialog)
+            }
+            if(intent_number == Constants.NOTIFICATION_LIKERT_CLICKED_CODE){
+                hostFramentNavController.navigate(R.id.likertDialog)
+            }
+        }
+    }
+
+    private fun initNotifications() {
+
+
+        notificationInterval = PreferenceManager.getDefaultSharedPreferences(applicationContext)
+            .getInt("interval_notification", 12)
+
+        notificationEnabled = PreferenceManager.getDefaultSharedPreferences(applicationContext)
+            .getBoolean("notification", false)
+
+
+        if(!notificationEnabled){
+            return
+        }
+        val notificationRequest = PeriodicWorkRequestBuilder<NotificationWorker>(notificationInterval.toLong(),TimeUnit.HOURS)
+            .addTag(Constants.NOTIFICATION_ID.toString())
+            .setInitialDelay(notificationInterval.toLong(),TimeUnit.HOURS)
+            .build()
+
+        WorkManager.getInstance(applicationContext).enqueueUniquePeriodicWork("notifications",ExistingPeriodicWorkPolicy.REPLACE,notificationRequest)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -74,5 +119,30 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    override fun onStart() {
+        super.onStart()
+        PreferenceManager.getDefaultSharedPreferences(applicationContext).registerOnSharedPreferenceChangeListener(this)
+    }
 
+    override fun onStop() {
+        super.onStop()
+        PreferenceManager.getDefaultSharedPreferences(applicationContext).unregisterOnSharedPreferenceChangeListener(this)
+    }
+
+    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
+        if (key == "notification"){
+            if(!sharedPreferences!!.getBoolean("notification",false)) {
+                // Destroy Worker
+                WorkManager.getInstance(applicationContext)
+                    .cancelAllWorkByTag(Constants.NOTIFICATION_ID.toString())
+            }else{
+                // Init Worker
+                initNotifications()
+            }
+        }
+        if(key == "interval_notification"){
+            //Interval changed
+            initNotifications()
+        }
+    }
 }
