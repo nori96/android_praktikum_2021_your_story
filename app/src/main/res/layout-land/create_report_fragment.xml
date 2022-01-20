@@ -650,7 +650,7 @@
                     android:layout_margin="16dp"
                     app:layout_constraintTop_toBottomOf="@+id/create_report_confirm_date_text"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    android:text="@string/create_report_date"
+                    android:text=""
                     android:textColor="@color/black"
                     android:textSize="20dp"/>
                 <TextView
@@ -687,9 +687,9 @@
                     android:id="@+id/create_report_fifth_confirm_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
-                    app:layout_constraintTop_toBottomOf="@+id/create_report_fourth_confirm_label"
-                    app:layout_constraintLeft_toLeftOf="parent"
+                    android:layout_marginTop="16dp"
+                    app:layout_constraintTop_toBottomOf="@+id/create_report_date_confirm_value"
+                    app:layout_constraintLeft_toLeftOf="@id/create_report_date_confirm_value"
                     android:text=""
                     android:textColor="@color/black"
                     android:textSize="20dp"/>
@@ -697,9 +697,9 @@
                     android:id="@+id/create_report_sixth_confirm_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
+                    android:layout_marginTop="16dp"
                     app:layout_constraintTop_toBottomOf="@+id/create_report_fifth_confirm_label"
-                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintLeft_toLeftOf="@id/create_report_date_confirm_value"
                     android:text=""
                     android:textColor="@color/black"
                     android:textSize="20dp"/>
@@ -719,7 +719,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="16dp"
                     app:layout_constraintTop_toBottomOf="@id/create_report_date_confirm_value"
-                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintLeft_toRightOf="@id/create_report_confirm_date_text"
                     android:text=""
                     android:textColor="@color/black"
                     android:textSize="20dp"/>
@@ -729,7 +729,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="16dp"
                     app:layout_constraintTop_toBottomOf="@id/create_report_first_confirm_value"
-                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintLeft_toRightOf="@id/create_report_confirm_date_text"
                     android:text=""
                     android:textColor="@color/black"
                     android:textSize="20dp"/>
@@ -739,7 +739,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="16dp"
                     app:layout_constraintTop_toBottomOf="@id/create_report_second_confirm_value"
-                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintLeft_toRightOf="@id/create_report_confirm_date_text"
                     android:text=""
                     android:textColor="@color/black"
                     android:textSize="20dp"/>
@@ -749,7 +749,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="16dp"
                     app:layout_constraintTop_toBottomOf="@id/create_report_third_confirm_value"
-                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintLeft_toRightOf="@id/create_report_confirm_date_text"
                     android:text=""
                     android:textColor="@color/black"
                     android:textSize="20dp"/>
@@ -758,7 +758,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="16dp"
-                    app:layout_constraintTop_toBottomOf="@id/create_report_fourth_confirm_value"
+                    app:layout_constraintTop_toBottomOf="@id/create_report_date_confirm_value"
                     app:layout_constraintRight_toRightOf="parent"
                     android:text=""
                     android:textColor="@color/black"

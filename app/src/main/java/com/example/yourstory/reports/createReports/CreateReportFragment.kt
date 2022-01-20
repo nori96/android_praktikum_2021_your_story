@@ -7,31 +7,23 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import com.example.yourstory.R
-import com.example.yourstory.database.data.DiaryEntry
 import com.example.yourstory.database.data.EmotionalState
-import com.example.yourstory.database.data.ReportEntry
 import com.example.yourstory.databinding.CreateReportFragmentBinding
 import com.example.yourstory.utils.DateEpochConverter
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.utils.ColorTemplate
 import com.savvi.rangedatepicker.CalendarPickerView
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import org.joda.time.DateTime
 import org.joda.time.DateTimeZone
 import java.util.*
 import java.text.SimpleDateFormat
 import java.util.Date;
-import android.widget.Toast
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.*
-import com.github.mikephil.charting.formatter.IAxisValueFormatter
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
-import com.github.mikephil.charting.formatter.ValueFormatter
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.joda.time.format.DateTimeFormat
 import org.joda.time.format.DateTimeFormatter
@@ -76,8 +68,8 @@ class CreateReportFragment : Fragment() {
             }
         }
         binding.createReportsExport.setOnClickListener {
+            setDateRanges()
             if (areDatesProperlySet()) {
-                setDateRanges()
                 viewModel.tabSelected.value = 3
             } else {
                 showDatesNotSelectedReport()
@@ -90,12 +82,34 @@ class CreateReportFragment : Fragment() {
 
         val lastYear: Calendar  = Calendar.getInstance();
         lastYear.add(Calendar.YEAR, - 5)
-        binding.createReportsCalendarRangePicker.init(
-            lastYear.time,
-            nextYear.time,
-            SimpleDateFormat("MMMM, yyyy", Locale.GERMANY))
-            .inMode(CalendarPickerView.SelectionMode.RANGE)
-            .withSelectedDate(Date())
+
+        binding.createReportsCalendarRangePicker.setOnDateSelectedListener (object:  CalendarPickerView.OnDateSelectedListener{
+            override fun onDateSelected(date: Date?) {
+                viewModel.selectedDates.value = binding.createReportsCalendarRangePicker.selectedDates
+            }
+
+            override fun onDateUnselected(date: Date?) {
+
+            }
+        })
+
+        if (viewModel.selectedDates.value!!.size < 2) {
+            binding.createReportsCalendarRangePicker.init(
+                lastYear.time,
+                nextYear.time,
+                SimpleDateFormat("MMMM, yyyy", Locale.GERMANY))
+                .inMode(CalendarPickerView.SelectionMode.RANGE)
+                .withSelectedDate(Date())
+        }
+        else {
+            binding.createReportsCalendarRangePicker.init(
+                lastYear.time,
+                nextYear.time,
+                SimpleDateFormat("MMMM, yyyy", Locale.GERMANY))
+                .inMode(CalendarPickerView.SelectionMode.RANGE)
+                .withSelectedDates(listOf(viewModel.selectedDates.value!![0], viewModel.selectedDates.value!!.last()))
+        }
+
 
         setupJoyButton()
         setupAngerButton()
@@ -111,6 +125,10 @@ class CreateReportFragment : Fragment() {
             setBarChartData()
             setConfirmPageData()
         })
+
+        /*viewModel.firstSelectedDate.observe(viewLifecycleOwner, {
+            binding.createReportsCalendarRangePicker.selectedDates
+        })*/
 
         // set always correct tab
         viewModel.tabSelected.observe(viewLifecycleOwner, {
@@ -344,6 +362,7 @@ class CreateReportFragment : Fragment() {
                     DateTimeZone.forTimeZone(TimeZone.getTimeZone("GMT+1")))
                     .withTime(23, 59, 59, 999).toDateTimeISO().toString()
             )
+            viewModel.selectedDates.value = binding.createReportsCalendarRangePicker.selectedDates
             //Log.i("asdf", DateEpochConverter.convertEpochToDateTime(viewModel.lastSelectedDate.value!!).toString())
         }
     }

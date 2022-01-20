@@ -13,7 +13,6 @@ import com.example.yourstory.R
 import com.example.yourstory.databinding.RecordLocationFragmentBinding
 import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.LatLng
-
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.CameraUpdateFactory
 import android.location.Location
@@ -81,7 +80,7 @@ class RecordLocationFragment : Fragment(), OnMapReadyCallback {
         val fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
         fusedLocationClient.lastLocation
             .addOnSuccessListener { location: Location? ->
-                userLocation = LatLng(location!!.latitude, location!!.longitude)
+                userLocation = LatLng(location!!.latitude, location.longitude)
                 p0.addMarker(
                     MarkerOptions()
                         .position(userLocation)

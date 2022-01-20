@@ -14,6 +14,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.joda.time.format.DateTimeFormat
 import org.joda.time.format.DateTimeFormatter
+import java.util.*
 
 
 class CreateReportViewModel(application: Application) : AndroidViewModel(application) {
@@ -35,6 +36,8 @@ class CreateReportViewModel(application: Application) : AndroidViewModel(applica
     var fearAverage = MutableLiveData(0f)
 
     var tabSelected = MutableLiveData(0)
+
+    var selectedDates = MutableLiveData(listOf<Date>())
 
     private val repository = Repository(application)
     var emotionalStatesObserver : LiveData<List<EmotionalState>> =

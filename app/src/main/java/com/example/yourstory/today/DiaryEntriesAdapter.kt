@@ -1,7 +1,5 @@
 package com.example.yourstory.today
-
 import android.content.Context
-import android.graphics.BitmapFactory
 import android.media.MediaPlayer
 import android.os.Handler
 import android.view.LayoutInflater
@@ -18,10 +16,13 @@ import com.example.yourstory.database.data.DiaryEntry
 import com.example.yourstory.database.data.EmotionalState
 import com.example.yourstory.database.data.Entry
 import com.example.yourstory.utils.DateEpochConverter
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.MapView
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import java.io.File
-import java.util.*
 
-class DiaryEntriesAdapter() : RecyclerView.Adapter<DiaryEntriesAdapter.ViewHolder>() {
+class DiaryEntriesAdapter : RecyclerView.Adapter<DiaryEntriesAdapter.ViewHolder>() {
 
     private var todayModelData: List<Entry> = listOf()
     private lateinit var view: View
@@ -57,7 +58,7 @@ class DiaryEntriesAdapter() : RecyclerView.Adapter<DiaryEntriesAdapter.ViewHolde
             val entry = todayModelData[position] as DiaryEntry
             var imageUUID = entry.image
             holder.diaryText.text = entry.text
-            if (!imageUUID.isEmpty()) {
+            if (imageUUID.isNotEmpty()) {
                 holder.diaryImage.setImageURI(File(context.filesDir, imageUUID + ".png").toUri())
             }
 
@@ -69,6 +70,18 @@ class DiaryEntriesAdapter() : RecyclerView.Adapter<DiaryEntriesAdapter.ViewHolde
             }
             if (entry.locationLat == 0.0 && entry.locationLong == 0.0 && holder.diaryLocation.parent != null) {
                 (holder.diaryLocation.parent as ViewGroup).removeView(holder.diaryLocation)
+            } else {
+                holder.locationMapView.getMapAsync { map ->
+                    val location = LatLng(entry.locationLat, entry.locationLong)
+                    map.addMarker(
+                        MarkerOptions()
+                            .position(location)
+                    )
+                    map.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 11f))
+                    map.uiSettings.setAllGesturesEnabled(false)
+                    map.uiSettings.isMapToolbarEnabled = false
+                    holder.locationMapView.onResume()
+                }
             }
             if (entry.audio.equals("") && holder.diaryAudio.parent != null) {
                 (holder.diaryAudio.parent as ViewGroup).removeView(holder.diaryAudio)
@@ -168,7 +181,8 @@ class DiaryEntriesAdapter() : RecyclerView.Adapter<DiaryEntriesAdapter.ViewHolde
         val diaryText: TextView = itemView.findViewById(R.id.main_today_text)
         val diaryImage: ImageView = itemView.findViewById(R.id.main_today_image)
         val diaryAudio: View = itemView.findViewById(R.id.main_today_audio_source)
-        val diaryLocation: ImageView = itemView.findViewById(R.id.main_today_location)
+        val diaryLocation: CardView = itemView.findViewById(R.id.main_today_location)
+        val locationMapView: MapView = itemView.findViewById(R.id.main_today_map_view)
         val playButton: ImageView = itemView.findViewById(R.id.entry_diary_play_button)
         val seekBar: SeekBar = itemView.findViewById(R.id.entry_diary_seek_bar)
         val date: TextView = itemView.findViewById((R.id.entry_date))
@@ -187,9 +201,12 @@ class DiaryEntriesAdapter() : RecyclerView.Adapter<DiaryEntriesAdapter.ViewHolde
         val sadnessEmoji: ImageView = itemView.findViewById(R.id.emoji_today_sadness)
         val fearEmoji: ImageView = itemView.findViewById(R.id.emoji_today_fear)
         val disgustEmoji: ImageView = itemView.findViewById(R.id.emoji_today_disgust)
+        // special handling for maps, it seems to be necessary
+        init {
+            locationMapView.onCreate(null)
+        }
     }
 
-    @Synchronized
     fun setData(diaries: List<Entry>){
         if (diaries.isEmpty()) {
             return
