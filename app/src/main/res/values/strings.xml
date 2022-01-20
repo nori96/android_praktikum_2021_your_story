@@ -105,6 +105,10 @@
     <string name="login_with_google">Login with Google</string>
     <string name="logout_google">Logout</string>
     <string name="latest_backup">Latest backup:</string>
+    <string name="channel_name">Notification Your Story</string>
+    <string name="channel_description">Notifications for Your Story</string>
+    <string name="mood">Mood</string>
+    <string name="thought">Thought</string>
 
 
 </resources>
