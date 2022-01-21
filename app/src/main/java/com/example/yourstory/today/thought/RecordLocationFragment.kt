@@ -61,7 +61,7 @@ class RecordLocationFragment : Fragment(), OnMapReadyCallback {
     }
 
     override fun onDestroy() {
-        binding.recordLocationMapView.onDestroy()
+        //binding.recordLocationMapView.onDestroy()
         super.onDestroy()
     }
 
@@ -69,14 +69,14 @@ class RecordLocationFragment : Fragment(), OnMapReadyCallback {
         super.onLowMemory()
         binding.recordLocationMapView.onLowMemory()
     }
+
     override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState!!)
-        binding.recordLocationMapView.onSaveInstanceState(outState)
+        //super.onSaveInstanceState(outState)
+        //binding.recordLocationMapView.onSaveInstanceState(outState)
     }
 
     @SuppressLint("MissingPermission")
     override fun onMapReady(p0: GoogleMap) {
-
         val fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
         fusedLocationClient.lastLocation
             .addOnSuccessListener { location: Location? ->

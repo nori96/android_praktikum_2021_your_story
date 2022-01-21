@@ -61,7 +61,7 @@ class Repository(var application: Application){
 
         val fileMetadata = com.google.api.services.drive.model.File()
         fileMetadata.name = "yourstory_database_" + UUID.randomUUID()
-        fileMetadata.parents = listOf("appDataFolder")
+        //fileMetadata.parents = listOf("appDataFolder")
         fileMetadata.createdTime = com.google.api.client.util.DateTime(DateTime.now().toString())
 
         var filecontent = FileContent(
@@ -72,7 +72,6 @@ class Repository(var application: Application){
         googleDriveService!!.files().create(fileMetadata,filecontent)
             .setFields("id")
             .execute()
-
     }
 
     fun downloadLatestDB(fileID: String): File {
