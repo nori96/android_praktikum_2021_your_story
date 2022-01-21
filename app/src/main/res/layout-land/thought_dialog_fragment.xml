@@ -36,7 +36,7 @@
             app:layout_constraintDimensionRatio="1:1"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            app:layout_constraintLeft_toRightOf="@+id/cancel_thought_audio_card_view_icon"
+            app:layout_constraintLeft_toRightOf="@+id/cancel_thought_audio_card_view"
             app:layout_constraintTop_toTopOf="@+id/thougt_dialog_heading"
             app:layout_constraintBottom_toBottomOf="@+id/thougt_dialog_heading"
             app:cardBackgroundColor="@color/white"
@@ -47,6 +47,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
+
                 <ImageView
                     android:layout_width="36dp"
                     android:layout_height="36dp"
@@ -82,11 +83,12 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
+
                 <ImageView
                     android:layout_width="36dp"
                     android:layout_height="36dp"
                     android:layout_centerInParent="true"
-                    android:src="@drawable/microphone"/>
+                    android:src="@drawable/microphone" />
             </RelativeLayout>
         </androidx.cardview.widget.CardView>
         <ImageView
@@ -117,11 +119,12 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
+
                 <ImageView
                     android:layout_width="36dp"
                     android:layout_height="36dp"
                     android:layout_centerInParent="true"
-                    android:src="@drawable/tought_dialog_location"/>
+                    android:src="@drawable/tought_dialog_location" />
             </RelativeLayout>
         </androidx.cardview.widget.CardView>
 

@@ -16,10 +16,16 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.CameraUpdateFactory
 import android.location.Location
+import android.location.LocationListener
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import android.location.LocationManager
 
-class RecordLocationFragment : Fragment(), OnMapReadyCallback {
+import android.content.Context.LOCATION_SERVICE
+import java.lang.Exception
+
+
+class RecordLocationFragment : Fragment(), OnMapReadyCallback, LocationListener {
 
     private lateinit var viewModelShared: SharedThoughtDialogViewModel
     private lateinit var hostFragmentNavController: NavController
@@ -47,6 +53,7 @@ class RecordLocationFragment : Fragment(), OnMapReadyCallback {
         binding.recordLocationMapView.onCreate(savedInstanceState)
         binding.recordLocationMapView.getMapAsync(this)
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
+        userLocation = LatLng(getLocation()!!.latitude, getLocation()!!.longitude)
         return binding.root
     }
 
@@ -60,24 +67,29 @@ class RecordLocationFragment : Fragment(), OnMapReadyCallback {
         binding.recordLocationMapView.onPause()
     }
 
-    override fun onDestroy() {
-        //binding.recordLocationMapView.onDestroy()
+    /*override fun onDestroy() {
+        binding.recordLocationMapView.onDestroy()
         super.onDestroy()
-    }
+    }*/
 
     override fun onLowMemory() {
         super.onLowMemory()
         binding.recordLocationMapView.onLowMemory()
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        //super.onSaveInstanceState(outState)
-        //binding.recordLocationMapView.onSaveInstanceState(outState)
-    }
-
+    /*override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        binding.recordLocationMapView.onSaveInstanceState(outState)
+    }*/
     @SuppressLint("MissingPermission")
     override fun onMapReady(p0: GoogleMap) {
-        val fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
+        p0.addMarker(
+            MarkerOptions()
+                .position(userLocation)
+        )
+        val update = CameraUpdateFactory.newLatLngZoom(userLocation, 11f)
+        p0.animateCamera(update)
+        /*val fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
         fusedLocationClient.lastLocation
             .addOnSuccessListener { location: Location? ->
                 userLocation = LatLng(location!!.latitude, location.longitude)
@@ -87,6 +99,30 @@ class RecordLocationFragment : Fragment(), OnMapReadyCallback {
                 )
                 val update = CameraUpdateFactory.newLatLngZoom(userLocation, 11f)
                 p0.animateCamera(update)
+            }*/
+    }
+    @SuppressLint("MissingPermission")
+    fun getLocation(): Location? {
+        try {
+            val locationManager = requireActivity().getSystemService(LOCATION_SERVICE) as LocationManager
+            val isGPSEnabled = locationManager
+                .isProviderEnabled(LocationManager.GPS_PROVIDER)
+            if (!isGPSEnabled) {
+                return null
             }
+            locationManager.requestLocationUpdates(
+                LocationManager.GPS_PROVIDER,
+                1000*60L,
+                10f,
+                this
+            )
+            return locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        return null
+    }
+    override fun onLocationChanged(location: Location) {
+        this.userLocation = LatLng(location.latitude, location.longitude)
     }
 }
