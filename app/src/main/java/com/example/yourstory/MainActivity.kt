@@ -62,9 +62,11 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
             var intent_number = intent.extras!!.get("notification_intent")
             if(intent_number == Constants.NOTIFICATION_ENTRY_CLICKED_CODE){
                 hostFramentNavController.navigate(R.id.thought_dialog)
+                intent.putExtra("notification_intent",0)
             }
             if(intent_number == Constants.NOTIFICATION_LIKERT_CLICKED_CODE){
                 hostFramentNavController.navigate(R.id.likertDialog)
+                intent.putExtra("notification_intent",0)
             }
         }
     }
@@ -84,7 +86,7 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
         }
         val notificationRequest = PeriodicWorkRequestBuilder<NotificationWorker>(notificationInterval.toLong(),TimeUnit.HOURS)
             .addTag(Constants.NOTIFICATION_ID.toString())
-            .setInitialDelay(notificationInterval.toLong(),TimeUnit.HOURS)
+            //.setInitialDelay(notificationInterval.toLong(),TimeUnit.HOURS)
             .build()
 
         WorkManager.getInstance(applicationContext).enqueueUniquePeriodicWork("notifications",ExistingPeriodicWorkPolicy.REPLACE,notificationRequest)
