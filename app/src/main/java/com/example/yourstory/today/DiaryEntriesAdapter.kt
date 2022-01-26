@@ -21,6 +21,7 @@ import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import java.io.File
+import java.io.IOException
 
 class DiaryEntriesAdapter : RecyclerView.Adapter<DiaryEntriesAdapter.ViewHolder>() {
 
@@ -42,7 +43,7 @@ class DiaryEntriesAdapter : RecyclerView.Adapter<DiaryEntriesAdapter.ViewHolder>
 
 
     override fun onBindViewHolder(holder: DiaryEntriesAdapter.ViewHolder, position: Int) {
-        // TODO pretty bad because its against the recycling in recyclerview, but its not allowed to delete nodes when it should stay recyclable
+        // views cant be recycled if nodes from the view are removed
         holder.setIsRecyclable(false)
 
         holder.date.text =
@@ -83,63 +84,61 @@ class DiaryEntriesAdapter : RecyclerView.Adapter<DiaryEntriesAdapter.ViewHolder>
                     holder.locationMapView.onResume()
                 }
             }
-            if (entry.audio.equals("") && holder.diaryAudio.parent != null) {
+            if (entry.audio == "" && holder.diaryAudio.parent != null) {
                 (holder.diaryAudio.parent as ViewGroup).removeView(holder.diaryAudio)
             } else {
+                //if (view.context.assets.list("")!!.contains(entry.audio)) {
+                 //   var assetFileDescriptor =
+                 //       view.context.resources.assets.openFd(entry.audio)
+                  //  val mediaPlayer: MediaPlayer = MediaPlayer()
+                  //  mediaPlayer.setDataSource(
+                   //     assetFileDescriptor.fileDescriptor,
+                    //    assetFileDescriptor.startOffset,
+                     //   assetFileDescriptor.length
+                    //)
+                holder.seekBar.progress = 0
+                val mediaPlayer = MediaPlayer().apply {
+                    try {
+                        setDataSource(entry.audio)
+                        prepare()
+                    } catch (e: IOException) { }
+                }
+                holder.seekBar.max = mediaPlayer.duration
 
-                if (view.context.assets.list("")!!.contains(entry.audio)) {
-                    var assetFileDescriptor =
-                        view.context.resources.assets.openFd(entry.audio)
-                    val mediaPlayer: MediaPlayer = MediaPlayer()
-                    mediaPlayer.setDataSource(
-                        assetFileDescriptor.fileDescriptor,
-                        assetFileDescriptor.startOffset,
-                        assetFileDescriptor.length
-                    )
-                    holder.seekBar.progress = 0
-                    mediaPlayer.prepare()
-                    holder.seekBar.max = mediaPlayer.duration
-
-                    holder.seekBar.setOnSeekBarChangeListener(object :
-                        SeekBar.OnSeekBarChangeListener {
-
-
-                        override fun onProgressChanged(
-                            seekBar: SeekBar?,
-                            progress: Int,
-                            fromUser: Boolean
-                        ) {
-                            if (fromUser) {
-                                mediaPlayer.seekTo(progress)
-                            }
-                        }
-
-                        override fun onStartTrackingTouch(seekBar: SeekBar?) {
-                        }
-
-                        override fun onStopTrackingTouch(seekBar: SeekBar?) {
-                        }
-                    })
-                    holder.playButton.setOnClickListener {
-                        if (!mediaPlayer.isPlaying) {
-                            mediaPlayer.start()
-                            holder.playButton.setImageResource(R.drawable.pause_icon_media_player)
-                        } else {
-                            mediaPlayer.pause()
-                            holder.playButton.setImageResource(R.drawable.ic_baseline_play_arrow_24)
+                holder.seekBar.setOnSeekBarChangeListener(object :
+                    SeekBar.OnSeekBarChangeListener {
+                    override fun onProgressChanged(
+                        seekBar: SeekBar?,
+                        progress: Int,
+                        fromUser: Boolean) {
+                        if (fromUser) {
+                            mediaPlayer.seekTo(progress)
                         }
                     }
-                    lateinit var runnable: Runnable
-                    var handler = Handler()
-                    runnable = Runnable {
-                        holder.seekBar.progress = mediaPlayer.currentPosition
-                        handler.postDelayed(runnable, 1000)
+                    override fun onStartTrackingTouch(seekBar: SeekBar?) {
                     }
-                    handler.postDelayed(runnable, 1000)
-                    mediaPlayer.setOnCompletionListener {
+                    override fun onStopTrackingTouch(seekBar: SeekBar?) {
+                    }
+                })
+                holder.playButton.setOnClickListener {
+                    if (!mediaPlayer.isPlaying) {
+                        mediaPlayer.start()
+                        holder.playButton.setImageResource(R.drawable.pause_icon_media_player)
+                    } else {
+                        mediaPlayer.pause()
                         holder.playButton.setImageResource(R.drawable.ic_baseline_play_arrow_24)
-                        holder.seekBar.progress = 0
                     }
+                }
+                lateinit var runnable: Runnable
+                val handler = Handler()
+                runnable = Runnable {
+                    holder.seekBar.progress = mediaPlayer.currentPosition
+                    handler.postDelayed(runnable, 1000)
+                }
+                handler.postDelayed(runnable, 1000)
+                mediaPlayer.setOnCompletionListener {
+                    holder.playButton.setImageResource(R.drawable.ic_baseline_play_arrow_24)
+                    holder.seekBar.progress = 0
                 }
             }
         }

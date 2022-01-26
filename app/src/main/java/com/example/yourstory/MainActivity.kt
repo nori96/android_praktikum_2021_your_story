@@ -59,7 +59,7 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
 
         //Navigate based on the clicked Navigation button
         if (intent.hasExtra("notification_intent")){
-            var intent_number = intent.extras!!.get("notification_intent")
+            val intent_number = intent.extras!!.get("notification_intent")
             if(intent_number == Constants.NOTIFICATION_ENTRY_CLICKED_CODE){
                 hostFramentNavController.navigate(R.id.thought_dialog)
                 intent.putExtra("notification_intent",0)

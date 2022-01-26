@@ -50,7 +50,7 @@ class TakePictureFragment : Fragment(){
                 materialAlertDialogBuilder.setTitle(R.string.take_a_picture_title)
                 materialAlertDialogBuilder.setMessage(R.string.take_a_picture_text)
                 materialAlertDialogBuilder.setPositiveButton("OK"){
-                    dialog, which ->
+                        _, _ ->
                 }
                 materialAlertDialogBuilder.show()
             }else {

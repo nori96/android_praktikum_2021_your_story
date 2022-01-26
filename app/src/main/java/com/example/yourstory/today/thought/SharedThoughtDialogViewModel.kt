@@ -24,7 +24,6 @@ class SharedThoughtDialogViewModel(application: Application) : AndroidViewModel(
 
     // these values represent their null values
     var image = MutableLiveData(Bitmap.createBitmap(1,1,Bitmap.Config.ARGB_8888))
-    //var location = MutableLiveData("")
     var location = MutableLiveData(LatLng(0.0, 0.0))
     var audio = MutableLiveData("")
     var text = MutableLiveData("")
@@ -43,7 +42,7 @@ class SharedThoughtDialogViewModel(application: Application) : AndroidViewModel(
         if(image.value!!.height.equals(1)){
             rndmUUID = ""
         }else{
-            var fos = context.openFileOutput("$rndmUUID.png",Context.MODE_PRIVATE)
+            val fos = context.openFileOutput("$rndmUUID.png",Context.MODE_PRIVATE)
             image.value!!.compress(Bitmap.CompressFormat.PNG,100,fos)
             fos.close()
         }
@@ -52,7 +51,8 @@ class SharedThoughtDialogViewModel(application: Application) : AndroidViewModel(
                 0,
                 repository.readLastEmotionalStateID(),
                 text.value.toString(),
-                rndmUUID, audio.value!!,
+                rndmUUID,
+                audio.value!!,
                 location.value!!.latitude,
                 location.value!!.longitude,
                 DateEpochConverter.generateEpochDate()
