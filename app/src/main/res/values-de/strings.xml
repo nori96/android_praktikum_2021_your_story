@@ -37,6 +37,12 @@
     <string name="add_thought_audio_dialog_heading">Nimm Audio auf</string>
     <string name="add_thought_text_dialog_heading">Schreib einen Text auf</string>
     <string name="add_thought_location_dialog_heading">Speichere eine Koordinate</string>
+    <string name="thought_empty_dialog_ok_button">Okay</string>
+
+    <!-- Record audio dialog -->
+    <string name="record_audio_record_button">AUFNEHMEN</string>
+    <string name="record_audio_stop_button">STOP</string>
+    <string name="record_audio_play_button">ABSPIELEN</string>
 
     <!--likert dialog -->
     <string name="likert_dialog_heading">Emotionaler Zustand</string>

@@ -24,6 +24,7 @@ class AddThoughtDialog : Fragment(), EasyPermissions.PermissionCallbacks {
         const val PERMISSION_LOCATION_REQUEST_CODE = 1
         const val PERMISSION_AUDIO_REQUEST_CODE = 2
         const val PERMISSION_CAMERA_REQUEST_CODE = 3
+        const val PERMISSION_WRITE_FILES = 4
     }
 
     private lateinit var materialAlertDialogBuilder: MaterialAlertDialogBuilder
@@ -36,7 +37,7 @@ class AddThoughtDialog : Fragment(), EasyPermissions.PermissionCallbacks {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         _binding = ThoughtDialogFragmentBinding.inflate(inflater, container, false)
         todayViewModel = ViewModelProvider(requireActivity())[TodayViewModel::class.java]
@@ -76,8 +77,8 @@ class AddThoughtDialog : Fragment(), EasyPermissions.PermissionCallbacks {
             if(!viewModelShared.checkIfAnySelected()){
                 materialAlertDialogBuilder.setTitle(R.string.thought_empty_dialog_title)
                 materialAlertDialogBuilder.setMessage(R.string.thought_empty_dialog_text)
-                materialAlertDialogBuilder.setPositiveButton("OK"){
-                        dialog, which ->
+                materialAlertDialogBuilder.setPositiveButton(R.string.thought_empty_dialog_ok_button){
+                        _, _ ->
                 }
                 materialAlertDialogBuilder.show()
             }else {
@@ -116,7 +117,7 @@ class AddThoughtDialog : Fragment(), EasyPermissions.PermissionCallbacks {
         }
 
         viewModelShared.audio.observe(viewLifecycleOwner, { audio ->
-            if (!audio.isBlank()) {
+            if (audio.isNotBlank()) {
                 binding.cancelThoughtAudioCardView.visibility = View.VISIBLE
                 binding.cancelThoughtAudioCardViewIcon.visibility = View.VISIBLE
             } else {
@@ -129,7 +130,7 @@ class AddThoughtDialog : Fragment(), EasyPermissions.PermissionCallbacks {
         }
 
         viewModelShared.text.observe(viewLifecycleOwner, { text ->
-            if (!text.isBlank()) {
+            if (text.isNotBlank()) {
                 binding.cancelThoughtTextCardView.visibility = View.VISIBLE
                 binding.cancelThoughtTextCardViewIcon.visibility = View.VISIBLE
             } else {
@@ -142,10 +143,6 @@ class AddThoughtDialog : Fragment(), EasyPermissions.PermissionCallbacks {
         }
 
         return binding.root
-    }
-
-    override fun onDestroyView(){
-        super.onDestroyView()
     }
 
     private fun requestLocationPermission() {

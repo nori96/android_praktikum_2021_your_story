@@ -73,9 +73,15 @@
     <string name="take_a_picture_text">You have to take a picture before submitting</string>
     <string name="thought_empty_dialog_title">Thought is empty</string>
     <string name="thought_empty_dialog_text">You have to specify at least one item before submitting a thought</string>
+    <string name="thought_empty_dialog_ok_button">Okay</string>
 
     <!-- Record Text Dialog -->
     <string name="click_to_write_a_message">Tap here to write a text.</string>
+    
+    <!-- Record audio dialog -->
+    <string name="record_audio_record_button">RECORD</string>
+    <string name="record_audio_stop_button">STOP</string>
+    <string name="record_audio_play_button">PLAY</string>
 
     <!-- Months -->
     <string name="month_january">January</string>
