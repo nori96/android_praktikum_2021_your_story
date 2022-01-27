@@ -8,22 +8,41 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/record_audio_timer"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:textSize="48dp"
+            android:text="@string/record_audio_recorded_time"/>
+        <Chronometer
+            android:id="@+id/record_audio_timer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/record_audio_stop_button"
+            android:textSize="48dp" />
+
         <Button
             android:id="@+id/record_audio_record_button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/record_audio_record_button"
-            android:backgroundTint="@color/non_clickable_grey"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toLeftOf="@+id/record_audio_stop_button"
             android:layout_margin="16dp"
-            app:layout_constraintBottom_toTopOf="@+id/cancel_thought_dialog_audio"/>
+            android:backgroundTint="@color/teal_700"
+            android:text="@string/record_audio_record_button"
+            app:layout_constraintBottom_toTopOf="@+id/cancel_thought_dialog_audio"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/record_audio_stop_button" />
         <Button
             android:id="@+id/record_audio_stop_button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/record_audio_stop_button"
-            android:backgroundTint="@color/non_clickable_grey"
+            android:backgroundTint="@color/teal_700"
             android:layout_margin="16dp"
             app:layout_constraintLeft_toRightOf="@+id/record_audio_record_button"
             app:layout_constraintRight_toLeftOf="@id/record_audio_play_button"
@@ -33,7 +52,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/record_audio_play_button"
-            android:backgroundTint="@color/non_clickable_grey"
+            android:backgroundTint="@color/teal_700"
             android:layout_margin="16dp"
             app:layout_constraintLeft_toRightOf="@+id/record_audio_stop_button"
             app:layout_constraintRight_toRightOf="parent"

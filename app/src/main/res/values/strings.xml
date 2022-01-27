@@ -82,6 +82,7 @@
     <string name="record_audio_record_button">RECORD</string>
     <string name="record_audio_stop_button">STOP</string>
     <string name="record_audio_play_button">PLAY</string>
+    <string name="record_audio_recorded_time">Recorded Time:</string>
 
     <!-- Months -->
     <string name="month_january">January</string>

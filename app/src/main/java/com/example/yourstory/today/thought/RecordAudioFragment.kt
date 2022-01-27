@@ -5,6 +5,7 @@ import android.media.MediaRecorder
 import android.media.MediaRecorder.AudioSource.MIC
 import android.os.Bundle
 import android.os.Environment
+import android.os.SystemClock
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -47,6 +48,8 @@ class RecordAudioFragment : Fragment() {
                     prepare()
                 } catch (e: IOException) { }
                 start()
+                binding.recordAudioTimer.base = SystemClock.elapsedRealtime()
+                binding.recordAudioTimer.start()
             }
         }
         binding.recordAudioStopButton.setOnClickListener {
@@ -56,21 +59,30 @@ class RecordAudioFragment : Fragment() {
                     release()
                 }
                 mediaRecorder = null
+                binding.recordAudioTimer.stop()
             }
         }
 
         binding.recordAudioPlayButton.setOnClickListener {
-            player = MediaPlayer().apply {
-                try {
-                    setDataSource(getRecordingFilePath())
-                    prepare()
-                    start()
-                } catch (e: IOException) { }
+            if (player  == null || (player != null && !player!!.isPlaying)) {
+                player = MediaPlayer().apply {
+                    try {
+                        setDataSource(getRecordingFilePath())
+                        prepare()
+                        start()
+                    } catch (e: IOException) { }
+                }
+            }
+            else if (player != null && player!!.isPlaying) {
+                player!!.stop()
             }
         }
 
         binding.confirmThoughtDialogAudio.setOnClickListener {
             viewModelShared.audio.value = getRecordingFilePath()
+            if (player != null && player!!.isPlaying) {
+                player!!.stop()
+            }
             hostFragmentNavController.navigate(R.id.action_recordAudioFragment_to_thought_dialog)
         }
         binding.cancelThoughtDialogAudio.setOnClickListener {

@@ -43,6 +43,7 @@
     <string name="record_audio_record_button">AUFNEHMEN</string>
     <string name="record_audio_stop_button">STOP</string>
     <string name="record_audio_play_button">ABSPIELEN</string>
+    <string name="record_audio_recorded_time">Aufgenommene Zeit:</string>
 
     <!--likert dialog -->
     <string name="likert_dialog_heading">Emotionaler Zustand</string>

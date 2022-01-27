@@ -18,7 +18,6 @@ import androidx.work.WorkManager
 import com.example.yourstory.databinding.ActivityMainBinding
 import com.example.yourstory.notification.NotificationWorker
 import com.example.yourstory.utils.Constants
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import java.util.concurrent.TimeUnit
 
@@ -36,9 +35,6 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
 
         //Setup Methods
         initNotifications()
-
-
-
         binding = ActivityMainBinding.inflate(layoutInflater)
 
         setContentView(binding.root)
