@@ -33,12 +33,12 @@ import com.example.yourstory.databinding.TakePictureFragmentShowModeBinding
 class TakePictureFragment : Fragment(){
 
     private lateinit var hostFramentNavController: NavController
-    private lateinit var binding_show: TakePictureFragmentShowModeBinding
     private lateinit var viewModelShared: SharedThoughtDialogViewModel
     private lateinit var hostFragmentNavController: NavController
     private lateinit var cameraExecutor: ExecutorService
     private var imageCapture: ImageCapture? = null
-    private lateinit var binding_capture: TakePictureFragmentCaptureModeBinding
+    private var binding_capture : TakePictureFragmentCaptureModeBinding? = null
+    private var binding_show : TakePictureFragmentShowModeBinding? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -47,41 +47,37 @@ class TakePictureFragment : Fragment(){
         viewModelShared = ViewModelProvider(requireActivity())[SharedThoughtDialogViewModel::class.java]
 
         if (container != null) {
-            hostFramentNavController = container.findNavController()
+            hostFragmentNavController = NavHostFragment.findNavController(this)
         }
 
         if(viewModelShared.isInCaptureMode) {
             binding_capture = TakePictureFragmentCaptureModeBinding.inflate(inflater)
-            hostFragmentNavController = NavHostFragment.findNavController(this)
-
             startCamera();
 
             // Set up the listener for take photo button
-            binding_capture.cameraCaptureButton.setOnClickListener {
+            binding_capture!!.cameraCaptureButton.setOnClickListener {
                 takePhoto();
             }
             cameraExecutor = Executors.newSingleThreadExecutor()
 
-            return binding_capture.root
+            return binding_capture!!.root
         }
         binding_show = TakePictureFragmentShowModeBinding.inflate(inflater)
 
-        binding_show.cancelThoughtDialogText.setOnClickListener{
+        binding_show!!.cancelThoughtDialogText.setOnClickListener{
             viewModelShared.isInCaptureMode = true
             requireActivity().onBackPressed()
         }
 
-        binding_show.confirmThoughtDialogText.setOnClickListener{
-            hostFragmentNavController.navigate(R.id.takePictureFragment)
+        binding_show!!.confirmThoughtDialogText.setOnClickListener{
+            this.hostFragmentNavController.navigate(R.id.action_takePictureFragment_to_thought_dialog)
         }
 
         viewModelShared.image.observe(viewLifecycleOwner, { image ->
-            binding_show.pictureCaptured.setImageBitmap(image)
+            binding_show!!.pictureCaptured.setImageBitmap(image)
         })
 
-        (requireActivity() as MainActivity).showBottomNav()
-
-        return binding_show.root
+        return binding_show!!.root
     }
 
     private fun startCamera() {
@@ -96,7 +92,7 @@ class TakePictureFragment : Fragment(){
                 .setTargetAspectRatio(RATIO_16_9)
                 .build()
                 .also {
-                    it.setSurfaceProvider(binding_capture.viewFinder.surfaceProvider)
+                    it.setSurfaceProvider(binding_capture!!.viewFinder.surfaceProvider)
                 }
 
             imageCapture = ImageCapture.Builder()
@@ -136,7 +132,12 @@ class TakePictureFragment : Fragment(){
                 @SuppressLint("UnsafeOptInUsageError")
                 override fun onCaptureSuccess(image: ImageProxy) {
                     var bmp = imageProxyToBitmap(image)
-                    viewModelShared.image.postValue(rotateBitmap(bmp,90F))
+
+                    if(image.imageInfo.rotationDegrees == 90){
+                        bmp = rotateBitmap(bmp,90F)!!
+                    }
+
+                    viewModelShared.image.postValue(bmp)
                     viewModelShared.isInCaptureMode = false
                     hostFragmentNavController.navigate(R.id.takePictureFragment)
                 }
@@ -150,18 +151,31 @@ class TakePictureFragment : Fragment(){
 
     override fun onResume() {
         super.onResume()
-        requireActivity().requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        if(binding_capture != null) {
+            requireActivity().requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        }
     }
 
     override fun onPause() {
         super.onPause()
-        requireActivity().requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR;
+        if(binding_capture != null) {
+            requireActivity().requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR;
+        }
     }
 
     override fun onDestroy() {
         super.onDestroy()
         if(binding_capture != null) {
             cameraExecutor.shutdown()
+        }
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        if(binding_capture == null){
+            (requireActivity() as MainActivity).showBottomNav()
+        }else{
+            (requireActivity() as MainActivity).hideBottomNav()
         }
     }
 

@@ -70,23 +70,14 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
                 intent.putExtra("notification_intent",0)
             }
         }
-
-        hostFramentNavController.addOnDestinationChangedListener{_ , destination, _ ->
-            when(destination.id){
-                R.id.takePictureFragment -> {
-                    hideBottomNav()
-                }
-                else -> showBottomNav();
-            }
-        }
     }
 
-    public fun showBottomNav() {
+    fun showBottomNav() {
         bottomNavigationView.visibility = View.VISIBLE
         supportActionBar!!.show()
     }
 
-    public fun hideBottomNav() {
+    fun hideBottomNav() {
         bottomNavigationView.visibility = View.GONE
         supportActionBar!!.hide()
     }
