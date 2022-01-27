@@ -85,7 +85,7 @@
         android:id="@+id/takePictureFragment"
         android:name="com.example.yourstory.today.thought.TakePictureFragment"
         android:label="@string/add_thought_image_dialog_heading"
-        tools:layout="@layout/take_picture_fragment" >
+        tools:layout="@layout/take_picture_fragment_capture_mode" >
         <action
             android:id="@+id/action_takePictureFragment_to_thought_dialog"
             app:destination="@id/thought_dialog"

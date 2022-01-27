@@ -1,70 +1,87 @@
 package com.example.yourstory.today.thought
 
 import android.annotation.SuppressLint
-import android.app.Activity.RESULT_OK
-import android.content.ActivityNotFoundException
 import android.content.ContentValues.TAG
-import android.content.Intent
-import android.content.pm.PackageManager
+import android.content.pm.ActivityInfo
 import android.graphics.*
-import android.media.Image
-import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
 import android.util.Log
-import android.util.Rational
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.Toast
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
-import com.example.yourstory.R
-import com.example.yourstory.databinding.TakePictureFragmentBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import kotlinx.android.synthetic.main.take_picture_fragment.*
-import java.io.ByteArrayOutputStream
 import java.io.File
 import java.nio.ByteBuffer
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
-import java.util.jar.Manifest
+import android.graphics.Bitmap
+import androidx.camera.core.AspectRatio.RATIO_16_9
+import androidx.navigation.findNavController
+import com.example.yourstory.MainActivity
+import com.example.yourstory.R
+import com.example.yourstory.databinding.TakePictureFragmentCaptureModeBinding
+import com.example.yourstory.databinding.TakePictureFragmentShowModeBinding
+
 
 class TakePictureFragment : Fragment(){
 
+    private lateinit var hostFramentNavController: NavController
+    private lateinit var binding_show: TakePictureFragmentShowModeBinding
     private lateinit var viewModelShared: SharedThoughtDialogViewModel
     private lateinit var hostFragmentNavController: NavController
-    private lateinit var outputDirectory: File
     private lateinit var cameraExecutor: ExecutorService
     private var imageCapture: ImageCapture? = null
-    private lateinit var binding: TakePictureFragmentBinding
-    lateinit var materialAlertDialogBuilder: MaterialAlertDialogBuilder
-    val REQUEST_IMAGE_CAPTURE = 1
+    private lateinit var binding_capture: TakePictureFragmentCaptureModeBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = TakePictureFragmentBinding.inflate(inflater, container, false)
-        hostFragmentNavController = NavHostFragment.findNavController(this)
-
         viewModelShared = ViewModelProvider(requireActivity())[SharedThoughtDialogViewModel::class.java]
 
-        startCamera();
-
-        // Set up the listener for take photo button
-        binding.cameraCaptureButton?.setOnClickListener {
-            takePhoto();
+        if (container != null) {
+            hostFramentNavController = container.findNavController()
         }
-        cameraExecutor = Executors.newSingleThreadExecutor()
-        return binding.root
+
+        if(viewModelShared.isInCaptureMode) {
+            binding_capture = TakePictureFragmentCaptureModeBinding.inflate(inflater)
+            hostFragmentNavController = NavHostFragment.findNavController(this)
+
+            startCamera();
+
+            // Set up the listener for take photo button
+            binding_capture.cameraCaptureButton.setOnClickListener {
+                takePhoto();
+            }
+            cameraExecutor = Executors.newSingleThreadExecutor()
+
+            return binding_capture.root
+        }
+        binding_show = TakePictureFragmentShowModeBinding.inflate(inflater)
+
+        binding_show.cancelThoughtDialogText.setOnClickListener{
+            viewModelShared.isInCaptureMode = true
+            requireActivity().onBackPressed()
+        }
+
+        binding_show.confirmThoughtDialogText.setOnClickListener{
+            hostFragmentNavController.navigate(R.id.takePictureFragment)
+        }
+
+        viewModelShared.image.observe(viewLifecycleOwner, { image ->
+            binding_show.pictureCaptured.setImageBitmap(image)
+        })
+
+        (requireActivity() as MainActivity).showBottomNav()
+
+        return binding_show.root
     }
 
     private fun startCamera() {
@@ -76,17 +93,15 @@ class TakePictureFragment : Fragment(){
 
             // Preview
             val preview = Preview.Builder()
+                .setTargetAspectRatio(RATIO_16_9)
                 .build()
                 .also {
-                    it.setSurfaceProvider(binding.viewFinder?.surfaceProvider)
+                    it.setSurfaceProvider(binding_capture.viewFinder.surfaceProvider)
                 }
 
             imageCapture = ImageCapture.Builder()
+                .setTargetAspectRatio(RATIO_16_9)
                 .build()
-
-
-            //TODO:Define Aspect Ratio here!
-            //imageCapture!!.setCropAspectRatio(Rational(16,9))
 
             // Select back camera as a default
             val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
@@ -120,16 +135,51 @@ class TakePictureFragment : Fragment(){
 
                 @SuppressLint("UnsafeOptInUsageError")
                 override fun onCaptureSuccess(image: ImageProxy) {
+                    var bmp = imageProxyToBitmap(image)
+                    viewModelShared.image.postValue(rotateBitmap(bmp,90F))
+                    viewModelShared.isInCaptureMode = false
+                    hostFragmentNavController.navigate(R.id.takePictureFragment)
                 }
                 override fun onError(error: ImageCaptureException)
                 {
                     // insert your code here.
                 }
            })
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+        requireActivity().requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+    }
+
+    override fun onPause() {
+        super.onPause()
+        requireActivity().requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR;
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        cameraExecutor.shutdown()
+        if(binding_capture != null) {
+            cameraExecutor.shutdown()
+        }
+    }
+
+    /**
+     *  convert image proxy to bitmap
+     *  @param image
+     */
+    private fun imageProxyToBitmap(image: ImageProxy): Bitmap {
+        val planeProxy = image.planes[0]
+        val buffer: ByteBuffer = planeProxy.buffer
+        val bytes = ByteArray(buffer.remaining())
+        buffer.get(bytes)
+        return BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
+    }
+
+    fun rotateBitmap(source: Bitmap, angle: Float): Bitmap? {
+        val matrix = Matrix()
+        matrix.postRotate(angle)
+        return Bitmap.createBitmap(source, 0, 0, source.width, source.height, matrix, true)
     }
 }
