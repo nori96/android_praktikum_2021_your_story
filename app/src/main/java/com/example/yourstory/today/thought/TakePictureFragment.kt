@@ -1,117 +1,199 @@
 package com.example.yourstory.today.thought
 
-import android.app.Activity.RESULT_OK
-import android.content.ActivityNotFoundException
-import android.content.Intent
-import android.graphics.Bitmap
+import android.annotation.SuppressLint
+import android.content.ContentValues.TAG
+import android.content.pm.ActivityInfo
+import android.graphics.*
 import android.os.Bundle
-import android.provider.MediaStore
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
+import androidx.camera.core.*
+import androidx.camera.lifecycle.ProcessCameraProvider
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
-import com.example.yourstory.R
-import com.example.yourstory.databinding.TakePictureFragmentBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import java.io.File
 import java.nio.ByteBuffer
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
+import android.graphics.Bitmap
+import androidx.camera.core.AspectRatio.RATIO_16_9
+import androidx.navigation.findNavController
+import com.example.yourstory.MainActivity
+import com.example.yourstory.R
+import com.example.yourstory.databinding.TakePictureFragmentCaptureModeBinding
+import com.example.yourstory.databinding.TakePictureFragmentShowModeBinding
+
 
 class TakePictureFragment : Fragment(){
 
+    private lateinit var hostFramentNavController: NavController
     private lateinit var viewModelShared: SharedThoughtDialogViewModel
     private lateinit var hostFragmentNavController: NavController
-    private var _binding: TakePictureFragmentBinding? = null
-    private lateinit var imageView: ImageView
-    private lateinit var imageBitmap: Bitmap
-    private val binding get() = _binding!!
-    lateinit var materialAlertDialogBuilder: MaterialAlertDialogBuilder
-    val REQUEST_IMAGE_CAPTURE = 1
+    private lateinit var cameraExecutor: ExecutorService
+    private var imageCapture: ImageCapture? = null
+    private var binding_capture : TakePictureFragmentCaptureModeBinding? = null
+    private var binding_show : TakePictureFragmentShowModeBinding? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = TakePictureFragmentBinding.inflate(inflater, container, false)
-        hostFragmentNavController = NavHostFragment.findNavController(this)
-
         viewModelShared = ViewModelProvider(requireActivity())[SharedThoughtDialogViewModel::class.java]
 
-        //Get the ImageView
-        imageView = _binding!!.pictureView
+        if (container != null) {
+            hostFragmentNavController = NavHostFragment.findNavController(this)
+        }
 
-        materialAlertDialogBuilder = MaterialAlertDialogBuilder(requireContext())
+        if(viewModelShared.isInCaptureMode) {
+            binding_capture = TakePictureFragmentCaptureModeBinding.inflate(inflater)
+            startCamera();
 
-        //Setup Confirm-Button
-        binding.confirmThoughtDialogPicture.setOnClickListener {
-            if(!viewModelShared.picSelected.value!!){
-                materialAlertDialogBuilder.setTitle(R.string.take_a_picture_title)
-                materialAlertDialogBuilder.setMessage(R.string.take_a_picture_text)
-                materialAlertDialogBuilder.setPositiveButton("OK"){
-                        _, _ ->
-                }
-                materialAlertDialogBuilder.show()
-            }else {
-                viewModelShared.image = viewModelShared.pictureImage
-                hostFragmentNavController.navigate(R.id.action_takePictureFragment_to_thought_dialog)
+            // Set up the listener for take photo button
+            binding_capture!!.cameraCaptureButton.setOnClickListener {
+                takePhoto();
             }
+            cameraExecutor = Executors.newSingleThreadExecutor()
+
+            return binding_capture!!.root
+        }
+        binding_show = TakePictureFragmentShowModeBinding.inflate(inflater)
+
+        binding_show!!.cancelThoughtDialogText.setOnClickListener{
+            viewModelShared.isInCaptureMode = true
+            requireActivity().onBackPressed()
         }
 
-        binding.takeNewPictureButton.setOnClickListener{
-            dispatchTakePictureIntent()
+        binding_show!!.confirmThoughtDialogText.setOnClickListener{
+            this.hostFragmentNavController.navigate(R.id.action_takePictureFragment_to_thought_dialog)
         }
 
-        binding.cancelThoughtDialogPicture.setOnClickListener {
-            hostFragmentNavController.navigate(R.id.action_takePictureFragment_to_thought_dialog)
-        }
-
-        viewModelShared.pictureImage.observe(viewLifecycleOwner,{
-            newBitmap -> imageView.setImageBitmap(newBitmap)
+        viewModelShared.image.observe(viewLifecycleOwner, { image ->
+            binding_show!!.pictureCaptured.setImageBitmap(image)
         })
 
-        return binding.root
+        return binding_show!!.root
     }
-    private fun dispatchTakePictureIntent() {
-        val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        try {
-            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
-        } catch (e: ActivityNotFoundException) {
-            // display error state to the user
+
+    private fun startCamera() {
+        val cameraProviderFuture = ProcessCameraProvider.getInstance(requireContext())
+
+        cameraProviderFuture.addListener({
+            // Used to bind the lifecycle of cameras to the lifecycle owner
+            val cameraProvider: ProcessCameraProvider = cameraProviderFuture.get()
+
+            // Preview
+            val preview = Preview.Builder()
+                .setTargetAspectRatio(RATIO_16_9)
+                .build()
+                .also {
+                    it.setSurfaceProvider(binding_capture!!.viewFinder.surfaceProvider)
+                }
+
+            imageCapture = ImageCapture.Builder()
+                .setTargetAspectRatio(RATIO_16_9)
+                .build()
+
+            // Select back camera as a default
+            val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
+
+            try {
+                // Unbind use cases before rebinding
+                cameraProvider.unbindAll()
+
+                // Bind use cases to camera
+                cameraProvider.bindToLifecycle(
+                    this, cameraSelector, preview, imageCapture)
+
+            } catch(exc: Exception) {
+                Log.e(TAG, "Use case binding failed", exc)
+            }
+
+        }, ContextCompat.getMainExecutor(requireContext()))
+    }
+
+    private fun takePhoto() {
+        // Get a stable reference of the modifiable image capture use case
+        val imageCapture = imageCapture ?: return
+
+
+
+        // Set up image capture listener, which is triggered after photo has
+        // been taken
+        imageCapture.takePicture(
+           ContextCompat.getMainExecutor(requireContext()), object :
+                ImageCapture.OnImageCapturedCallback() {
+
+                @SuppressLint("UnsafeOptInUsageError")
+                override fun onCaptureSuccess(image: ImageProxy) {
+                    var bmp = imageProxyToBitmap(image)
+
+                    if(image.imageInfo.rotationDegrees == 90){
+                        bmp = rotateBitmap(bmp,90F)!!
+                    }
+
+                    viewModelShared.image.postValue(bmp)
+                    viewModelShared.isInCaptureMode = false
+                    hostFragmentNavController.navigate(R.id.takePictureFragment)
+                }
+                override fun onError(error: ImageCaptureException)
+                {
+                    // insert your code here.
+                }
+           })
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if(binding_capture != null) {
+            requireActivity().requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            imageBitmap = data!!.extras!!.get("data") as Bitmap
-            viewModelShared.picSelected.value = true
-            viewModelShared.pictureImage.value = imageBitmap
+    override fun onPause() {
+        super.onPause()
+        if(binding_capture != null) {
+            requireActivity().requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR;
         }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        if(binding_capture != null) {
+            cameraExecutor.shutdown()
+        }
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        if(binding_capture == null){
+            (requireActivity() as MainActivity).showBottomNav()
+        }else{
+            (requireActivity() as MainActivity).hideBottomNav()
+        }
+    }
 
     /**
-     * Convert bitmap to byte array using ByteBuffer.
+     *  convert image proxy to bitmap
+     *  @param image
      */
-    fun Bitmap.convertToByteArray(): ByteArray {
-        //minimum number of bytes that can be used to store this bitmap's pixels
-        val size = this.byteCount
-
-        //allocate new instances which will hold bitmap
-        val buffer = ByteBuffer.allocate(size)
-        val bytes = ByteArray(size)
-
-        //copy the bitmap's pixels into the specified buffer
-        this.copyPixelsToBuffer(buffer)
-
-        //rewinds buffer (buffer position is set to zero and the mark is discarded)
-        buffer.rewind()
-
-        //transfer bytes from buffer into the given destination array
+    private fun imageProxyToBitmap(image: ImageProxy): Bitmap {
+        val planeProxy = image.planes[0]
+        val buffer: ByteBuffer = planeProxy.buffer
+        val bytes = ByteArray(buffer.remaining())
         buffer.get(bytes)
+        return BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
+    }
 
-        //return bitmap's pixels
-        return bytes
+    fun rotateBitmap(source: Bitmap, angle: Float): Bitmap? {
+        val matrix = Matrix()
+        matrix.postRotate(angle)
+        return Bitmap.createBitmap(source, 0, 0, source.width, source.height, matrix, true)
     }
 }

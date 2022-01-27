@@ -13,6 +13,7 @@ import com.example.yourstory.R
 import com.example.yourstory.database.data.Entry
 import com.example.yourstory.databinding.TodayFragmentBinding
 import com.example.yourstory.today.thought.SharedThoughtDialogViewModel
+import com.example.yourstory.utils.BackupManager
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class TodayFragment : Fragment() {
@@ -32,6 +33,8 @@ class TodayFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+        BackupManager(requireContext()).initDB()
 
         binding = TodayFragmentBinding.inflate(inflater, container, false)
 

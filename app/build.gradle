@@ -126,9 +126,20 @@ dependencies {
 
     // optional - Multiprocess support
     implementation "androidx.work:work-multiprocess:2.7.1"
+
+
+    //CameraX
+
+    // CameraX core library using camera2 implementation
+    implementation "androidx.camera:camera-camera2:1.0.2"
+    // CameraX Lifecycle Library
+    implementation "androidx.camera:camera-lifecycle:1.0.2"
+    // CameraX View class
+    implementation "androidx.camera:camera-view:1.0.0-alpha32"
 }
 
 apply plugin: "androidx.navigation.safeargs.kotlin"
+apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 

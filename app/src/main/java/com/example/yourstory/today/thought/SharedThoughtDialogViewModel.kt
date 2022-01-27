@@ -19,8 +19,7 @@ class SharedThoughtDialogViewModel(application: Application) : AndroidViewModel(
     private val repository: Repository
 
     // TakePictureFragment specific data
-    var pictureImage = MutableLiveData(Bitmap.createBitmap(1,1,Bitmap.Config.ARGB_8888))
-    var picSelected = MutableLiveData(false)
+    var isInCaptureMode = true
 
     // these values represent their null values
     var image = MutableLiveData(Bitmap.createBitmap(1,1,Bitmap.Config.ARGB_8888))
@@ -62,9 +61,7 @@ class SharedThoughtDialogViewModel(application: Application) : AndroidViewModel(
     }
 
     fun resetData() {
-        //Reset TakePictureFragment-Data
-        pictureImage.postValue(Bitmap.createBitmap(1,1,Bitmap.Config.ARGB_8888))
-        picSelected.postValue(false)
+        isInCaptureMode = true;
 
         //Reset ShareViewModel-Data
         image.postValue(Bitmap.createBitmap(1,1,Bitmap.Config.ARGB_8888))
