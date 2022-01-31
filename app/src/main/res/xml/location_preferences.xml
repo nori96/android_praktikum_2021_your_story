@@ -5,14 +5,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:title="@string/location_title">
-
         <SwitchPreferenceCompat
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:key="location"
             app:summary="@string/settings_allow_data_collection_summary"
             app:title="@string/settings_allow_data_collection_title" />
-
         <SeekBarPreference
             android:defaultValue="true"
             android:max="60"

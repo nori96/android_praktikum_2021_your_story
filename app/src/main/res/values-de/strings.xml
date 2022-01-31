@@ -92,6 +92,7 @@
     <string name="settings_location_summary">Erlauben, Intervall</string>
     <string name="notification_description">Erlauben, Intervall</string>
     <string name="settings_diary_description">Sicherrung, Importieren, Exportieren</string>
+    <string name="channel_description">Benachrichtigungen für Your Story</string>
     <string name="location_settings">GPS - Einstellungen</string>
     <string name="notifiaction_settings">Benachrichtigungen - Einstellungen</string>
     <string name="diary_settings">Tagebuch Einstellungen</string>

@@ -22,5 +22,4 @@
             app:title="@string/settings_notification_interval_title"
             app:summary="@string/settings_notification_interval_text"/>
     </PreferenceCategory>
-
 </PreferenceScreen>

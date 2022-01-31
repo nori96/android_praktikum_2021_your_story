@@ -120,9 +120,6 @@ class TakePictureFragment : Fragment(){
     private fun takePhoto() {
         // Get a stable reference of the modifiable image capture use case
         val imageCapture = imageCapture ?: return
-
-
-
         // Set up image capture listener, which is triggered after photo has
         // been taken
         imageCapture.takePicture(
@@ -146,7 +143,6 @@ class TakePictureFragment : Fragment(){
                     // insert your code here.
                 }
            })
-
     }
 
     override fun onResume() {
