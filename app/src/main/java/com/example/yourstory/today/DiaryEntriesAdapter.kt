@@ -1,7 +1,6 @@
 package com.example.yourstory.today
 import android.content.Context
 import android.media.MediaPlayer
-import android.os.Handler
 import android.text.method.ScrollingMovementMethod
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -26,9 +25,7 @@ import com.google.android.gms.maps.model.MarkerOptions
 import java.io.File
 import java.io.IOException
 import android.view.ViewGroup.MarginLayoutParams
-
-
-
+import android.animation.ValueAnimator
 
 class DiaryEntriesAdapter : RecyclerView.Adapter<DiaryEntriesAdapter.ViewHolder>() {
 
@@ -41,7 +38,6 @@ class DiaryEntriesAdapter : RecyclerView.Adapter<DiaryEntriesAdapter.ViewHolder>
         context = parent.context
         return ViewHolder(view)
     }
-
 
     override fun onBindViewHolder(holder: DiaryEntriesAdapter.ViewHolder, position: Int) {
         // views cant be recycled if nodes from the view are removed
@@ -111,37 +107,23 @@ class DiaryEntriesAdapter : RecyclerView.Adapter<DiaryEntriesAdapter.ViewHolder>
                 }
                 holder.seekBar.max = mediaPlayer.duration
 
-                holder.seekBar.setOnSeekBarChangeListener(object :
-                    SeekBar.OnSeekBarChangeListener {
-                    override fun onProgressChanged(
-                        seekBar: SeekBar?,
-                        progress: Int,
-                        fromUser: Boolean) {
-                        if (fromUser) {
-                            mediaPlayer.seekTo(progress)
-                        }
-                    }
-                    override fun onStartTrackingTouch(seekBar: SeekBar?) {
-                    }
-                    override fun onStopTrackingTouch(seekBar: SeekBar?) {
-                    }
-                })
+                val animSeekbar = ValueAnimator.ofInt(0, holder.seekBar.max)
+                animSeekbar.duration = mediaPlayer.duration.toLong()
+                animSeekbar.addUpdateListener { animation ->
+                    val animProgress = animation.animatedValue as Int
+                    holder.seekBar.progress = animProgress
+                }
                 holder.playButton.setOnClickListener {
                     if (!mediaPlayer.isPlaying) {
                         mediaPlayer.start()
+                        animSeekbar.start()
                         holder.playButton.setImageResource(R.drawable.pause_icon_media_player)
                     } else {
                         mediaPlayer.pause()
+                        animSeekbar.pause()
                         holder.playButton.setImageResource(R.drawable.ic_baseline_play_arrow_24)
                     }
                 }
-                lateinit var runnable: Runnable
-                val handler = Handler()
-                runnable = Runnable {
-                    holder.seekBar.progress = mediaPlayer.currentPosition
-                    handler.postDelayed(runnable, 1000)
-                }
-                handler.postDelayed(runnable, 1000)
                 mediaPlayer.setOnCompletionListener {
                     holder.playButton.setImageResource(R.drawable.ic_baseline_play_arrow_24)
                     holder.seekBar.progress = 0
