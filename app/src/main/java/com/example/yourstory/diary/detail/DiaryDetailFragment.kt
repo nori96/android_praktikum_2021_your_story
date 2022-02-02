@@ -39,22 +39,44 @@ class DiaryDetailFragment : Fragment() {
 
         binding = DiaryDetailFragmentBinding.inflate(layoutInflater,container,false)
 
-        viewModel = ViewModelProvider(this)[DiaryDetailViewModel::class.java]
+        viewModel = ViewModelProvider(requireActivity())[DiaryDetailViewModel::class.java]
 
         recyclerView = binding.recyclerViewDiaryDetailPage
-        recyclerView.adapter = DiaryEntriesAdapter(this)
+        recyclerView.adapter = DiaryDetailEntriesAdapter(this)
 
         viewModel.setDate(args.date.toString())
 
         viewModel.todayDiaryEntryData.observe(viewLifecycleOwner, { newDiaryEntries ->
             val todayEntries = newDiaryEntries as List<Entry>
-            (recyclerView.adapter as DiaryEntriesAdapter).setData(todayEntries)
+            if(todayEntries.isEmpty()) {
+                (recyclerView.adapter as DiaryDetailEntriesAdapter).removeDiaryEntries()
+            }else {
+                (recyclerView.adapter as DiaryDetailEntriesAdapter).setData(todayEntries)
+            }
         })
 
         viewModel.todayEmotionalStateEntryData.observe(viewLifecycleOwner, { newStates ->
             val todayStates = newStates as List<Entry>
-            (recyclerView.adapter as DiaryEntriesAdapter).setData(todayStates)
+            if(todayStates.isEmpty()){
+                (recyclerView.adapter as DiaryDetailEntriesAdapter).removeEmotionalStates()
+            }else {
+                (recyclerView.adapter as DiaryDetailEntriesAdapter).setData(todayStates)
+            }
         })
+
+        viewModel.deleteState.observe(viewLifecycleOwner,{
+            if(it == true){
+                binding.deleteFab!!.visibility = View.VISIBLE
+            }else{
+                binding.deleteFab!!.visibility = View.INVISIBLE
+            }
+        })
+
+        binding.deleteFab!!.setOnClickListener {
+            var entries = (recyclerView.adapter as DiaryDetailEntriesAdapter).getSelectedEntries()
+            viewModel.deleteDiaryEntries(entries)
+            (recyclerView.adapter as DiaryDetailEntriesAdapter).deleteSelectedEntries()
+        }
 
         return binding.root
     }
