@@ -51,7 +51,7 @@ class RecordLocationFragment : Fragment(), OnMapReadyCallback, LocationListener 
         userLocation = LatLng(getLocation()!!.latitude, getLocation()!!.longitude)
         return binding.root
     }
-    
+
     override fun onResume() {
         super.onResume()
         binding.recordLocationMapView.onResume()

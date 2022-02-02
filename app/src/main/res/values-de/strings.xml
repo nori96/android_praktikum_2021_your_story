@@ -44,7 +44,13 @@
     <string name="record_audio_stop_button">STOP</string>
     <string name="record_audio_play_button">ABSPIELEN</string>
     <string name="record_audio_recorded_time">Aufgenommene Zeit:</string>
-
+    <!-- record audio dialog texts-->
+    <string name="record_audio_no_audio_submit_heading">Keine Aufnahme</string>
+    <string name="record_audio_no_audio_submit_main_text">Bitte tätige eine Aufnahme bevor du versucht diese einem Gedanken hinzuzufügen.</string>
+    <string name="record_audio_no_stop_possible_heading">Aufnahme kann nicht gestoppt werden.</string>
+    <string name="record_audio_no_stop_possible_main_text">Bitte starte erst eine Aufnahme, bevor du diese stoppst. Sonst hat dies keinen Effekt.</string>
+    <string name="record_audio_no_recording_play_heading">Keine Aufnahme ist nicht abspielbar</string>
+    <string name="record_audio_no_recording_play_main_text">Du musst zuerst eine Aufnahme tätigen, bevor du probierst diese abzuspielen.</string>
     <!--likert dialog -->
     <string name="likert_dialog_heading">Emotionaler Zustand</string>
     <string name="likert_dialog_start">Passe die Emotionen deinem Gemüt entsprechend an.</string>

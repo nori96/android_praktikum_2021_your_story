@@ -3,6 +3,8 @@ package com.example.yourstory.today.thought
 import android.app.Application
 import android.content.Context
 import android.graphics.Bitmap
+import android.media.MediaPlayer
+import android.media.MediaRecorder
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -26,6 +28,12 @@ class SharedThoughtDialogViewModel(application: Application) : AndroidViewModel(
     var location = MutableLiveData(LatLng(0.0, 0.0))
     var audio = MutableLiveData("")
     var text = MutableLiveData("")
+
+    // record audio specific fields
+    var mediaRecorder: MediaRecorder? = null
+    var player: MediaPlayer? = null
+    var audioFileName: String = ""
+    var chronometerElapsedTime = 0L
 
     init{
         repository = Repository(application)

@@ -83,7 +83,13 @@
     <string name="record_audio_stop_button">STOP</string>
     <string name="record_audio_play_button">PLAY</string>
     <string name="record_audio_recorded_time">Recorded Time:</string>
-
+    <!-- record audio dialog texts-->
+    <string name="record_audio_no_audio_submit_heading">No voice recording</string>
+    <string name="record_audio_no_audio_submit_main_text">There was no voice recording. Please record some audio before submitting.</string>
+    <string name="record_audio_no_stop_possible_heading">Can\'t stop recording</string>
+    <string name="record_audio_no_stop_possible_main_text">Please start first a recording before stopping it, else pressing stop won\'t have an effect.</string>
+    <string name="record_audio_no_recording_play_heading">Can\'t play no recording</string>
+    <string name="record_audio_no_recording_play_main_text">Please first do a recording before trying to play it.</string>
     <!-- Months -->
     <string name="month_january">January</string>
     <string name="month_february">February</string>

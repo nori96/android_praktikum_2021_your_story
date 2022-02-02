@@ -3,6 +3,7 @@ package com.example.yourstory.today.thought
 import android.media.MediaPlayer
 import android.media.MediaRecorder
 import android.media.MediaRecorder.AudioSource.MIC
+import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.os.SystemClock
@@ -10,11 +11,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.example.yourstory.R
 import com.example.yourstory.databinding.RecordAudioFragmentBinding
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java.io.File
 import java.io.IOException
 import java.util.*
@@ -25,9 +28,7 @@ class RecordAudioFragment : Fragment() {
     private lateinit var hostFragmentNavController: NavController
     private var _binding: RecordAudioFragmentBinding? = null
     private val binding get() = _binding!!
-    private var mediaRecorder: MediaRecorder? = null
-    private var player: MediaPlayer? = null
-    private val fileName = UUID.randomUUID().toString()
+    private lateinit var alertDialogBuilder: MaterialAlertDialogBuilder
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,12 +38,15 @@ class RecordAudioFragment : Fragment() {
         _binding = RecordAudioFragmentBinding.inflate(inflater, container, false)
         hostFragmentNavController = NavHostFragment.findNavController(this)
         viewModelShared = ViewModelProvider(requireActivity())[SharedThoughtDialogViewModel::class.java]
-
+        alertDialogBuilder = MaterialAlertDialogBuilder(requireContext())
         binding.recordAudioRecordButton.setOnClickListener{
-            mediaRecorder = MediaRecorder().apply {
+            stopPlayer()
+            viewModelShared.chronometerElapsedTime = 0L
+            viewModelShared.audioFileName = getRecordingFilePath()
+            viewModelShared.mediaRecorder = MediaRecorder().apply {
                 setAudioSource(MIC)
                 setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP)
-                setOutputFile(getRecordingFilePath())
+                setOutputFile(viewModelShared.audioFileName)
                 setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB)
                 try {
                     prepare()
@@ -52,48 +56,99 @@ class RecordAudioFragment : Fragment() {
                 binding.recordAudioTimer.start()
             }
         }
+
+        binding.recordAudioTimer.base = SystemClock.elapsedRealtime() - viewModelShared.chronometerElapsedTime
+        if (viewModelShared.mediaRecorder != null) {
+            binding.recordAudioTimer.start()
+        }
+        binding.recordAudioTimer.setOnChronometerTickListener {
+            viewModelShared.chronometerElapsedTime = SystemClock.elapsedRealtime() - binding.recordAudioTimer.base
+        }
+
         binding.recordAudioStopButton.setOnClickListener {
-            if (mediaRecorder != null) {
-                mediaRecorder?.apply {
+            if (viewModelShared.mediaRecorder != null) {
+                viewModelShared.mediaRecorder?.apply {
                     stop()
                     release()
                 }
-                mediaRecorder = null
+                viewModelShared.mediaRecorder = null
                 binding.recordAudioTimer.stop()
+            } else {
+                alertDialogBuilder.setTitle(R.string.record_audio_no_stop_possible_heading)
+                alertDialogBuilder.setMessage(R.string.record_audio_no_stop_possible_main_text)
+                alertDialogBuilder.setPositiveButton(R.string.create_report_confirm_dialog) { _, _ -> }
+                alertDialogBuilder.show()
             }
         }
 
         binding.recordAudioPlayButton.setOnClickListener {
-            if (player  == null || (player != null && !player!!.isPlaying)) {
-                player = MediaPlayer().apply {
+            var actionTaken = false
+            if (viewModelShared.player  == null ||
+               (viewModelShared.player != null && !viewModelShared.player!!.isPlaying)) {
+                viewModelShared.player = MediaPlayer().apply {
                     try {
-                        setDataSource(getRecordingFilePath())
+                        setDataSource(viewModelShared.audioFileName)
                         prepare()
                         start()
+                        actionTaken = true
                     } catch (e: IOException) { }
                 }
             }
-            else if (player != null && player!!.isPlaying) {
-                player!!.stop()
+            else if (viewModelShared.player != null && viewModelShared.player!!.isPlaying) {
+                viewModelShared.player!!.stop()
+                actionTaken = true
+            }
+            if (!actionTaken) {
+                alertDialogBuilder.setTitle(R.string.record_audio_no_recording_play_heading)
+                alertDialogBuilder.setMessage(R.string.record_audio_no_recording_play_main_text)
+                alertDialogBuilder.setPositiveButton(R.string.create_report_confirm_dialog) { _, _ -> }
+                alertDialogBuilder.show()
             }
         }
 
         binding.confirmThoughtDialogAudio.setOnClickListener {
-            viewModelShared.audio.value = getRecordingFilePath()
-            if (player != null && player!!.isPlaying) {
-                player!!.stop()
+            if (viewModelShared.audioFileName != "") {
+                viewModelShared.audio.value = viewModelShared.audioFileName
+                revertUserActions()
+                hostFragmentNavController.navigate(R.id.action_recordAudioFragment_to_thought_dialog)
+            } else {
+                alertDialogBuilder.setTitle(R.string.record_audio_no_audio_submit_heading)
+                alertDialogBuilder.setMessage(R.string.record_audio_no_audio_submit_main_text)
+                alertDialogBuilder.setPositiveButton(R.string.create_report_confirm_dialog) { _, _ -> }
+                alertDialogBuilder.show()
             }
-            hostFragmentNavController.navigate(R.id.action_recordAudioFragment_to_thought_dialog)
         }
         binding.cancelThoughtDialogAudio.setOnClickListener {
+            revertUserActions()
             hostFragmentNavController.navigate(R.id.action_recordAudioFragment_to_thought_dialog)
         }
         return binding.root
     }
 
     private fun getRecordingFilePath():String {
+        val fileName = UUID.randomUUID().toString()
         val musicDirectory = requireContext().getExternalFilesDir(Environment.DIRECTORY_MUSIC)
         val file = File(musicDirectory, "$fileName.3gp")
         return file.path
+    }
+
+    private fun revertUserActions() {
+        stopPlayer()
+        if (viewModelShared.mediaRecorder != null) {
+            viewModelShared.mediaRecorder?.apply {
+                stop()
+                release()
+            }
+        }
+        viewModelShared.chronometerElapsedTime = 0L
+        viewModelShared.audioFileName = ""
+        viewModelShared.mediaRecorder = null
+        viewModelShared.player = null
+    }
+
+    private fun stopPlayer() {
+        if (viewModelShared.player != null && viewModelShared.player!!.isPlaying) {
+            viewModelShared.player!!.stop()
+        }
     }
 }

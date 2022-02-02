@@ -147,10 +147,9 @@ class DiaryEntriesAdapter : RecyclerView.Adapter<DiaryEntriesAdapter.ViewHolder>
                     holder.seekBar.progress = 0
                 }
             }
-            // when theres a pic, but no map many things have to be adjusted
+
             if (imageFlag) {
                 if (!locationFlag) {
-                    // if theres text we put it in the maps place else we center the image
                     if (textFlag) {
                         (holder.diaryText.parent as ViewGroup).removeView(holder.diaryText)
                         val layoutParams = holder.diaryText.layoutParams as MarginLayoutParams
@@ -159,7 +158,15 @@ class DiaryEntriesAdapter : RecyclerView.Adapter<DiaryEntriesAdapter.ViewHolder>
                         holder.diaryText.layoutParams = layoutParams
                         holder.diaryText.movementMethod = ScrollingMovementMethod()
                         holder.firstRowLinearLayoutSecondItem.addView(holder.diaryText)
-                    // center image when no text
+                        if (audioFlag) {
+                            val layoutParamsImage = holder.diaryImage.layoutParams as MarginLayoutParams
+                            layoutParamsImage.bottomMargin = holder.itemView.context.resources.getDimension(R.dimen.standard_margin).toInt()
+                            holder.diaryImage.layoutParams = layoutParamsImage
+                            val layoutParamsText = holder.diaryText.layoutParams as MarginLayoutParams
+                            layoutParamsText.bottomMargin = holder.itemView.context.resources.getDimension(R.dimen.standard_margin).toInt()
+                            holder.diaryText.layoutParams = layoutParamsText
+
+                        }
                     } else {
                         (holder.firstRowLinearLayoutSecondItem.parent as ViewGroup).removeView(holder.firstRowLinearLayoutSecondItem)
                         (holder.diaryImage.layoutParams as LinearLayout.LayoutParams).weight = 0f
@@ -172,7 +179,6 @@ class DiaryEntriesAdapter : RecyclerView.Adapter<DiaryEntriesAdapter.ViewHolder>
                     }
                 }
             }
-            // margin to audio player
             if (!textFlag && audioFlag) {
                 val layoutParams = holder.diaryImage.layoutParams as MarginLayoutParams
                 layoutParams.bottomMargin = holder.itemView.context.resources.getDimension(R.dimen.standard_margin).toInt()
@@ -182,7 +188,6 @@ class DiaryEntriesAdapter : RecyclerView.Adapter<DiaryEntriesAdapter.ViewHolder>
                 layoutParamsLocation.bottomMargin = holder.itemView.context.resources.getDimension(R.dimen.standard_margin).toInt()
                 holder.diaryLocation.layoutParams = layoutParamsLocation
             }
-            // no marginLeft when map, but no image
             if (!imageFlag && locationFlag) {
                 val layoutParamsLocation = holder.firstRowLinearLayoutSecondItem.layoutParams as MarginLayoutParams
                 layoutParamsLocation.leftMargin = 0
