@@ -98,13 +98,13 @@ class DiaryEntriesAdapter : RecyclerView.Adapter<DiaryEntriesAdapter.ViewHolder>
             } else {
                 audioFlag = true
                 holder.diaryAudio.clipToOutline = true
-                holder.seekBar.progress = 0
                 val mediaPlayer = MediaPlayer().apply {
                     try {
                         setDataSource(entry.audio)
                         prepare()
                     } catch (e: IOException) { }
                 }
+                holder.seekBar.progress = 0
                 holder.seekBar.max = mediaPlayer.duration
 
                 val animSeekbar = ValueAnimator.ofInt(0, holder.seekBar.max)

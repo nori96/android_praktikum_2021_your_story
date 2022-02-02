@@ -35,7 +35,7 @@ class DiaryDetailFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         binding = DiaryDetailFragmentBinding.inflate(layoutInflater,container,false)
 

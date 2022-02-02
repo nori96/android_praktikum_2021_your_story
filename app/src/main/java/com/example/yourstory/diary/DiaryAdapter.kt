@@ -70,6 +70,7 @@ class DiaryAdapter(var onDiaryClickListener: OnDiaryClickListener) : RecyclerVie
             viewHolder.pieChart.legend.isEnabled = false
             viewHolder.pieChart.description.isEnabled = false
             viewHolder.pieChart.isDrawHoleEnabled = false
+            viewHolder.pieChart.isHighlightPerTapEnabled = false
             viewHolder.pieChart.invalidate()
 
 
@@ -116,7 +117,7 @@ class DiaryAdapter(var onDiaryClickListener: OnDiaryClickListener) : RecyclerVie
             viewHolder.pieChart.setDrawEntryLabels(false)
             viewHolder.pieChart.legend.isEnabled = false
             viewHolder.pieChart.description.isEnabled = false
-
+            viewHolder.pieChart.isHighlightPerTapEnabled = false
             viewHolder.pieChart.invalidate()
         }
 

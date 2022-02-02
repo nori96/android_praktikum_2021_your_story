@@ -126,10 +126,6 @@ class CreateReportFragment : Fragment() {
             setConfirmPageData()
         })
 
-        /*viewModel.firstSelectedDate.observe(viewLifecycleOwner, {
-            binding.createReportsCalendarRangePicker.selectedDates
-        })*/
-
         // set always correct tab
         viewModel.tabSelected.observe(viewLifecycleOwner, {
             when (viewModel.tabSelected.value) {
@@ -400,7 +396,7 @@ class CreateReportFragment : Fragment() {
             barEntries.add(BarEntry(drawIndex, viewModel.angerAverage.value!!))
             colors.add(ColorTemplate.rgb("#FF8181"))
             labels.add(resources.getString(R.string.create_report_anger_abbreviation))
-            Log.i("asdf",resources.getString(R.string.create_report_anger_abbreviation))
+
             drawIndex += 1
         }
         if (viewModel.surpriseAverage.value!! > 0 && viewModel.surpriseSelected.value!!) {
@@ -460,6 +456,7 @@ class CreateReportFragment : Fragment() {
 
             binding.createReportPieChartGraph.data = PieData(pieDataSet)
             binding.createReportPieChartGraph.description.isEnabled = false
+            binding.createReportPieChartGraph.isHighlightPerTapEnabled = false
             binding.createReportPieChartGraph.setDrawEntryLabels(false)
             binding.createReportPieChartGraph.legend.isEnabled = false
             binding.createReportPieChartGraph.isDrawHoleEnabled = false
@@ -499,6 +496,7 @@ class CreateReportFragment : Fragment() {
             binding.createReportPieChartGraph.data = pieData
             binding.createReportPieChartGraph.setDrawEntryLabels(true)
             binding.createReportPieChartGraph.legend.isEnabled = false
+            binding.createReportPieChartGraph.isHighlightPerTapEnabled = false
             binding.createReportPieChartGraph.setEntryLabelColor(R.color.black)
             binding.createReportPieChartGraph.description.isEnabled = false
             binding.createReportPieChartGraph.isDrawHoleEnabled = true
