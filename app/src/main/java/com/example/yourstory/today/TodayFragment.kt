@@ -45,12 +45,10 @@ class TodayFragment : Fragment() {
         recyclerView = binding.recyclerViewTodayPage
         recyclerView.adapter = DiaryEntriesAdapter(this)
 
-        //Prepare Viewmodels
         viewModel = ViewModelProvider(requireActivity())[TodayViewModel::class.java]
         sharedViewModel = ViewModelProvider(requireActivity())[SharedThoughtDialogViewModel::class.java]
         sharedViewModel.resetData()
 
-        //Setup Observers
         viewModel.todayDiaryEntryData.observe(viewLifecycleOwner, { newDiaryEntries ->
             val todayEntries = newDiaryEntries as List<Entry>
             if(todayEntries.isEmpty()) {

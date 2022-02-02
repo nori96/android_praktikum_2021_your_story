@@ -2,8 +2,11 @@ package com.example.yourstory.today
 import android.annotation.SuppressLint
 import android.content.Context
 import android.media.MediaPlayer
+<<<<<<< HEAD
 import android.opengl.Visibility
 import android.os.Handler
+=======
+>>>>>>> origin/main
 import android.text.method.ScrollingMovementMethod
 import android.view.*
 import android.widget.ImageView
@@ -25,6 +28,7 @@ import com.google.android.gms.maps.model.MarkerOptions
 import java.io.File
 import java.io.IOException
 import android.view.ViewGroup.MarginLayoutParams
+<<<<<<< HEAD
 import androidx.lifecycle.ViewModelProvider
 import kotlinx.android.synthetic.main.text_entry_diary_layout.view.*
 import androidx.appcompat.app.AppCompatActivity
@@ -39,6 +43,9 @@ import android.view.MotionEvent
 import android.view.ViewConfiguration
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
+=======
+import android.animation.ValueAnimator
+>>>>>>> origin/main
 
 
 class DiaryEntriesAdapter(var lifeCycleOwner: LifecycleOwner) : RecyclerView.Adapter<DiaryEntriesAdapter.ViewHolder>() {
@@ -60,8 +67,11 @@ class DiaryEntriesAdapter(var lifeCycleOwner: LifecycleOwner) : RecyclerView.Ada
         return ViewHolder(view)
     }
 
+<<<<<<< HEAD
 
     @SuppressLint("ClickableViewAccessibility")
+=======
+>>>>>>> origin/main
     override fun onBindViewHolder(holder: DiaryEntriesAdapter.ViewHolder, position: Int) {
         // views cant be recycled if nodes from the view are removed
         holder.setIsRecyclable(false)
@@ -130,37 +140,23 @@ class DiaryEntriesAdapter(var lifeCycleOwner: LifecycleOwner) : RecyclerView.Ada
                 }
                 holder.seekBar.max = mediaPlayer.duration
 
-                holder.seekBar.setOnSeekBarChangeListener(object :
-                    SeekBar.OnSeekBarChangeListener {
-                    override fun onProgressChanged(
-                        seekBar: SeekBar?,
-                        progress: Int,
-                        fromUser: Boolean) {
-                        if (fromUser) {
-                            mediaPlayer.seekTo(progress)
-                        }
-                    }
-                    override fun onStartTrackingTouch(seekBar: SeekBar?) {
-                    }
-                    override fun onStopTrackingTouch(seekBar: SeekBar?) {
-                    }
-                })
+                val animSeekbar = ValueAnimator.ofInt(0, holder.seekBar.max)
+                animSeekbar.duration = mediaPlayer.duration.toLong()
+                animSeekbar.addUpdateListener { animation ->
+                    val animProgress = animation.animatedValue as Int
+                    holder.seekBar.progress = animProgress
+                }
                 holder.playButton.setOnClickListener {
                     if (!mediaPlayer.isPlaying) {
                         mediaPlayer.start()
+                        animSeekbar.start()
                         holder.playButton.setImageResource(R.drawable.pause_icon_media_player)
                     } else {
                         mediaPlayer.pause()
+                        animSeekbar.pause()
                         holder.playButton.setImageResource(R.drawable.ic_baseline_play_arrow_24)
                     }
                 }
-                lateinit var runnable: Runnable
-                val handler = Handler()
-                runnable = Runnable {
-                    holder.seekBar.progress = mediaPlayer.currentPosition
-                    handler.postDelayed(runnable, 1000)
-                }
-                handler.postDelayed(runnable, 1000)
                 mediaPlayer.setOnCompletionListener {
                     holder.playButton.setImageResource(R.drawable.ic_baseline_play_arrow_24)
                     holder.seekBar.progress = 0
