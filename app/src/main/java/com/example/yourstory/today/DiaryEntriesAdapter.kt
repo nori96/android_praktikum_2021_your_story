@@ -2,11 +2,6 @@ package com.example.yourstory.today
 import android.annotation.SuppressLint
 import android.content.Context
 import android.media.MediaPlayer
-<<<<<<< HEAD
-import android.opengl.Visibility
-import android.os.Handler
-=======
->>>>>>> origin/main
 import android.text.method.ScrollingMovementMethod
 import android.view.*
 import android.widget.ImageView
@@ -28,24 +23,15 @@ import com.google.android.gms.maps.model.MarkerOptions
 import java.io.File
 import java.io.IOException
 import android.view.ViewGroup.MarginLayoutParams
-<<<<<<< HEAD
 import androidx.lifecycle.ViewModelProvider
 import kotlinx.android.synthetic.main.text_entry_diary_layout.view.*
-import androidx.appcompat.app.AppCompatActivity
-
-import androidx.lifecycle.ViewModelProviders
 import com.example.yourstory.MainActivity
-import android.R.attr.onClick
 import android.graphics.Color
-
 import android.view.MotionEvent
-
 import android.view.ViewConfiguration
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
-=======
 import android.animation.ValueAnimator
->>>>>>> origin/main
 
 
 class DiaryEntriesAdapter(var lifeCycleOwner: LifecycleOwner) : RecyclerView.Adapter<DiaryEntriesAdapter.ViewHolder>() {
@@ -66,12 +52,7 @@ class DiaryEntriesAdapter(var lifeCycleOwner: LifecycleOwner) : RecyclerView.Ada
         })
         return ViewHolder(view)
     }
-
-<<<<<<< HEAD
-
     @SuppressLint("ClickableViewAccessibility")
-=======
->>>>>>> origin/main
     override fun onBindViewHolder(holder: DiaryEntriesAdapter.ViewHolder, position: Int) {
         // views cant be recycled if nodes from the view are removed
         holder.setIsRecyclable(false)
