@@ -1,12 +1,11 @@
 package com.example.yourstory.today
+import android.annotation.SuppressLint
 import android.content.Context
 import android.media.MediaPlayer
+import android.opengl.Visibility
 import android.os.Handler
 import android.text.method.ScrollingMovementMethod
-import android.view.Gravity
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.SeekBar
@@ -26,23 +25,43 @@ import com.google.android.gms.maps.model.MarkerOptions
 import java.io.File
 import java.io.IOException
 import android.view.ViewGroup.MarginLayoutParams
+import androidx.lifecycle.ViewModelProvider
+import kotlinx.android.synthetic.main.text_entry_diary_layout.view.*
+import androidx.appcompat.app.AppCompatActivity
+
+import androidx.lifecycle.ViewModelProviders
+import com.example.yourstory.MainActivity
+import android.R.attr.onClick
+import android.graphics.Color
+
+import android.view.MotionEvent
+
+import android.view.ViewConfiguration
+import androidx.core.content.ContextCompat
+import androidx.lifecycle.LifecycleOwner
 
 
-
-
-class DiaryEntriesAdapter : RecyclerView.Adapter<DiaryEntriesAdapter.ViewHolder>() {
+class DiaryEntriesAdapter(var lifeCycleOwner: LifecycleOwner) : RecyclerView.Adapter<DiaryEntriesAdapter.ViewHolder>() {
 
     private var todayModelData: List<Entry> = listOf()
     private lateinit var view: View
     private lateinit var context: Context
+    private lateinit var selectedItems: ArrayList<Int>
+    private lateinit var todayViewModel: TodayViewModel
+    private var then: Long = 0;
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DiaryEntriesAdapter.ViewHolder {
         view = LayoutInflater.from(parent.context).inflate(R.layout.text_entry_diary_layout, parent, false)
         context = parent.context
+        todayViewModel = ViewModelProvider(context as MainActivity)[TodayViewModel::class.java]
+        todayViewModel.selectedItems.observe(lifeCycleOwner,{
+            selectedItems = ArrayList(it)
+        })
         return ViewHolder(view)
     }
 
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onBindViewHolder(holder: DiaryEntriesAdapter.ViewHolder, position: Int) {
         // views cant be recycled if nodes from the view are removed
         holder.setIsRecyclable(false)
@@ -220,11 +239,68 @@ class DiaryEntriesAdapter : RecyclerView.Adapter<DiaryEntriesAdapter.ViewHolder>
             holder.sadnessEmoji.alpha = (0.2 + ((state.sadness.toFloat()/5) * 0.8)).toFloat()
             holder.fearEmoji.alpha = (0.2 + ((state.fear.toFloat()/5) * 0.8)).toFloat()
             holder.disgustEmoji.alpha = (0.2 + ((state.disgust.toFloat()/5) * 0.8)).toFloat()
+
+
         }
+
+        if(!selectedItems.contains(position)){
+            holder.itemView.checkbox.visibility = View.INVISIBLE
+            holder.itemView.cardView.setCardBackgroundColor(ContextCompat.getColor(context, R.color.egg_white))
+        }else if (selectedItems.contains(position)) {
+            holder.itemView.checkbox.visibility = View.VISIBLE
+            holder.itemView.cardView.setCardBackgroundColor(Color.LTGRAY)
+        }
+
+
+        holder.itemView.setOnTouchListener(View.OnTouchListener {
+                view, event ->
+
+            if (event.action == MotionEvent.ACTION_DOWN) {
+                view.tag = true
+            } else if (view.tag as Boolean) {
+                val eventDuration = event.eventTime - event.downTime
+                if (eventDuration > ViewConfiguration.getLongPressTimeout()) {
+                    view.tag = false
+
+                    if(selectedItems.contains(position)){
+                        holder.itemView.checkbox.visibility = View.INVISIBLE
+                        holder.itemView.cardView.setCardBackgroundColor(ContextCompat.getColor(context, R.color.egg_white))
+                        selectedItems.remove(position)
+                        todayViewModel.selectedItems.postValue(selectedItems)
+                    }else{
+                        holder.itemView.checkbox.visibility = View.VISIBLE
+                        holder.itemView.cardView.setCardBackgroundColor(Color.LTGRAY)
+                        selectedItems.add(position)
+                        todayViewModel.selectedItems.postValue(selectedItems)
+                    }
+
+                    if(selectedItems.isNotEmpty()){
+                        todayViewModel.deleteState.postValue(true)
+                    }else{
+                        todayViewModel.deleteState.postValue(false)
+                    }
+                    return@OnTouchListener true
+                }
+            }
+            return@OnTouchListener true
+        })
     }
 
     override fun getItemCount(): Int {
         return todayModelData.size
+    }
+
+    fun getSelectedEntries(): ArrayList<Entry>{
+    var list = arrayListOf<Entry>()
+        for (int in selectedItems){
+            list.add(todayModelData[int])
+        }
+        return list
+    }
+
+    fun deleteSelectedEntries(){
+        todayViewModel.selectedItems.postValue(listOf())
+        todayViewModel.deleteState.postValue(false)
     }
 
     inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
@@ -286,5 +362,28 @@ class DiaryEntriesAdapter : RecyclerView.Adapter<DiaryEntriesAdapter.ViewHolder>
         }
         notifyDataSetChanged()
     }
+
+    fun removeDiaryEntries() {
+        var tempList = arrayListOf<Entry>()
+        for (entry in todayModelData){
+            if(entry !is DiaryEntry){
+                tempList.add(entry)
+            }
+        }
+        todayModelData = tempList.sortedBy { it.date }.reversed()
+        notifyDataSetChanged()
+    }
+
+    fun removeEmotionalStates() {
+        var tempList = arrayListOf<Entry>()
+        for (entry in todayModelData){
+            if(entry !is EmotionalState){
+                tempList.add(entry)
+            }
+        }
+        todayModelData = tempList.sortedBy { it.date }.reversed()
+        notifyDataSetChanged()
+    }
+
 }
 

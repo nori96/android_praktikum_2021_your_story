@@ -13,6 +13,9 @@ interface EmotionalStateDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun addEmotionalState(emotionalState: EmotionalState)
 
+    @Query("DELETE FROM emotional_states_table WHERE id = :emotionalStateId")
+    fun deleteEmotionalStateByID(emotionalStateId: Int)
+
     @Query( "SELECT * FROM emotional_states_table ORDER BY id ASC")
     fun readAllEmotionalStatesSortedByID(): LiveData<List<EmotionalState>>
 

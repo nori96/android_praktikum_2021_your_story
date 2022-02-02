@@ -140,6 +140,10 @@ class Repository(var application: Application){
         diaryEntryDao.addDiaryEntry(diaryEntry)
     }
 
+    fun deleteDiaryEntry(diaryEntryID: Int){
+        diaryEntryDao.deleteDiaryEntryById(diaryEntryID)
+    }
+
     fun addReportEntry(reportEntry: ReportEntry) {
         reportEntryDao.addReport(reportEntry)
     }
@@ -176,6 +180,10 @@ class Repository(var application: Application){
 
      fun addEmotionalState(emotionalState: EmotionalState){
         emotionalStateDao.addEmotionalState(emotionalState)
+    }
+
+    fun deleteEmotionalState(emotionalStateID: Int){
+        emotionalStateDao.deleteEmotionalStateByID(emotionalStateID)
     }
 
     fun readEmotionalStatesOfAMonth(isoDate: String): LiveData<List<EmotionalState>> {

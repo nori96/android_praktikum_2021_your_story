@@ -10,6 +10,7 @@ import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.yourstory.R
+import com.example.yourstory.database.data.DiaryEntry
 import com.example.yourstory.database.data.Entry
 import com.example.yourstory.databinding.TodayFragmentBinding
 import com.example.yourstory.today.thought.SharedThoughtDialogViewModel
@@ -42,7 +43,7 @@ class TodayFragment : Fragment() {
             hostFramentNavController = container.findNavController()
         }
         recyclerView = binding.recyclerViewTodayPage
-        recyclerView.adapter = DiaryEntriesAdapter()
+        recyclerView.adapter = DiaryEntriesAdapter(this)
 
         //Prepare Viewmodels
         viewModel = ViewModelProvider(requireActivity())[TodayViewModel::class.java]
@@ -52,12 +53,20 @@ class TodayFragment : Fragment() {
         //Setup Observers
         viewModel.todayDiaryEntryData.observe(viewLifecycleOwner, { newDiaryEntries ->
             val todayEntries = newDiaryEntries as List<Entry>
-            (recyclerView.adapter as DiaryEntriesAdapter).setData(todayEntries)
+            if(todayEntries.isEmpty()) {
+                (recyclerView.adapter as DiaryEntriesAdapter).removeDiaryEntries()
+            }else {
+                (recyclerView.adapter as DiaryEntriesAdapter).setData(todayEntries)
+            }
         })
 
         viewModel.todayEmotionalStateEntryData.observe(viewLifecycleOwner, { newStates ->
             val todayStates = newStates as List<Entry>
-            (recyclerView.adapter as DiaryEntriesAdapter).setData(todayStates)
+            if(todayStates.isEmpty()){
+                (recyclerView.adapter as DiaryEntriesAdapter).removeEmotionalStates()
+            }else {
+                (recyclerView.adapter as DiaryEntriesAdapter).setData(todayStates)
+            }
         })
 
         likertFab = binding.likertFab
@@ -81,6 +90,22 @@ class TodayFragment : Fragment() {
         binding.likertFab.setOnClickListener {
             hostFramentNavController.navigate(R.id.action_navigation_today_to_likertDialog)
             fabClicked = false
+        }
+
+        viewModel.deleteState.observe(viewLifecycleOwner,{
+            if(it == true){
+                binding.deleteFab!!.visibility = View.VISIBLE
+                binding.rootFab.visibility = View.INVISIBLE
+            }else{
+                binding.deleteFab!!.visibility = View.INVISIBLE
+                binding.rootFab.visibility = View.VISIBLE
+            }
+        })
+
+        binding.deleteFab!!.setOnClickListener {
+            var entries = (recyclerView.adapter as DiaryEntriesAdapter).getSelectedEntries()
+            viewModel.deleteDiaryEntries(entries)
+            (recyclerView.adapter as DiaryEntriesAdapter).deleteSelectedEntries()
         }
 
         return binding.root
