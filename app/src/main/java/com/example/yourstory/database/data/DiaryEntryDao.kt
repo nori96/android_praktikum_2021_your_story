@@ -12,6 +12,9 @@ interface DiaryEntryDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun addDiaryEntry(diaryEntry: DiaryEntry)
 
+    @Query("DELETE FROM diary_entries_table WHERE id = :diaryEntryId")
+    fun deleteDiaryEntryById(diaryEntryId: Int)
+
     @Query("SELECT * FROM diary_entries_table ORDER BY id ASC ")
     fun readAllEntriesSortedByID(): LiveData<List<DiaryEntry>>
 

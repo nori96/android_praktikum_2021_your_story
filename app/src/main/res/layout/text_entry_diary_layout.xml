@@ -1,44 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cardView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_margin="5dp"
+    android:translationZ="1000dp"
     app:cardBackgroundColor="@color/egg_white"
     app:cardCornerRadius="12dp"
     app:cardElevation="3dp"
     app:contentPadding="4dp">
+
+    <ImageView
+        android:id="@+id/checkbox"
+        android:layout_width="37dp"
+        android:layout_height="37dp"
+        android:layout_gravity="right|top"
+        android:translationZ="10000dp"
+        android:visibility="invisible"
+        app:srcCompat="@drawable/ic_baseline_check_circle_24" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:padding="16dp">
+
         <LinearLayout
             android:id="@+id/text_diary_entry_first_row"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
+
             <ImageView
                 android:id="@+id/main_today_image"
                 android:layout_width="0dp"
                 android:layout_height="150dp"
                 android:layout_weight="1"
-                app:layout_constraintDimensionRatio="H,16:9"
                 android:background="@drawable/round_outline"
+                android:cropToPadding="true"
                 android:scaleType="centerCrop"
-                android:cropToPadding="true" />
+                app:layout_constraintDimensionRatio="H,16:9" />
+
             <LinearLayout
                 android:id="@+id/text_entry_diary_layout_second_item"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
+                android:layout_marginLeft="16dp"
                 android:layout_weight="2"
-                android:layout_marginLeft="16dp">
+                android:orientation="vertical">
+
                 <androidx.cardview.widget.CardView
                     android:id="@+id/main_today_location"
                     android:layout_width="match_parent"
                     android:layout_height="150dp"
                     app:cardCornerRadius="10dp">
+
                     <com.google.android.gms.maps.MapView
                         android:id="@+id/main_today_map_view"
                         android:layout_width="match_parent"
@@ -47,77 +64,86 @@
                 </androidx.cardview.widget.CardView>
             </LinearLayout>
         </LinearLayout>
+
         <TextView
             android:id="@+id/main_today_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
-            android:scrollbars = "vertical"/>
+            android:scrollbars="vertical" />
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/main_today_audio_source"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/green_standard"
-            android:background="@drawable/round_outline">
+            android:background="@drawable/round_outline"
+            android:backgroundTint="@color/green_standard">
+
             <ImageView
                 android:id="@+id/entry_diary_play_button"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_marginRight="16dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="8dp"
+                android:layout_marginRight="16dp"
                 android:layout_marginBottom="8dp"
-                android:src="@drawable/ic_baseline_play_arrow_24" />
+                android:src="@drawable/ic_baseline_play_arrow_24"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
             <SeekBar
                 android:id="@+id/entry_diary_seek_bar"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintLeft_toRightOf="@+id/entry_diary_play_button"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_height="wrap_content"
                 android:layout_width="0dp"
-                android:layout_margin="16dp" />
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toRightOf="@+id/entry_diary_play_button"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
+
         <androidx.cardview.widget.CardView
             android:id="@+id/emotional_state_root"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/transparent"
             app:cardElevation="0dp">
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+
                 <TextView
                     android:id="@+id/today_emotional_state_heading"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
                     android:paddingBottom="8dp"
+                    android:text="@string/today_likert_heading"
                     android:textColor="@color/black"
                     android:textSize="28dp"
-                    android:text="@string/today_likert_heading"
-                    />
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
                 <ImageView
                     android:id="@+id/emoji_today_joy"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
                     android:src="@drawable/emoji_joy"
-                    app:layout_constraintTop_toBottomOf="@+id/today_emotional_state_heading"
-                    app:layout_constraintLeft_toLeftOf="parent"/>
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/today_emotional_state_heading" />
+
                 <TextView
                     android:id="@+id/joy_today_likert"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:textSize="20dp"
                     app:layout_constraintLeft_toLeftOf="@+id/emoji_today_joy"
                     app:layout_constraintRight_toRightOf="@+id/emoji_today_joy"
-                    app:layout_constraintTop_toBottomOf="@+id/emoji_today_joy"
-                    android:textSize="20dp"
-                    android:textColor="@color/black"/>
+                    app:layout_constraintTop_toBottomOf="@+id/emoji_today_joy" />
+
                 <ImageView
                     android:id="@+id/emoji_today_surprise"
                     android:layout_width="48dp"
@@ -125,16 +151,18 @@
                     android:src="@drawable/emoji_surprised"
                     app:layout_constraintLeft_toRightOf="@id/emoji_today_joy"
                     app:layout_constraintRight_toLeftOf="@+id/emoji_today_anger"
-                    app:layout_constraintTop_toBottomOf="@+id/today_emotional_state_heading"/>
+                    app:layout_constraintTop_toBottomOf="@+id/today_emotional_state_heading" />
+
                 <TextView
                     android:id="@+id/surprise_today_likert"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:textSize="20dp"
                     app:layout_constraintLeft_toLeftOf="@+id/emoji_today_surprise"
                     app:layout_constraintRight_toRightOf="@+id/emoji_today_surprise"
-                    app:layout_constraintTop_toBottomOf="@+id/emoji_today_surprise"
-                    android:textSize="20dp"
-                    android:textColor="@color/black"/>
+                    app:layout_constraintTop_toBottomOf="@+id/emoji_today_surprise" />
+
                 <ImageView
                     android:id="@+id/emoji_today_anger"
                     android:layout_width="48dp"
@@ -142,16 +170,18 @@
                     android:src="@drawable/emoji_anger"
                     app:layout_constraintLeft_toRightOf="@+id/emoji_today_surprise"
                     app:layout_constraintRight_toLeftOf="@+id/emoji_today_sadness"
-                    app:layout_constraintTop_toBottomOf="@+id/today_emotional_state_heading"/>
+                    app:layout_constraintTop_toBottomOf="@+id/today_emotional_state_heading" />
+
                 <TextView
                     android:id="@+id/anger_today_likert"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:textSize="20dp"
                     app:layout_constraintLeft_toLeftOf="@+id/emoji_today_anger"
                     app:layout_constraintRight_toRightOf="@+id/emoji_today_anger"
-                    app:layout_constraintTop_toBottomOf="@+id/emoji_today_anger"
-                    android:textSize="20dp"
-                    android:textColor="@color/black"/>
+                    app:layout_constraintTop_toBottomOf="@+id/emoji_today_anger" />
+
                 <ImageView
                     android:id="@+id/emoji_today_sadness"
                     android:layout_width="48dp"
@@ -159,16 +189,18 @@
                     android:src="@drawable/emoji_sadness"
                     app:layout_constraintLeft_toRightOf="@+id/emoji_today_anger"
                     app:layout_constraintRight_toLeftOf="@+id/emoji_today_fear"
-                    app:layout_constraintTop_toBottomOf="@+id/today_emotional_state_heading"/>
+                    app:layout_constraintTop_toBottomOf="@+id/today_emotional_state_heading" />
+
                 <TextView
                     android:id="@+id/sadness_today_likert"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:textSize="20dp"
                     app:layout_constraintLeft_toLeftOf="@+id/emoji_today_sadness"
                     app:layout_constraintRight_toRightOf="@+id/emoji_today_sadness"
-                    app:layout_constraintTop_toBottomOf="@+id/emoji_today_sadness"
-                    android:textSize="20dp"
-                    android:textColor="@color/black"/>
+                    app:layout_constraintTop_toBottomOf="@+id/emoji_today_sadness" />
+
                 <ImageView
                     android:id="@+id/emoji_today_fear"
                     android:layout_width="48dp"
@@ -176,43 +208,47 @@
                     android:src="@drawable/emoji_fear"
                     app:layout_constraintLeft_toRightOf="@+id/emoji_today_sadness"
                     app:layout_constraintRight_toLeftOf="@+id/emoji_today_disgust"
-                    app:layout_constraintTop_toBottomOf="@+id/today_emotional_state_heading"/>
+                    app:layout_constraintTop_toBottomOf="@+id/today_emotional_state_heading" />
+
                 <TextView
                     android:id="@+id/fear_today_likert"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:textSize="20dp"
                     app:layout_constraintLeft_toLeftOf="@+id/emoji_today_fear"
                     app:layout_constraintRight_toRightOf="@+id/emoji_today_fear"
-                    app:layout_constraintTop_toBottomOf="@+id/emoji_today_fear"
-                    android:textSize="20dp"
-                    android:textColor="@color/black"/>
+                    app:layout_constraintTop_toBottomOf="@+id/emoji_today_fear" />
+
                 <ImageView
                     android:id="@+id/emoji_today_disgust"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
                     android:src="@drawable/emoji_disgust"
-                    app:layout_constraintTop_toBottomOf="@+id/today_emotional_state_heading"
-                    app:layout_constraintRight_toRightOf="parent"/>
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/today_emotional_state_heading" />
+
                 <TextView
                     android:id="@+id/disgust_today_likert"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:textSize="20dp"
                     app:layout_constraintLeft_toLeftOf="@+id/emoji_today_disgust"
                     app:layout_constraintRight_toRightOf="@+id/emoji_today_disgust"
-                    app:layout_constraintTop_toBottomOf="@+id/emoji_today_disgust"
-                    android:textSize="20dp"
-                    android:textColor="@color/black"/>
+                    app:layout_constraintTop_toBottomOf="@+id/emoji_today_disgust" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.cardview.widget.CardView>
 
 
         <TextView
             android:id="@+id/entry_date"
-            android:gravity="center"
-            android:layout_marginTop="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
             android:text="TextView" />
 
     </LinearLayout>
+
 </androidx.cardview.widget.CardView>

@@ -1,6 +1,9 @@
-package com.example.yourstory.today
+package com.example.yourstory.diary.detail
+
+import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.Color
 import android.media.MediaPlayer
 import android.text.method.ScrollingMovementMethod
 import android.view.*
@@ -9,8 +12,12 @@ import android.widget.LinearLayout
 import android.widget.SeekBar
 import android.widget.TextView
 import androidx.cardview.widget.CardView
+import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
+import com.example.yourstory.MainActivity
 import com.example.yourstory.R
 import com.example.yourstory.database.data.DiaryEntry
 import com.example.yourstory.database.data.EmotionalState
@@ -20,40 +27,28 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import kotlinx.android.synthetic.main.text_entry_diary_layout.view.*
 import java.io.File
 import java.io.IOException
-import android.view.ViewGroup.MarginLayoutParams
-import androidx.lifecycle.ViewModelProvider
-import kotlinx.android.synthetic.main.text_entry_diary_layout.view.*
-import com.example.yourstory.MainActivity
-import android.graphics.Color
-import android.view.MotionEvent
-import android.view.ViewConfiguration
-import androidx.core.content.ContextCompat
-import androidx.lifecycle.LifecycleOwner
-import android.animation.ValueAnimator
 
-
-class DiaryEntriesAdapter(var lifeCycleOwner: LifecycleOwner) : RecyclerView.Adapter<DiaryEntriesAdapter.ViewHolder>() {
-
+class DiaryDetailEntriesAdapter(var lifeCycleOwner: LifecycleOwner) : RecyclerView.Adapter<DiaryDetailEntriesAdapter.ViewHolder>() {
     private var todayModelData: List<Entry> = listOf()
     private lateinit var view: View
     private lateinit var context: Context
     private lateinit var selectedItems: ArrayList<Int>
-    private lateinit var todayViewModel: TodayViewModel
-    private var then: Long = 0;
+    private lateinit var diaryDetailViewModel: DiaryDetailViewModel
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DiaryEntriesAdapter.ViewHolder {
-        view = LayoutInflater.from(parent.context).inflate(R.layout.text_entry_diary_layout, parent, false)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DiaryDetailEntriesAdapter.ViewHolder {
+        view = LayoutInflater.from(parent.context as MainActivity).inflate(R.layout.text_entry_diary_layout, parent, false)
         context = parent.context
-        todayViewModel = ViewModelProvider(context as MainActivity)[TodayViewModel::class.java]
-        todayViewModel.selectedItems.observe(lifeCycleOwner,{
+        diaryDetailViewModel = ViewModelProvider(context as MainActivity)[DiaryDetailViewModel::class.java]
+        diaryDetailViewModel.selectedItems.observe(lifeCycleOwner,{
             selectedItems = ArrayList(it)
         })
         return ViewHolder(view)
     }
     @SuppressLint("ClickableViewAccessibility")
-    override fun onBindViewHolder(holder: DiaryEntriesAdapter.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: DiaryDetailEntriesAdapter.ViewHolder, position: Int) {
         // views cant be recycled if nodes from the view are removed
         holder.setIsRecyclable(false)
         holder.date.text =
@@ -63,7 +58,7 @@ class DiaryEntriesAdapter(var lifeCycleOwner: LifecycleOwner) : RecyclerView.Ada
         if (todayModelData[position] is DiaryEntry) {
             // nodes from emotional state arent needed
             if (holder.emotionalStateRoot.parent is ViewGroup) {
-               (holder.emotionalStateRoot.parent as ViewGroup).removeView(holder.emotionalStateRoot)
+                (holder.emotionalStateRoot.parent as ViewGroup).removeView(holder.emotionalStateRoot)
             }
             val entry = todayModelData[position] as DiaryEntry
 
@@ -112,13 +107,13 @@ class DiaryEntriesAdapter(var lifeCycleOwner: LifecycleOwner) : RecyclerView.Ada
             } else {
                 audioFlag = true
                 holder.diaryAudio.clipToOutline = true
+                holder.seekBar.progress = 0
                 val mediaPlayer = MediaPlayer().apply {
                     try {
                         setDataSource(entry.audio)
                         prepare()
                     } catch (e: IOException) { }
                 }
-                holder.seekBar.progress = 0
                 holder.seekBar.max = mediaPlayer.duration
 
                 val animSeekbar = ValueAnimator.ofInt(0, holder.seekBar.max)
@@ -148,44 +143,47 @@ class DiaryEntriesAdapter(var lifeCycleOwner: LifecycleOwner) : RecyclerView.Ada
                 if (!locationFlag) {
                     if (textFlag) {
                         (holder.diaryText.parent as ViewGroup).removeView(holder.diaryText)
-                        val layoutParams = holder.diaryText.layoutParams as MarginLayoutParams
+                        val layoutParams = holder.diaryText.layoutParams as ViewGroup.MarginLayoutParams
                         layoutParams.bottomMargin = 0
                         layoutParams.topMargin = 0
                         holder.diaryText.layoutParams = layoutParams
                         holder.diaryText.movementMethod = ScrollingMovementMethod()
                         holder.firstRowLinearLayoutSecondItem.addView(holder.diaryText)
                         if (audioFlag) {
-                            val layoutParamsImage = holder.diaryImage.layoutParams as MarginLayoutParams
-                            layoutParamsImage.bottomMargin = holder.itemView.context.resources.getDimension(R.dimen.standard_margin).toInt()
+                            val layoutParamsImage = holder.diaryImage.layoutParams as ViewGroup.MarginLayoutParams
+                            layoutParamsImage.bottomMargin = holder.itemView.context.resources.getDimension(
+                                R.dimen.standard_margin).toInt()
                             holder.diaryImage.layoutParams = layoutParamsImage
-                            val layoutParamsText = holder.diaryText.layoutParams as MarginLayoutParams
-                            layoutParamsText.bottomMargin = holder.itemView.context.resources.getDimension(R.dimen.standard_margin).toInt()
+                            val layoutParamsText = holder.diaryText.layoutParams as ViewGroup.MarginLayoutParams
+                            layoutParamsText.bottomMargin = holder.itemView.context.resources.getDimension(
+                                R.dimen.standard_margin).toInt()
                             holder.diaryText.layoutParams = layoutParamsText
 
                         }
                     } else {
                         (holder.firstRowLinearLayoutSecondItem.parent as ViewGroup).removeView(holder.firstRowLinearLayoutSecondItem)
                         (holder.diaryImage.layoutParams as LinearLayout.LayoutParams).weight = 0f
-                        holder.diaryImage.layoutParams.width = holder.itemView.context.resources.getDimension(R.dimen.new_image_width).toInt()
+                        holder.diaryImage.layoutParams.width = holder.itemView.context.resources.getDimension(
+                            R.dimen.new_image_width).toInt()
                         (holder.diaryImage.layoutParams as LinearLayout.LayoutParams).gravity =  Gravity.CENTER
                         holder.firstRowLinearLayout.orientation = LinearLayout.VERTICAL
-                        val layoutParams = holder.diaryImage.layoutParams as MarginLayoutParams
+                        val layoutParams = holder.diaryImage.layoutParams as ViewGroup.MarginLayoutParams
                         layoutParams.bottomMargin = holder.itemView.context.resources.getDimension(R.dimen.standard_margin).toInt()
                         holder.diaryImage.layoutParams = layoutParams
                     }
                 }
             }
             if (!textFlag && audioFlag) {
-                val layoutParams = holder.diaryImage.layoutParams as MarginLayoutParams
+                val layoutParams = holder.diaryImage.layoutParams as ViewGroup.MarginLayoutParams
                 layoutParams.bottomMargin = holder.itemView.context.resources.getDimension(R.dimen.standard_margin).toInt()
                 holder.diaryImage.layoutParams = layoutParams
 
-                val layoutParamsLocation = holder.diaryLocation.layoutParams as MarginLayoutParams
+                val layoutParamsLocation = holder.diaryLocation.layoutParams as ViewGroup.MarginLayoutParams
                 layoutParamsLocation.bottomMargin = holder.itemView.context.resources.getDimension(R.dimen.standard_margin).toInt()
                 holder.diaryLocation.layoutParams = layoutParamsLocation
             }
             if (!imageFlag && locationFlag) {
-                val layoutParamsLocation = holder.firstRowLinearLayoutSecondItem.layoutParams as MarginLayoutParams
+                val layoutParamsLocation = holder.firstRowLinearLayoutSecondItem.layoutParams as ViewGroup.MarginLayoutParams
                 layoutParamsLocation.leftMargin = 0
                 holder.firstRowLinearLayoutSecondItem.layoutParams = layoutParamsLocation
             }
@@ -243,18 +241,18 @@ class DiaryEntriesAdapter(var lifeCycleOwner: LifecycleOwner) : RecyclerView.Ada
                         holder.itemView.checkbox.visibility = View.INVISIBLE
                         holder.itemView.cardView.setCardBackgroundColor(ContextCompat.getColor(context, R.color.egg_white))
                         selectedItems.remove(position)
-                        todayViewModel.selectedItems.postValue(selectedItems)
+                        diaryDetailViewModel.selectedItems.postValue(selectedItems)
                     }else{
                         holder.itemView.checkbox.visibility = View.VISIBLE
                         holder.itemView.cardView.setCardBackgroundColor(Color.LTGRAY)
                         selectedItems.add(position)
-                        todayViewModel.selectedItems.postValue(selectedItems)
+                        diaryDetailViewModel.selectedItems.postValue(selectedItems)
                     }
 
                     if(selectedItems.isNotEmpty()){
-                        todayViewModel.deleteState.postValue(true)
+                        diaryDetailViewModel.deleteState.postValue(true)
                     }else{
-                        todayViewModel.deleteState.postValue(false)
+                        diaryDetailViewModel.deleteState.postValue(false)
                     }
                     return@OnTouchListener true
                 }
@@ -268,7 +266,7 @@ class DiaryEntriesAdapter(var lifeCycleOwner: LifecycleOwner) : RecyclerView.Ada
     }
 
     fun getSelectedEntries(): ArrayList<Entry>{
-    var list = arrayListOf<Entry>()
+        var list = arrayListOf<Entry>()
         for (int in selectedItems){
             list.add(todayModelData[int])
         }
@@ -276,8 +274,8 @@ class DiaryEntriesAdapter(var lifeCycleOwner: LifecycleOwner) : RecyclerView.Ada
     }
 
     fun deleteSelectedEntries(){
-        todayViewModel.selectedItems.postValue(listOf())
-        todayViewModel.deleteState.postValue(false)
+        diaryDetailViewModel.selectedItems.postValue(listOf())
+        diaryDetailViewModel.deleteState.postValue(false)
     }
 
     inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
@@ -361,6 +359,4 @@ class DiaryEntriesAdapter(var lifeCycleOwner: LifecycleOwner) : RecyclerView.Ada
         todayModelData = tempList.sortedBy { it.date }.reversed()
         notifyDataSetChanged()
     }
-
 }
-
