@@ -1,6 +1,7 @@
 package com.example.yourstory.today
 
 import android.app.Application
+import android.media.MediaPlayer
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -22,13 +23,17 @@ class TodayViewModel(application: Application) : AndroidViewModel(application) {
     var todayDiaryEntryData : LiveData<List<DiaryEntry>>
     var todayEmotionalStateEntryData : LiveData<List<EmotionalState>>
 
+    var todayMediaPlayer: MediaPlayer? = null
+    var currentAudioTrack = MutableLiveData("")
+    var mediaPlayerRunning = MutableLiveData(false)
+
     init {
         repository = Repository(application)
         todayDiaryEntryData = repository.readAllEntriesOfaDate(DateTime.now().toString())
         todayEmotionalStateEntryData = repository.readAllEmotionalStatesOfADate(DateTime.now().toString())
     }
 
-    fun deleteDiaryEntries(entries: ArrayList<Entry>){
+    fun deleteDiaryEntries(entries: ArrayList<Entry>) {
         viewModelScope.launch (Dispatchers.IO) {
             for (entry in entries){
                 if(entry is DiaryEntry){

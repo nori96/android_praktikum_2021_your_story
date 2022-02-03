@@ -88,7 +88,7 @@ class DiaryAdapter(var onDiaryClickListener: OnDiaryClickListener) : RecyclerVie
             pieEntries.add(PieEntry(diaryListModelItem.fearAverage, "Fear"))
 
             //initializing colors for the entries
-            var colors = arrayListOf<Int>()
+            val colors = arrayListOf<Int>()
             colors.add(ColorTemplate.rgb("#4BF430"))
             colors.add(ColorTemplate.rgb("#FF8181"))
             colors.add(ColorTemplate.rgb("#FEF63B"))
@@ -98,7 +98,7 @@ class DiaryAdapter(var onDiaryClickListener: OnDiaryClickListener) : RecyclerVie
 
 
             //collecting the entries with label name
-            var pieDataSet = PieDataSet(pieEntries, "Emotions")
+            val pieDataSet = PieDataSet(pieEntries, "Emotions")
 
             //setting text size of the value
             pieDataSet.valueTextSize = 12f;
@@ -107,7 +107,7 @@ class DiaryAdapter(var onDiaryClickListener: OnDiaryClickListener) : RecyclerVie
             pieDataSet.colors = colors
 
             //grouping the data set from entry to chart
-            var pieData = PieData(pieDataSet)
+            val pieData = PieData(pieDataSet)
 
             //showing the value of the entries, default true if not set
             pieData.setDrawValues(false)

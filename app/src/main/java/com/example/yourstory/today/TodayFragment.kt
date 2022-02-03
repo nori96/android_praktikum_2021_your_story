@@ -33,7 +33,7 @@ class TodayFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         BackupManager(requireContext()).initDB()
 
@@ -43,11 +43,12 @@ class TodayFragment : Fragment() {
             hostFramentNavController = container.findNavController()
         }
         recyclerView = binding.recyclerViewTodayPage
-        recyclerView.adapter = DiaryEntriesAdapter(this)
+
 
         viewModel = ViewModelProvider(requireActivity())[TodayViewModel::class.java]
         sharedViewModel = ViewModelProvider(requireActivity())[SharedThoughtDialogViewModel::class.java]
         sharedViewModel.resetData()
+        recyclerView.adapter = DiaryEntriesAdapter(this)
 
         viewModel.todayDiaryEntryData.observe(viewLifecycleOwner, { newDiaryEntries ->
             val todayEntries = newDiaryEntries as List<Entry>
@@ -92,20 +93,26 @@ class TodayFragment : Fragment() {
 
         viewModel.deleteState.observe(viewLifecycleOwner,{
             if(it == true){
-                binding.deleteFab!!.visibility = View.VISIBLE
+                binding.deleteFab.visibility = View.VISIBLE
                 binding.rootFab.visibility = View.INVISIBLE
             }else{
-                binding.deleteFab!!.visibility = View.INVISIBLE
+                binding.deleteFab.visibility = View.INVISIBLE
                 binding.rootFab.visibility = View.VISIBLE
             }
         })
 
-        binding.deleteFab!!.setOnClickListener {
-            var entries = (recyclerView.adapter as DiaryEntriesAdapter).getSelectedEntries()
+        binding.deleteFab.setOnClickListener {
+            val entries = (recyclerView.adapter as DiaryEntriesAdapter).getSelectedEntries()
             viewModel.deleteDiaryEntries(entries)
             (recyclerView.adapter as DiaryEntriesAdapter).deleteSelectedEntries()
         }
-
         return binding.root
+    }
+    // works not specific enough, maybe add this code to graph transitions?
+    override fun onPause() {
+        super.onPause()
+        //viewModel.todayMediaPlayer!!.pause()
+        //viewModel.mediaPlayerRunning.value = false
+        //viewModel.currentAudioTrack.value = ""
     }
 }

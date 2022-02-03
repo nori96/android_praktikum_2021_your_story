@@ -32,7 +32,9 @@ import android.view.ViewConfiguration
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
 import android.animation.ValueAnimator
+import android.animation.Animator
 
+import android.animation.AnimatorListenerAdapter
 
 class DiaryEntriesAdapter(var lifeCycleOwner: LifecycleOwner) : RecyclerView.Adapter<DiaryEntriesAdapter.ViewHolder>() {
 
@@ -41,7 +43,7 @@ class DiaryEntriesAdapter(var lifeCycleOwner: LifecycleOwner) : RecyclerView.Ada
     private lateinit var context: Context
     private lateinit var selectedItems: ArrayList<Int>
     private lateinit var todayViewModel: TodayViewModel
-    private var then: Long = 0;
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DiaryEntriesAdapter.ViewHolder {
         view = LayoutInflater.from(parent.context).inflate(R.layout.text_entry_diary_layout, parent, false)
@@ -52,6 +54,7 @@ class DiaryEntriesAdapter(var lifeCycleOwner: LifecycleOwner) : RecyclerView.Ada
         })
         return ViewHolder(view)
     }
+
     @SuppressLint("ClickableViewAccessibility")
     override fun onBindViewHolder(holder: DiaryEntriesAdapter.ViewHolder, position: Int) {
         // views cant be recycled if nodes from the view are removed
@@ -111,36 +114,106 @@ class DiaryEntriesAdapter(var lifeCycleOwner: LifecycleOwner) : RecyclerView.Ada
                 (holder.diaryAudio.parent as ViewGroup).removeView(holder.diaryAudio)
             } else {
                 audioFlag = true
+                var animSeekbar: ValueAnimator? = null
                 holder.diaryAudio.clipToOutline = true
-                val mediaPlayer = MediaPlayer().apply {
-                    try {
-                        setDataSource(entry.audio)
-                        prepare()
-                    } catch (e: IOException) { }
-                }
-                holder.seekBar.progress = 0
-                holder.seekBar.max = mediaPlayer.duration
 
-                val animSeekbar = ValueAnimator.ofInt(0, holder.seekBar.max)
-                animSeekbar.duration = mediaPlayer.duration.toLong()
-                animSeekbar.addUpdateListener { animation ->
-                    val animProgress = animation.animatedValue as Int
-                    holder.seekBar.progress = animProgress
-                }
-                holder.playButton.setOnClickListener {
-                    if (!mediaPlayer.isPlaying) {
-                        mediaPlayer.start()
-                        animSeekbar.start()
-                        holder.playButton.setImageResource(R.drawable.pause_icon_media_player)
-                    } else {
-                        mediaPlayer.pause()
-                        animSeekbar.pause()
-                        holder.playButton.setImageResource(R.drawable.ic_baseline_play_arrow_24)
+                fun setupMediaPlayer() {
+                    todayViewModel.todayMediaPlayer = MediaPlayer().apply {
+                        try {
+                            setDataSource(todayViewModel.currentAudioTrack.value)
+                            prepare()
+                        } catch (e: IOException) { }
+                    }
+                    holder.seekBar.max = todayViewModel.todayMediaPlayer!!.duration
+                    animSeekbar = ValueAnimator.ofInt(0, holder.seekBar.max)
+                    animSeekbar!!.duration = todayViewModel.todayMediaPlayer!!.duration.toLong()
+                    animSeekbar!!.addUpdateListener { animation ->
+                        val animProgress = animation.animatedValue as Int
+                        holder.seekBar.progress = animProgress
+                    }
+                    todayViewModel.todayMediaPlayer!!.start()
+                    animSeekbar!!.addListener(object : AnimatorListenerAdapter() {
+                        override fun onAnimationEnd(animation: Animator) {
+                            holder.seekBar.progress = 0
+                        }
+                    })
+                    animSeekbar!!.start()
+                    todayViewModel.todayMediaPlayer!!.setOnCompletionListener {
+                        todayViewModel.todayMediaPlayer!!.release()
+                        todayViewModel.todayMediaPlayer = null
+                        todayViewModel.mediaPlayerRunning.value = false
+                        todayViewModel.currentAudioTrack.value = ""
                     }
                 }
-                mediaPlayer.setOnCompletionListener {
-                    holder.playButton.setImageResource(R.drawable.ic_baseline_play_arrow_24)
-                    holder.seekBar.progress = 0
+                todayViewModel.mediaPlayerRunning.observe(lifeCycleOwner,{
+                    if (todayViewModel.currentAudioTrack.value == entry.audio && todayViewModel.mediaPlayerRunning.value!!) {
+                        holder.playButton.setImageResource(R.drawable.pause_icon_media_player)
+                    } else {
+                        holder.playButton.setImageResource(R.drawable.ic_baseline_play_arrow_24)
+                    }
+                })
+                todayViewModel.currentAudioTrack.observe(lifeCycleOwner,{
+                    if(todayViewModel.currentAudioTrack.value != entry.audio && animSeekbar != null) {
+                        animSeekbar!!.removeAllListeners()
+                        animSeekbar!!.cancel()
+                        holder.seekBar.progress = 0
+                    }
+                })
+
+                if (todayViewModel.todayMediaPlayer != null &&
+                    todayViewModel.mediaPlayerRunning.value!! && todayViewModel.currentAudioTrack.value == entry.audio) {
+                    holder.seekBar.progress = todayViewModel.todayMediaPlayer!!.currentPosition
+                    holder.seekBar.max = todayViewModel.todayMediaPlayer!!.duration
+                    animSeekbar = ValueAnimator.ofInt(todayViewModel.todayMediaPlayer!!.currentPosition, holder.seekBar.max)
+                    animSeekbar!!.duration = todayViewModel.todayMediaPlayer!!.duration.toLong() - todayViewModel.todayMediaPlayer!!.currentPosition
+                    animSeekbar!!.addUpdateListener { animation ->
+                        val animProgress = animation.animatedValue as Int
+                        holder.seekBar.progress = animProgress
+                    }
+                    animSeekbar!!.addListener(object : AnimatorListenerAdapter() {
+                        override fun onAnimationEnd(animation: Animator) {
+                            holder.seekBar.progress = 0
+                        }
+                    })
+                    animSeekbar!!.start()
+                }
+
+                holder.playButton.setOnClickListener {
+                    if (todayViewModel.todayMediaPlayer != null &&
+                        !todayViewModel.mediaPlayerRunning.value!! && todayViewModel.currentAudioTrack.value == entry.audio) {
+                        todayViewModel.todayMediaPlayer!!.start()
+                        animSeekbar = ValueAnimator.ofInt(todayViewModel.todayMediaPlayer!!.currentPosition, holder.seekBar.max)
+                        animSeekbar!!.duration = todayViewModel.todayMediaPlayer!!.duration.toLong() - todayViewModel.todayMediaPlayer!!.currentPosition
+                        animSeekbar!!.addUpdateListener { animation ->
+                            val animProgress = animation.animatedValue as Int
+                            holder.seekBar.progress = animProgress
+                        }
+                        animSeekbar!!.addListener(object : AnimatorListenerAdapter() {
+                            override fun onAnimationEnd(animation: Animator) {
+                                holder.seekBar.progress = 0
+                            }
+                        })
+                        animSeekbar!!.start()
+                        todayViewModel.mediaPlayerRunning.value = true
+                    }
+                    else if (todayViewModel.mediaPlayerRunning.value!! && todayViewModel.currentAudioTrack.value == entry.audio) {
+                        todayViewModel.todayMediaPlayer!!.pause()
+                        animSeekbar!!.pause()
+                        todayViewModel.mediaPlayerRunning.value = false
+                    } else if (todayViewModel.todayMediaPlayer != null && todayViewModel.currentAudioTrack.value != entry.audio) {
+                        todayViewModel.todayMediaPlayer!!.stop()
+                        todayViewModel.todayMediaPlayer!!.release()
+                        todayViewModel.todayMediaPlayer = null
+                        todayViewModel.currentAudioTrack.value = entry.audio
+                        todayViewModel.mediaPlayerRunning.value = true
+                        setupMediaPlayer()
+                    }
+
+                    if (todayViewModel.todayMediaPlayer == null) {
+                        todayViewModel.currentAudioTrack.value = entry.audio
+                        todayViewModel.mediaPlayerRunning.value = true
+                        setupMediaPlayer()
+                    }
                 }
             }
 
@@ -152,6 +225,11 @@ class DiaryEntriesAdapter(var lifeCycleOwner: LifecycleOwner) : RecyclerView.Ada
                         layoutParams.bottomMargin = 0
                         layoutParams.topMargin = 0
                         holder.diaryText.layoutParams = layoutParams
+                        holder.diaryText.isNestedScrollingEnabled = true
+                        holder.diaryText.setOnTouchListener { v, _ ->
+                            v.parent.requestDisallowInterceptTouchEvent(true)
+                            false
+                        }
                         holder.diaryText.movementMethod = ScrollingMovementMethod()
                         holder.firstRowLinearLayoutSecondItem.addView(holder.diaryText)
                         if (audioFlag) {
@@ -280,7 +358,7 @@ class DiaryEntriesAdapter(var lifeCycleOwner: LifecycleOwner) : RecyclerView.Ada
         todayViewModel.deleteState.postValue(false)
     }
 
-    inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
+    inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView), View.OnTouchListener{
         // entry nodes
         val diaryText: TextView = itemView.findViewById(R.id.main_today_text)
         val diaryImage: ImageView = itemView.findViewById(R.id.main_today_image)
@@ -309,6 +387,11 @@ class DiaryEntriesAdapter(var lifeCycleOwner: LifecycleOwner) : RecyclerView.Ada
         // special handling for maps, it seems to be necessary
         init {
             locationMapView.onCreate(null)
+        }
+
+        override fun onTouch(v: View?, event: MotionEvent?): Boolean {
+            v!!.parent.requestDisallowInterceptTouchEvent(true)
+            return false
         }
     }
     fun setData(diaries: List<Entry>){
