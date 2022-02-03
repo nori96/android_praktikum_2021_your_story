@@ -1,5 +1,7 @@
 package com.example.yourstory.diary.detail
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
 import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.content.Context
@@ -106,36 +108,106 @@ class DiaryDetailEntriesAdapter(var lifeCycleOwner: LifecycleOwner) : RecyclerVi
                 (holder.diaryAudio.parent as ViewGroup).removeView(holder.diaryAudio)
             } else {
                 audioFlag = true
+                var animSeekbar: ValueAnimator? = null
                 holder.diaryAudio.clipToOutline = true
-                holder.seekBar.progress = 0
-                val mediaPlayer = MediaPlayer().apply {
-                    try {
-                        setDataSource(entry.audio)
-                        prepare()
-                    } catch (e: IOException) { }
-                }
-                holder.seekBar.max = mediaPlayer.duration
 
-                val animSeekbar = ValueAnimator.ofInt(0, holder.seekBar.max)
-                animSeekbar.duration = mediaPlayer.duration.toLong()
-                animSeekbar.addUpdateListener { animation ->
-                    val animProgress = animation.animatedValue as Int
-                    holder.seekBar.progress = animProgress
-                }
-                holder.playButton.setOnClickListener {
-                    if (!mediaPlayer.isPlaying) {
-                        mediaPlayer.start()
-                        animSeekbar.start()
-                        holder.playButton.setImageResource(R.drawable.pause_icon_media_player)
-                    } else {
-                        mediaPlayer.pause()
-                        animSeekbar.pause()
-                        holder.playButton.setImageResource(R.drawable.ic_baseline_play_arrow_24)
+                fun setupMediaPlayer() {
+                    diaryDetailViewModel.todayMediaPlayer = MediaPlayer().apply {
+                        try {
+                            setDataSource(diaryDetailViewModel.currentAudioTrack.value)
+                            prepare()
+                        } catch (e: IOException) { }
+                    }
+                    holder.seekBar.max = diaryDetailViewModel.todayMediaPlayer!!.duration
+                    animSeekbar = ValueAnimator.ofInt(0, holder.seekBar.max)
+                    animSeekbar!!.duration = diaryDetailViewModel.todayMediaPlayer!!.duration.toLong()
+                    animSeekbar!!.addUpdateListener { animation ->
+                        val animProgress = animation.animatedValue as Int
+                        holder.seekBar.progress = animProgress
+                    }
+                    diaryDetailViewModel.todayMediaPlayer!!.start()
+                    animSeekbar!!.addListener(object : AnimatorListenerAdapter() {
+                        override fun onAnimationEnd(animation: Animator) {
+                            holder.seekBar.progress = 0
+                        }
+                    })
+                    animSeekbar!!.start()
+                    diaryDetailViewModel.todayMediaPlayer!!.setOnCompletionListener {
+                        diaryDetailViewModel.todayMediaPlayer!!.release()
+                        diaryDetailViewModel.todayMediaPlayer = null
+                        diaryDetailViewModel.mediaPlayerRunning.value = false
+                        diaryDetailViewModel.currentAudioTrack.value = ""
                     }
                 }
-                mediaPlayer.setOnCompletionListener {
-                    holder.playButton.setImageResource(R.drawable.ic_baseline_play_arrow_24)
-                    holder.seekBar.progress = 0
+                diaryDetailViewModel.mediaPlayerRunning.observe(lifeCycleOwner,{
+                    if (diaryDetailViewModel.currentAudioTrack.value == entry.audio && diaryDetailViewModel.mediaPlayerRunning.value!!) {
+                        holder.playButton.setImageResource(R.drawable.pause_icon_media_player)
+                    } else {
+                        holder.playButton.setImageResource(R.drawable.ic_baseline_play_arrow_24)
+                    }
+                })
+                diaryDetailViewModel.currentAudioTrack.observe(lifeCycleOwner,{
+                    if(diaryDetailViewModel.currentAudioTrack.value != entry.audio && animSeekbar != null) {
+                        animSeekbar!!.removeAllListeners()
+                        animSeekbar!!.cancel()
+                        holder.seekBar.progress = 0
+                    }
+                })
+
+                if (diaryDetailViewModel.todayMediaPlayer != null &&
+                    diaryDetailViewModel.mediaPlayerRunning.value!! && diaryDetailViewModel.currentAudioTrack.value == entry.audio) {
+                    holder.seekBar.progress = diaryDetailViewModel.todayMediaPlayer!!.currentPosition
+                    holder.seekBar.max = diaryDetailViewModel.todayMediaPlayer!!.duration
+                    animSeekbar = ValueAnimator.ofInt(diaryDetailViewModel.todayMediaPlayer!!.currentPosition, holder.seekBar.max)
+                    animSeekbar!!.duration = diaryDetailViewModel.todayMediaPlayer!!.duration.toLong() - diaryDetailViewModel.todayMediaPlayer!!.currentPosition
+                    animSeekbar!!.addUpdateListener { animation ->
+                        val animProgress = animation.animatedValue as Int
+                        holder.seekBar.progress = animProgress
+                    }
+                    animSeekbar!!.addListener(object : AnimatorListenerAdapter() {
+                        override fun onAnimationEnd(animation: Animator) {
+                            holder.seekBar.progress = 0
+                        }
+                    })
+                    animSeekbar!!.start()
+                }
+
+                holder.playButton.setOnClickListener {
+                    if (diaryDetailViewModel.todayMediaPlayer != null &&
+                        !diaryDetailViewModel.mediaPlayerRunning.value!! && diaryDetailViewModel.currentAudioTrack.value == entry.audio) {
+                        diaryDetailViewModel.todayMediaPlayer!!.start()
+                        animSeekbar = ValueAnimator.ofInt(diaryDetailViewModel.todayMediaPlayer!!.currentPosition, holder.seekBar.max)
+                        animSeekbar!!.duration = diaryDetailViewModel.todayMediaPlayer!!.duration.toLong() - diaryDetailViewModel.todayMediaPlayer!!.currentPosition
+                        animSeekbar!!.addUpdateListener { animation ->
+                            val animProgress = animation.animatedValue as Int
+                            holder.seekBar.progress = animProgress
+                        }
+                        animSeekbar!!.addListener(object : AnimatorListenerAdapter() {
+                            override fun onAnimationEnd(animation: Animator) {
+                                holder.seekBar.progress = 0
+                            }
+                        })
+                        animSeekbar!!.start()
+                        diaryDetailViewModel.mediaPlayerRunning.value = true
+                    }
+                    else if (diaryDetailViewModel.mediaPlayerRunning.value!! && diaryDetailViewModel.currentAudioTrack.value == entry.audio) {
+                        diaryDetailViewModel.todayMediaPlayer!!.pause()
+                        animSeekbar!!.pause()
+                        diaryDetailViewModel.mediaPlayerRunning.value = false
+                    } else if (diaryDetailViewModel.todayMediaPlayer != null && diaryDetailViewModel.currentAudioTrack.value != entry.audio) {
+                        diaryDetailViewModel.todayMediaPlayer!!.stop()
+                        diaryDetailViewModel.todayMediaPlayer!!.release()
+                        diaryDetailViewModel.todayMediaPlayer = null
+                        diaryDetailViewModel.currentAudioTrack.value = entry.audio
+                        diaryDetailViewModel.mediaPlayerRunning.value = true
+                        setupMediaPlayer()
+                    }
+
+                    if (diaryDetailViewModel.todayMediaPlayer == null) {
+                        diaryDetailViewModel.currentAudioTrack.value = entry.audio
+                        diaryDetailViewModel.mediaPlayerRunning.value = true
+                        setupMediaPlayer()
+                    }
                 }
             }
 

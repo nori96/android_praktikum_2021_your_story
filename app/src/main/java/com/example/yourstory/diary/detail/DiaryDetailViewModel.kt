@@ -1,6 +1,7 @@
 package com.example.yourstory.diary.detail
 
 import android.app.Application
+import android.media.MediaPlayer
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -21,6 +22,10 @@ class DiaryDetailViewModel(application: Application) : AndroidViewModel(applicat
     var selectedItems = MutableLiveData(listOf<Int>())
     lateinit var todayDiaryEntryData : LiveData<List<DiaryEntry>>
     lateinit var todayEmotionalStateEntryData : LiveData<List<EmotionalState>>
+
+    var todayMediaPlayer: MediaPlayer? = null
+    var currentAudioTrack = MutableLiveData("")
+    var mediaPlayerRunning = MutableLiveData(false)
 
     init {
         repository = Repository(application)
