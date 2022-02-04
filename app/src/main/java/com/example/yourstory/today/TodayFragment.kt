@@ -108,11 +108,14 @@ class TodayFragment : Fragment() {
         }
         return binding.root
     }
-    // works not specific enough, maybe add this code to graph transitions?
-    override fun onPause() {
-        super.onPause()
-        //viewModel.todayMediaPlayer!!.pause()
-        //viewModel.mediaPlayerRunning.value = false
-        //viewModel.currentAudioTrack.value = ""
+
+    override fun onDestroy() {
+        super.onDestroy()
+        //resetAudio()
+    }
+    private fun resetAudio() {
+        viewModel.todayMediaPlayer!!.pause()
+        viewModel.mediaPlayerRunning.value = false
+        viewModel.currentAudioTrack.value = ""
     }
 }

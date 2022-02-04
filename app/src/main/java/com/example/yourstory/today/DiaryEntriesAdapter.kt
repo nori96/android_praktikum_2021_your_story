@@ -145,6 +145,39 @@ class DiaryEntriesAdapter(var lifeCycleOwner: LifecycleOwner) : RecyclerView.Ada
                         todayViewModel.currentAudioTrack.value = ""
                     }
                 }
+                fun setupCurrentTrackRunning() {
+                    holder.seekBar.progress = todayViewModel.todayMediaPlayer!!.currentPosition
+                    holder.seekBar.max = todayViewModel.todayMediaPlayer!!.duration
+                    animSeekbar = ValueAnimator.ofInt(todayViewModel.todayMediaPlayer!!.currentPosition, holder.seekBar.max)
+                    animSeekbar!!.duration = todayViewModel.todayMediaPlayer!!.duration.toLong() - todayViewModel.todayMediaPlayer!!.currentPosition
+                    animSeekbar!!.addUpdateListener { animation ->
+                        val animProgress = animation.animatedValue as Int
+                        holder.seekBar.progress = animProgress
+                    }
+                    animSeekbar!!.addListener(object : AnimatorListenerAdapter() {
+                        override fun onAnimationEnd(animation: Animator) {
+                            holder.seekBar.progress = 0
+                        }
+                    })
+                    animSeekbar!!.start()
+                }
+                fun setupCurrentTrackPaused() {
+                    holder.seekBar.progress = todayViewModel.todayMediaPlayer!!.currentPosition
+                    holder.seekBar.max = todayViewModel.todayMediaPlayer!!.duration
+                    animSeekbar = ValueAnimator.ofInt(todayViewModel.todayMediaPlayer!!.currentPosition, holder.seekBar.max)
+                    animSeekbar!!.duration = todayViewModel.todayMediaPlayer!!.duration.toLong() - todayViewModel.todayMediaPlayer!!.currentPosition
+                    animSeekbar!!.addUpdateListener { animation ->
+                        val animProgress = animation.animatedValue as Int
+                        holder.seekBar.progress = animProgress
+                    }
+                    animSeekbar!!.addListener(object : AnimatorListenerAdapter() {
+                        override fun onAnimationEnd(animation: Animator) {
+                            holder.seekBar.progress = 0
+                        }
+                    })
+                    animSeekbar!!.start()
+                    animSeekbar!!.pause()
+                }
                 todayViewModel.mediaPlayerRunning.observe(lifeCycleOwner,{
                     if (todayViewModel.currentAudioTrack.value == entry.audio && todayViewModel.mediaPlayerRunning.value!!) {
                         holder.playButton.setImageResource(R.drawable.pause_icon_media_player)
@@ -162,22 +195,43 @@ class DiaryEntriesAdapter(var lifeCycleOwner: LifecycleOwner) : RecyclerView.Ada
 
                 if (todayViewModel.todayMediaPlayer != null &&
                     todayViewModel.mediaPlayerRunning.value!! && todayViewModel.currentAudioTrack.value == entry.audio) {
-                    holder.seekBar.progress = todayViewModel.todayMediaPlayer!!.currentPosition
-                    holder.seekBar.max = todayViewModel.todayMediaPlayer!!.duration
-                    animSeekbar = ValueAnimator.ofInt(todayViewModel.todayMediaPlayer!!.currentPosition, holder.seekBar.max)
-                    animSeekbar!!.duration = todayViewModel.todayMediaPlayer!!.duration.toLong() - todayViewModel.todayMediaPlayer!!.currentPosition
-                    animSeekbar!!.addUpdateListener { animation ->
-                        val animProgress = animation.animatedValue as Int
-                        holder.seekBar.progress = animProgress
-                    }
-                    animSeekbar!!.addListener(object : AnimatorListenerAdapter() {
-                        override fun onAnimationEnd(animation: Animator) {
-                            holder.seekBar.progress = 0
-                        }
-                    })
-                    animSeekbar!!.start()
+                    setupCurrentTrackRunning()
+                } else if (todayViewModel.todayMediaPlayer != null &&
+                    !todayViewModel.mediaPlayerRunning.value!! && todayViewModel.currentAudioTrack.value == entry.audio) {
+                    setupCurrentTrackPaused()
                 }
 
+                holder.seekBar.setOnSeekBarChangeListener (object: SeekBar.OnSeekBarChangeListener {
+                    override fun onProgressChanged(
+                        seekBar: SeekBar?,
+                        progress: Int,
+                        fromUser: Boolean
+                    ) {
+                        if (fromUser) {
+                            if (todayViewModel.todayMediaPlayer != null &&
+                                todayViewModel.mediaPlayerRunning.value!! && todayViewModel.currentAudioTrack.value == entry.audio) {
+                                if (animSeekbar != null) {
+                                    animSeekbar!!.removeAllListeners()
+                                    animSeekbar!!.cancel()
+                                }
+                                todayViewModel.todayMediaPlayer!!.seekTo(progress)
+                                setupCurrentTrackRunning()
+                            } else if (todayViewModel.todayMediaPlayer != null &&
+                                !todayViewModel.mediaPlayerRunning.value!! && todayViewModel.currentAudioTrack.value == entry.audio) {
+                                if (animSeekbar != null) {
+                                    animSeekbar!!.removeAllListeners()
+                                    animSeekbar!!.cancel()
+                                }
+                                todayViewModel.todayMediaPlayer!!.seekTo(progress)
+                                setupCurrentTrackPaused()
+                            }
+                        }
+                    }
+                    override fun onStartTrackingTouch(seekBar: SeekBar?) {
+                    }
+                    override fun onStopTrackingTouch(seekBar: SeekBar?) {
+                    }
+                })
                 holder.playButton.setOnClickListener {
                     if (todayViewModel.todayMediaPlayer != null &&
                         !todayViewModel.mediaPlayerRunning.value!! && todayViewModel.currentAudioTrack.value == entry.audio) {
@@ -195,8 +249,7 @@ class DiaryEntriesAdapter(var lifeCycleOwner: LifecycleOwner) : RecyclerView.Ada
                         })
                         animSeekbar!!.start()
                         todayViewModel.mediaPlayerRunning.value = true
-                    }
-                    else if (todayViewModel.mediaPlayerRunning.value!! && todayViewModel.currentAudioTrack.value == entry.audio) {
+                    } else if (todayViewModel.mediaPlayerRunning.value!! && todayViewModel.currentAudioTrack.value == entry.audio) {
                         todayViewModel.todayMediaPlayer!!.pause()
                         animSeekbar!!.pause()
                         todayViewModel.mediaPlayerRunning.value = false

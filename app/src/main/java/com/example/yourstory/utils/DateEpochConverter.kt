@@ -12,7 +12,7 @@ import java.util.*
 class DateEpochConverter {
     companion object {
         fun convertDateTimeToEpoch(isoString: String): Long {
-            var dateTime = DateTime(isoString, DateTimeZone.UTC)
+            val dateTime = DateTime(isoString, DateTimeZone.UTC)
             return dateTime.millis / 1000
         }
         fun getCurrentEpoch() : Long {
