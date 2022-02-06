@@ -30,17 +30,34 @@ class ReportsFragment : Fragment() {
         if (container != null) {
             hostFragmentNavController = container.findNavController()
         }
-        viewModel = ViewModelProvider(this).get(ReportsViewModel::class.java)
+        viewModel = ViewModelProvider(requireActivity()).get(ReportsViewModel::class.java)
 
         viewModel.reportsEntriesData.observe(viewLifecycleOwner, { newReports ->
             (recyclerView.adapter as ReportsAdapter).setData(newReports)
         })
 
         recyclerView = binding.reportRecyclerView
-        recyclerView.adapter = ReportsAdapter()
+        recyclerView.adapter = ReportsAdapter(this)
         binding.fabReports?.setOnClickListener {
             hostFragmentNavController.navigate(R.id.action_navigation_reports_to_createReportFragment)
         }
+
+        viewModel.deleteState.observe(viewLifecycleOwner,{
+            if(it == true){
+                binding.deleteFabReports.visibility = View.VISIBLE
+                binding.fabReports.visibility = View.INVISIBLE
+            }else{
+                binding.deleteFabReports.visibility = View.INVISIBLE
+                binding.fabReports.visibility = View.VISIBLE
+            }
+        })
+
+        binding.deleteFabReports.setOnClickListener{
+            val reports = (recyclerView.adapter as ReportsAdapter).getSelectedEntries()
+            viewModel.deleteReports(reports)
+            (recyclerView.adapter as ReportsAdapter).deleteSelectedEntries()
+        }
+
         return binding.root
     }
 }

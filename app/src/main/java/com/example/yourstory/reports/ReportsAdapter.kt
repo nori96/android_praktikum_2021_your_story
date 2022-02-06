@@ -1,12 +1,19 @@
 package com.example.yourstory.reports
 
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.annotation.SuppressLint
+import android.content.Context
+import android.graphics.Color
+import android.view.*
 import android.widget.TextView
+import androidx.core.content.ContextCompat
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
+import com.example.yourstory.MainActivity
 import com.example.yourstory.R
+import com.example.yourstory.database.data.Entry
 import com.example.yourstory.database.data.ReportEntry
+import com.example.yourstory.today.TodayViewModel
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.BarData
@@ -14,18 +21,24 @@ import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.github.mikephil.charting.utils.ColorTemplate
+import kotlinx.android.synthetic.main.report_row_item.view.*
+import kotlinx.android.synthetic.main.text_entry_diary_layout.view.*
 import org.joda.time.format.DateTimeFormat
 import org.joda.time.format.DateTimeFormatter
 import java.util.*
 import kotlin.collections.ArrayList
 
-class ReportsAdapter : RecyclerView.Adapter<ReportsAdapter.ViewHolder>(){
+class ReportsAdapter(var lifeCycleOwner: LifecycleOwner) : RecyclerView.Adapter<ReportsAdapter.ViewHolder>(){
 
+    private lateinit var selectedItems: ArrayList<Int>
     private var dataSet: List<ReportEntry> = listOf()
+    lateinit var viewModel: ReportsViewModel
+    private lateinit var context: Context
 
     class ViewHolder(reportView: View) : RecyclerView.ViewHolder(reportView) {
-       val textViewDate: TextView
-       val textViewAverage: TextView
+
+        val textViewDate: TextView
+        val textViewAverage: TextView
         val textViewTimeInterval: TextView
         val barChart: BarChart
         init {
@@ -65,12 +78,19 @@ class ReportsAdapter : RecyclerView.Adapter<ReportsAdapter.ViewHolder>(){
     }
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
-        val context = viewGroup.context
+        context = viewGroup.context
         val inflater = LayoutInflater.from(context)
+        viewModel = ViewModelProvider(context as MainActivity)[ReportsViewModel::class.java]
+
+        viewModel.selectedItems.observe(lifeCycleOwner,{
+            selectedItems = ArrayList(it)
+        })
+
         val reportView = inflater.inflate(R.layout.report_row_item, viewGroup, false)
         return ViewHolder(reportView)
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         val fmt: DateTimeFormatter = DateTimeFormat.forPattern("dd.MM.yyyy")
         viewHolder.textViewDate.text = fmt.print(dataSet[position].madeAt * 1000)
@@ -97,6 +117,49 @@ class ReportsAdapter : RecyclerView.Adapter<ReportsAdapter.ViewHolder>(){
         val barData = BarData()
         barData.addDataSet(barDataSet)
         viewHolder.barChart.data = barData
+
+
+        if(!selectedItems.contains(position)){
+            viewHolder.itemView.report_item_delete.visibility = View.INVISIBLE
+            viewHolder.itemView.cardView_reports.setCardBackgroundColor(ContextCompat.getColor(context, R.color.egg_white))
+        }else if (selectedItems.contains(position)) {
+            viewHolder.itemView.report_item_delete.visibility = View.VISIBLE
+            viewHolder.itemView.cardView_reports.setCardBackgroundColor(Color.LTGRAY)
+        }
+
+
+        viewHolder.itemView.setOnTouchListener(View.OnTouchListener {
+                view, event ->
+
+            if (event.action == MotionEvent.ACTION_DOWN) {
+                view.tag = true
+            } else if (view.tag as Boolean) {
+                val eventDuration = event.eventTime - event.downTime
+                if (eventDuration > ViewConfiguration.getLongPressTimeout()) {
+                    view.tag = false
+
+                    if(selectedItems.contains(position)){
+                        viewHolder.itemView.report_item_delete.visibility = View.INVISIBLE
+                        viewHolder.itemView.cardView_reports.setCardBackgroundColor(ContextCompat.getColor(context, R.color.egg_white))
+                        selectedItems.remove(position)
+                        viewModel.selectedItems.postValue(selectedItems)
+                    }else{
+                        viewHolder.itemView.report_item_delete.visibility = View.VISIBLE
+                        viewHolder.itemView.cardView_reports.setCardBackgroundColor(Color.LTGRAY)
+                        selectedItems.add(position)
+                        viewModel.selectedItems.postValue(selectedItems)
+                    }
+
+                    if(selectedItems.isNotEmpty()){
+                        viewModel.deleteState.postValue(true)
+                    }else{
+                        viewModel.deleteState.postValue(false)
+                    }
+                    return@OnTouchListener true
+                }
+            }
+            return@OnTouchListener true
+        })
     }
 
     override fun getItemCount(): Int {
@@ -105,5 +168,21 @@ class ReportsAdapter : RecyclerView.Adapter<ReportsAdapter.ViewHolder>(){
     fun setData(entries: List<ReportEntry>) {
         this.dataSet = (entries.sortedBy { it.madeAt }).reversed()
         notifyDataSetChanged()
+    }
+
+    fun getSelectedEntries(): ArrayList<ReportEntry>{
+        if(selectedItems.isEmpty()){
+            return arrayListOf()
+        }
+        var list = arrayListOf<ReportEntry>()
+        for (int in selectedItems){
+            list.add(dataSet[int])
+        }
+        return list
+    }
+
+    fun deleteSelectedEntries() {
+        viewModel.selectedItems.postValue(listOf())
+        viewModel.deleteState.postValue(false)
     }
 }

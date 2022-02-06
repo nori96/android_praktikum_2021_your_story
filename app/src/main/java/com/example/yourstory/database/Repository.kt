@@ -147,6 +147,11 @@ class Repository(var application: Application){
     fun addReportEntry(reportEntry: ReportEntry) {
         reportEntryDao.addReport(reportEntry)
     }
+
+    fun deleteReport(id: Int) {
+        reportEntryDao.deleteReport(id)
+    }
+
     fun readAllReportEntries() : LiveData<List<ReportEntry>>{
         return reportEntryDao.readAllReportsSortedByDate()
     }
