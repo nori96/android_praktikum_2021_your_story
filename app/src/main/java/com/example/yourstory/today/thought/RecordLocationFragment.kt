@@ -26,6 +26,7 @@ class RecordLocationFragment : Fragment(), OnMapReadyCallback, LocationListener 
 
     private lateinit var viewModelShared: SharedThoughtDialogViewModel
     private lateinit var hostFragmentNavController: NavController
+    private var mapView: GoogleMap? = null
     private var _binding: RecordLocationFragmentBinding? = null
     private val binding get() = _binding!!
     private lateinit var userLocation: LatLng
@@ -46,9 +47,25 @@ class RecordLocationFragment : Fragment(), OnMapReadyCallback, LocationListener 
         binding.cancelThoughtDialogLocation.setOnClickListener {
             hostFragmentNavController.navigate(R.id.action_recordLocationFragment_to_thought_dialog)
         }
+
+        viewModelShared.location.observe(viewLifecycleOwner,{
+            userLocation = it
+            if(this.mapView == null){
+                return@observe
+            }
+            mapView?.addMarker(
+                MarkerOptions()
+                    .position(it)
+            )
+            val update = CameraUpdateFactory.newLatLngZoom(it, 11f)
+            mapView!!.uiSettings.isMapToolbarEnabled = false
+            mapView!!.animateCamera(update)
+        })
+
+        getLocation()
         binding.recordLocationMapView.onCreate(savedInstanceState)
         binding.recordLocationMapView.getMapAsync(this)
-        userLocation = LatLng(getLocation()!!.latitude, getLocation()!!.longitude)
+        //userLocation = LatLng(getLocation()!!.latitude, getLocation()!!.longitude)
         return binding.root
     }
 
@@ -68,23 +85,17 @@ class RecordLocationFragment : Fragment(), OnMapReadyCallback, LocationListener 
 
     @SuppressLint("MissingPermission")
     override fun onMapReady(p0: GoogleMap) {
-        p0.addMarker(
-            MarkerOptions()
-                .position(userLocation)
-        )
-        val update = CameraUpdateFactory.newLatLngZoom(userLocation, 11f)
-        p0.uiSettings.isMapToolbarEnabled = false
-        p0.animateCamera(update)
+        this.mapView = p0
     }
 
     @SuppressLint("MissingPermission")
-    fun getLocation(): Location? {
+    fun getLocation(){
         try {
             val locationManager = requireActivity().getSystemService(LOCATION_SERVICE) as LocationManager
             val isGPSEnabled = locationManager
                 .isProviderEnabled(LocationManager.GPS_PROVIDER)
             if (!isGPSEnabled) {
-                return null
+                return
             }
             locationManager.requestLocationUpdates(
                 LocationManager.GPS_PROVIDER,
@@ -92,14 +103,13 @@ class RecordLocationFragment : Fragment(), OnMapReadyCallback, LocationListener 
                 10f,
                 this
             )
-            return locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
         } catch (e: Exception) {
             e.printStackTrace()
         }
-        return null
+        return
     }
 
     override fun onLocationChanged(location: Location) {
-        this.userLocation = LatLng(location.latitude, location.longitude)
+        viewModelShared.location.postValue(LatLng(location.latitude, location.longitude))
     }
 }
