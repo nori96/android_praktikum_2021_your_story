@@ -6,6 +6,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.Spinner
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
@@ -13,10 +16,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.yourstory.R
 import com.example.yourstory.database.data.Entry
 import com.example.yourstory.databinding.ReportsFragmentBinding
+import com.example.yourstory.diary.DiaryAdapter
 import com.example.yourstory.today.DiaryEntriesAdapter
+import org.joda.time.DateTime
 
-class ReportsFragment : Fragment() {
+class ReportsFragment : Fragment(), AdapterView.OnItemSelectedListener{
 
+    private lateinit var monthSpinner: Spinner
+    private lateinit var yearSpinner: Spinner
     private lateinit var binding: ReportsFragmentBinding
     lateinit var recyclerView: RecyclerView
     private lateinit var viewModel : ReportsViewModel
@@ -25,20 +32,20 @@ class ReportsFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = ReportsFragmentBinding.inflate(inflater, container, false)
         if (container != null) {
             hostFragmentNavController = container.findNavController()
         }
-        viewModel = ViewModelProvider(requireActivity()).get(ReportsViewModel::class.java)
+        viewModel = ViewModelProvider(requireActivity())[ReportsViewModel::class.java]
 
-        viewModel.reportsEntriesData.observe(viewLifecycleOwner, { newReports ->
+        viewModel.reportsEntriesDataAsList.observe(viewLifecycleOwner, { newReports ->
             (recyclerView.adapter as ReportsAdapter).setData(newReports)
         })
 
         recyclerView = binding.reportRecyclerView
         recyclerView.adapter = ReportsAdapter(this)
-        binding.fabReports?.setOnClickListener {
+        binding.fabReports.setOnClickListener {
             hostFragmentNavController.navigate(R.id.action_navigation_reports_to_createReportFragment)
         }
 
@@ -58,6 +65,34 @@ class ReportsFragment : Fragment() {
             (recyclerView.adapter as ReportsAdapter).deleteSelectedEntries()
         }
 
+        //Init YearSpinner
+        yearSpinner = binding.spinnerYearReports
+        val arrayAdapterYear = ArrayAdapter(requireContext(),R.layout.spinner_custom,
+            viewModel.years_items.value!!.toList())
+        arrayAdapterYear.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        yearSpinner.adapter = arrayAdapterYear
+        yearSpinner.setSelection(viewModel.years_items.value!!.indexOf(DateTime.now().year().toString()))
+        yearSpinner.onItemSelectedListener = this
+
+        //Init MonthSpinner
+        monthSpinner = binding.spinnerMonthReports
+        val arrayadapterMonth = ArrayAdapter(requireContext(),R.layout.spinner_custom,
+            viewModel.months_items.value!!.toList())
+        arrayadapterMonth.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        monthSpinner.adapter = arrayadapterMonth
+        monthSpinner.setSelection(DateTime.now().monthOfYear -1 )
+        monthSpinner.onItemSelectedListener = this
+
         return binding.root
+    }
+
+    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+        when(parent!!.id){
+            monthSpinner.id -> {viewModel.currentMonth.postValue(position +1)}
+            yearSpinner.id -> {viewModel.currentYear.postValue(viewModel.years_items.value!![position])}
+        }
+    }
+
+    override fun onNothingSelected(parent: AdapterView<*>?) {
     }
 }

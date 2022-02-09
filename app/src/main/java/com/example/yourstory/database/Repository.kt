@@ -156,6 +156,12 @@ class Repository(var application: Application){
         return reportEntryDao.readAllReportsSortedByDate()
     }
 
+    fun readAllReportsOfaMonth(isoDate: String):LiveData<List<ReportEntry>>{
+        var startEpoch = DateEpochConverter.convertDateTimeToEpoch(DateTime(isoDate).dayOfMonth().withMinimumValue().withTime(0,0,0,0).toString())
+        var endEpoch = DateEpochConverter.convertDateTimeToEpoch(DateTime(isoDate).dayOfMonth().withMaximumValue().withTime(23,59,59,999).toString())
+        return reportEntryDao.readAllReportsBetweenDates(startEpoch,endEpoch)
+    }
+
     fun readAllEntriesOfaDate(isoDate: String): LiveData<List<DiaryEntry>>{
         val epochCurrentDateStart = DateEpochConverter.convertDateTimeToEpoch(DateTime(isoDate).withTime(0, 0, 0, 0).toDateTimeISO().toString())
         val epochCurrentDateEnd = DateEpochConverter.convertDateTimeToEpoch(DateTime(isoDate).withTime(23, 59, 59, 999).toDateTimeISO().toString())

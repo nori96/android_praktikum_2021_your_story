@@ -21,10 +21,8 @@ class DiaryViewModel(application: Application) : AndroidViewModel(application) {
     var currentYear = DateTime.now().year.toString()
 
     //SpinnerData
-    var months_items = MutableLiveData<ArrayList<String>>(arrayListOf())
-    var years_items =  MutableLiveData<ArrayList<String>>(arrayListOf())
-
-    var yearOfOldestDbEntry = DateTime.now().year().get()
+    var monthsItems = MutableLiveData<ArrayList<String>>(arrayListOf())
+    var yearsItems =  MutableLiveData<ArrayList<String>>(arrayListOf())
 
     private val repository: Repository = Repository(application)
     var diaryEntriesAsListModel = MutableLiveData<ArrayList<DiaryListModel>>()
@@ -40,14 +38,14 @@ class DiaryViewModel(application: Application) : AndroidViewModel(application) {
 
         //init Spinner Data
         for(idx in 1..12){
-            months_items.value!!.add(DateEpochConverter.monthIntToString(application,idx))
+            monthsItems.value!!.add(DateEpochConverter.monthIntToString(application,idx))
         }
 
         //Sets the years of the Spinner to the oldest Entry
         for(idx in 0.. 5){
             var prevYear = Calendar.getInstance()
             prevYear.add(Calendar.YEAR,idx * -1)
-            years_items.value!!.add(prevYear.get(Calendar.YEAR).toString())
+            yearsItems.value!!.add(prevYear.get(Calendar.YEAR).toString())
         }
     }
 

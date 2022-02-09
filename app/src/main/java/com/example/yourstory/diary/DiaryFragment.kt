@@ -33,26 +33,26 @@ class DiaryFragment : Fragment(), DiaryAdapter.OnDiaryClickListener, AdapterView
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         binding = DiaryFragmentBinding.inflate(inflater, container, false)
-        viewModel = ViewModelProvider(this).get(DiaryViewModel::class.java)
+        viewModel = ViewModelProvider(this)[DiaryViewModel::class.java]
 
         //Init YearSpinner
-        yearSpinner = binding.spinnerYear!!
-        var arrayAdapterYear = ArrayAdapter(requireContext(),R.layout.spinner_custom,
-            viewModel.years_items.value!!.toList())
+        yearSpinner = binding.spinnerYear
+        val arrayAdapterYear = ArrayAdapter(requireContext(),R.layout.spinner_custom,
+            viewModel.yearsItems.value!!.toList())
         arrayAdapterYear.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         yearSpinner.adapter = arrayAdapterYear
-        yearSpinner.setSelection(viewModel.years_items.value!!.indexOf(DateTime.now().year().toString()))
+        yearSpinner.setSelection(viewModel.yearsItems.value!!.indexOf(DateTime.now().year().toString()))
         yearSpinner.onItemSelectedListener = this
 
         //Init MonthSpinner
-        monthSpinner = binding.spinnerMonth!!
-        var arrayadapterMonth = ArrayAdapter(requireContext(),R.layout.spinner_custom,
-            viewModel.months_items.value!!.toList())
-        arrayadapterMonth.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        monthSpinner.adapter = arrayadapterMonth
+        monthSpinner = binding.spinnerMonth
+        val arrayAdapterMonth = ArrayAdapter(requireContext(),R.layout.spinner_custom,
+            viewModel.monthsItems.value!!.toList())
+        arrayAdapterMonth.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        monthSpinner.adapter = arrayAdapterMonth
         monthSpinner.setSelection(DateTime.now().monthOfYear -1 )
         monthSpinner.onItemSelectedListener = this
 
@@ -74,7 +74,7 @@ class DiaryFragment : Fragment(), DiaryAdapter.OnDiaryClickListener, AdapterView
     }
 
     override fun onNoteClick(position: Int) {
-        var clickedListItem = viewModel.diaryEntriesAsListModel.value!![position]
+        val clickedListItem = viewModel.diaryEntriesAsListModel.value!![position]
 
         hostFramentNavController.navigate(DiaryFragmentDirections.actionNavigationDiaryToDiaryDetailFragment(clickedListItem.date))
     }
@@ -83,7 +83,7 @@ class DiaryFragment : Fragment(), DiaryAdapter.OnDiaryClickListener, AdapterView
         when(parent!!.id){
             monthSpinner.id -> {viewModel.currentMonth = position +1
             viewModel.fetchFilteredData()}
-            yearSpinner.id -> {viewModel.currentYear = viewModel.years_items.value!![position]
+            yearSpinner.id -> {viewModel.currentYear = viewModel.yearsItems.value!![position]
             viewModel.fetchFilteredData()}
         }
     }

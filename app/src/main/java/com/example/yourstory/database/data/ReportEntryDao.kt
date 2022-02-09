@@ -17,4 +17,7 @@ interface ReportEntryDao {
 
     @Query( "SELECT * FROM report_entries_table ORDER BY madeAt ASC")
     fun readAllReportsSortedByDate(): LiveData<List<ReportEntry>>
+
+    @Query("SELECT * FROM report_entries_table WHERE madeAt BETWEEN :from AND :to")
+    fun readAllReportsBetweenDates(from:Long, to:Long): LiveData<List<ReportEntry>>
 }
