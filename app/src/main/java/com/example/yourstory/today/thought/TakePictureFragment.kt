@@ -22,12 +22,16 @@ import java.nio.ByteBuffer
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import android.graphics.Bitmap
+import android.util.DisplayMetrics
+import android.util.Rational
+import android.util.Size
 import androidx.camera.core.AspectRatio.RATIO_16_9
 import androidx.navigation.findNavController
 import com.example.yourstory.MainActivity
 import com.example.yourstory.R
 import com.example.yourstory.databinding.TakePictureFragmentCaptureModeBinding
 import com.example.yourstory.databinding.TakePictureFragmentShowModeBinding
+import kotlinx.android.synthetic.main.take_picture_fragment_capture_mode.*
 
 
 class TakePictureFragment : Fragment(){
@@ -39,6 +43,8 @@ class TakePictureFragment : Fragment(){
     private var imageCapture: ImageCapture? = null
     private var binding_capture : TakePictureFragmentCaptureModeBinding? = null
     private var binding_show : TakePictureFragmentShowModeBinding? = null
+
+    val screenSize = Size(720, 1280)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -89,14 +95,14 @@ class TakePictureFragment : Fragment(){
 
             // Preview
             val preview = Preview.Builder()
-                .setTargetAspectRatio(RATIO_16_9)
+                .setTargetResolution(screenSize)
                 .build()
                 .also {
                     it.setSurfaceProvider(binding_capture!!.viewFinder.surfaceProvider)
                 }
 
             imageCapture = ImageCapture.Builder()
-                .setTargetAspectRatio(RATIO_16_9)
+                .setTargetResolution(screenSize)
                 .build()
 
             // Select back camera as a default

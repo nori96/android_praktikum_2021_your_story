@@ -44,16 +44,16 @@ class SharedThoughtDialogViewModel(application: Application) : AndroidViewModel(
     }
     fun confirmDiaryEntry(context: Context){
         var rndmUUID = UUID.randomUUID().toString()
-
-        //Set empty string if there is no Image set
-        if(image.value!!.height.equals(1)){
-            rndmUUID = ""
-        }else{
-            val fos = context.openFileOutput("$rndmUUID.png",Context.MODE_PRIVATE)
-            image.value!!.compress(Bitmap.CompressFormat.PNG,100,fos)
-            fos.close()
-        }
         viewModelScope.launch (Dispatchers.IO){
+            //Set empty string if there is no Image set
+            if(image.value!!.height.equals(1)){
+                rndmUUID = ""
+            }else{
+                val fos = context.openFileOutput("$rndmUUID.png",Context.MODE_PRIVATE)
+                image.value!!.compress(Bitmap.CompressFormat.PNG,100,fos)
+                fos.close()
+            }
+
             repository.addDiaryEntry(DiaryEntry(
                 0,
                 repository.readLastEmotionalStateID(),
