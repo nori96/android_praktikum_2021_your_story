@@ -23,6 +23,9 @@ class SharedThoughtDialogViewModel(application: Application) : AndroidViewModel(
     // TakePictureFragment specific data
     var isInCaptureMode = true
 
+    //RecordText specific data
+    var isInWritingState = false
+
     // these values represent their null values
     var image = MutableLiveData(Bitmap.createBitmap(1,1,Bitmap.Config.ARGB_8888))
     var location = MutableLiveData(LatLng(0.0, 0.0))

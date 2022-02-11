@@ -22,25 +22,36 @@ class RecordTextFragment : Fragment() {
     private val binding get() = _binding!!
     private lateinit var textView: EditText
 
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        super.onCreate(savedInstanceState)
+
         _binding = RecordTextFragmentBinding.inflate(inflater, container, false)
         hostFragmentNavController = NavHostFragment.findNavController(this)
         viewModelShared = ViewModelProvider(requireActivity())[SharedThoughtDialogViewModel::class.java]
 
         textView = _binding!!.thoughtRecordedText
+
         viewModelShared.text.observe(viewLifecycleOwner,{
-            newText -> textView.setText(newText, TextView.BufferType.EDITABLE)
+            newText ->
+            if(viewModelShared.isInWritingState){
+                return@observe
+            }
+            textView.setText(newText, TextView.BufferType.EDITABLE)
+            viewModelShared.isInWritingState = true
         })
 
 
         binding.confirmThoughtDialogText.setOnClickListener {
             viewModelShared.text.value = textView.text.toString()
+            viewModelShared.isInWritingState = false
             hostFragmentNavController.navigate(R.id.action_recordTextFragment_to_thought_dialog)
         }
         binding.cancelThoughtDialogText.setOnClickListener {
+            viewModelShared.isInWritingState = false
             hostFragmentNavController.navigate(R.id.action_recordTextFragment_to_thought_dialog)
         }
 

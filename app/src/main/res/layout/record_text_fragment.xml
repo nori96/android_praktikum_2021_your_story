@@ -18,6 +18,7 @@
             android:layout_marginTop="32dp"
             android:layout_marginEnd="32dp"
             android:layout_marginBottom="32dp"
+            android:saveEnabled="true"
             android:ems="10"
             android:gravity="top|start"
             android:hint="@string/click_to_write_a_message"
