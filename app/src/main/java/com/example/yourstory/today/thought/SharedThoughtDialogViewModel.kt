@@ -23,6 +23,9 @@ class SharedThoughtDialogViewModel(application: Application) : AndroidViewModel(
     // TakePictureFragment specific data
     var isInCaptureMode = true
 
+    //ReordLocationFragment specific data
+    var tmpLocation = MutableLiveData(LatLng(0.0, 0.0))
+
     //RecordText specific data
     var isInWritingState = false
 

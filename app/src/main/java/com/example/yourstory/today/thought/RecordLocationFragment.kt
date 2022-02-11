@@ -48,7 +48,7 @@ class RecordLocationFragment : Fragment(), OnMapReadyCallback, LocationListener 
             hostFragmentNavController.navigate(R.id.action_recordLocationFragment_to_thought_dialog)
         }
 
-        viewModelShared.location.observe(viewLifecycleOwner,{
+        viewModelShared.tmpLocation.observe(viewLifecycleOwner,{
             userLocation = it
             if(this.mapView == null){
                 return@observe
@@ -65,7 +65,6 @@ class RecordLocationFragment : Fragment(), OnMapReadyCallback, LocationListener 
         getLocation()
         binding.recordLocationMapView.onCreate(savedInstanceState)
         binding.recordLocationMapView.getMapAsync(this)
-        //userLocation = LatLng(getLocation()!!.latitude, getLocation()!!.longitude)
         return binding.root
     }
 
@@ -110,6 +109,6 @@ class RecordLocationFragment : Fragment(), OnMapReadyCallback, LocationListener 
     }
 
     override fun onLocationChanged(location: Location) {
-        viewModelShared.location.postValue(LatLng(location.latitude, location.longitude))
+        viewModelShared.tmpLocation.postValue(LatLng(location.latitude, location.longitude))
     }
 }
