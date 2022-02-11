@@ -31,6 +31,14 @@
     <string name="add_thought_location_dialog_heading">Record a Location</string>
     <string name="add_location_fragment_loading_text">Please wait. Your location gets calculated.</string>
 
+    <!-- help page -->
+    <string name="your_story_help_page_heading">Welcome to your Story.</string>
+    <string name="your_story_help_page_content">Your Story will provide you with an amazing possibility to capture interesting moments of your life in a diary
+    like manner. \n \n Its a diary which allows you more than an ordinary diary, since you can enrich your entries with additional information like pictures and audio.
+    On top of that you can use it to track your current emotional state based on six base emotions and you can plot graphs to check the development of your current mental state over time.
+    \n \n \n We thank you for using this app and if you like you can leave us some feedback as a comment in the app store.
+    </string>
+    <string name="your_story_help_page_devs">Your developers</string>
     <!--likert dialog -->
     <string name="likert_dialog_heading">Current emotional state</string>
     <string name="likert_dialog_start">Adjust sliders corresponding to your emotions.</string>

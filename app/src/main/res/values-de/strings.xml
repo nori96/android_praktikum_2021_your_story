@@ -40,6 +40,16 @@
     <string name="add_thought_location_dialog_heading">Speichere eine Koordinate</string>
     <string name="thought_empty_dialog_ok_button">Okay</string>
 
+    <!-- help page -->
+    <string name="your_story_help_page_heading">Willkommen zu Your Story.</string>
+    <string name="your_story_help_page_content">Your Story bietet Ihnen die Möglichkeit, interessante Momente Ihres Lebens in einem digitalen Tagebuch festzuhalten.
+     \n \n Es ist ein Tagebuch, das Ihnen mehr ermöglicht als ein gewöhnliches Tagebuch, da Sie Ihre Einträge mit zusätzlichen Informationen wie Bildern und Audioaufnahmen anreichern können.
+    Darüber hinaus können Sie damit Ihren aktuellen emotionalen Zustand anhand von sechs Basisemotionen verfolgen und an Diagrammen die Entwicklung Ihres aktuellen mentalen Zustands im Laufe der Zeit verfolgen.
+    \n \n \n Wir danken Ihnen für die Nutzung dieser App und wenn Sie möchten, können Sie uns ein Feedback als Kommentar im App Store hinterlassen.
+    </string>
+    <string name="your_story_help_page_devs">Ihre Entwickler</string>
+
+
     <!-- Record audio dialog -->
     <string name="record_audio_record_button">AUFNEHMEN</string>
     <string name="record_audio_stop_button">STOP</string>
