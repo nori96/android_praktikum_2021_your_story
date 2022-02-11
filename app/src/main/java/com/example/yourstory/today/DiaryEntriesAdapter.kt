@@ -16,10 +16,6 @@ import com.example.yourstory.database.data.DiaryEntry
 import com.example.yourstory.database.data.EmotionalState
 import com.example.yourstory.database.data.Entry
 import com.example.yourstory.utils.DateEpochConverter
-import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.MapView
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
 import java.io.File
 import java.io.IOException
 import android.view.ViewGroup.MarginLayoutParams
@@ -35,6 +31,15 @@ import android.animation.ValueAnimator
 import android.animation.Animator
 
 import android.animation.AnimatorListenerAdapter
+import android.content.Context.*
+
+import android.view.LayoutInflater
+import androidx.core.content.ContextCompat.getSystemService
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.MapView
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
+import kotlinx.android.synthetic.main.insertable_map_view.view.*
 
 class DiaryEntriesAdapter(var lifeCycleOwner: LifecycleOwner) : RecyclerView.Adapter<DiaryEntriesAdapter.ViewHolder>() {
 
@@ -97,7 +102,10 @@ class DiaryEntriesAdapter(var lifeCycleOwner: LifecycleOwner) : RecyclerView.Ada
             } else {
                 locationFlag = true
                 holder.diaryLocation.clipToOutline = true
-                holder.locationMapView.getMapAsync { map ->
+                val mapContainer = View.inflate(context, R.layout.insertable_map_view, holder.diaryLocationViewGroupHolder as ViewGroup)
+                val mapView = mapContainer.main_today_map_view
+                (mapView as MapView).onCreate(null)
+                mapView.getMapAsync { map ->
                     val location = LatLng(entry.locationLat, entry.locationLong)
                     map.addMarker(
                         MarkerOptions()
@@ -106,8 +114,9 @@ class DiaryEntriesAdapter(var lifeCycleOwner: LifecycleOwner) : RecyclerView.Ada
                     map.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 11f))
                     map.uiSettings.setAllGesturesEnabled(false)
                     map.uiSettings.isMapToolbarEnabled = false
-                    holder.locationMapView.onResume()
+                    mapView.onResume()
                 }
+
             }
 
             if (entry.audio == "" && holder.diaryAudio.parent != null) {
@@ -347,8 +356,6 @@ class DiaryEntriesAdapter(var lifeCycleOwner: LifecycleOwner) : RecyclerView.Ada
             holder.sadnessEmoji.alpha = (0.2 + ((state.sadness.toFloat()/5) * 0.8)).toFloat()
             holder.fearEmoji.alpha = (0.2 + ((state.fear.toFloat()/5) * 0.8)).toFloat()
             holder.disgustEmoji.alpha = (0.2 + ((state.disgust.toFloat()/5) * 0.8)).toFloat()
-
-
         }
 
         if(!selectedItems.contains(position)){
@@ -411,13 +418,14 @@ class DiaryEntriesAdapter(var lifeCycleOwner: LifecycleOwner) : RecyclerView.Ada
         todayViewModel.deleteState.postValue(false)
     }
 
-    inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView), View.OnTouchListener{
+    inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView)/*, View.OnTouchListener*/{
         // entry nodes
         val diaryText: TextView = itemView.findViewById(R.id.main_today_text)
         val diaryImage: ImageView = itemView.findViewById(R.id.main_today_image)
         val diaryAudio: View = itemView.findViewById(R.id.main_today_audio_source)
         val diaryLocation: CardView = itemView.findViewById(R.id.main_today_location)
-        val locationMapView: MapView = itemView.findViewById(R.id.main_today_map_view)
+        val diaryLocationViewGroupHolder: LinearLayout = itemView.findViewById(R.id.main_today_map_view_holder)
+        //val locationMapView: MapView = itemView.findViewById(R.id.main_today_map_view)
         val playButton: ImageView = itemView.findViewById(R.id.entry_diary_play_button)
         val seekBar: SeekBar = itemView.findViewById(R.id.entry_diary_seek_bar)
         val date: TextView = itemView.findViewById((R.id.entry_date))
@@ -439,13 +447,13 @@ class DiaryEntriesAdapter(var lifeCycleOwner: LifecycleOwner) : RecyclerView.Ada
         val disgustEmoji: ImageView = itemView.findViewById(R.id.emoji_today_disgust)
         // special handling for maps, it seems to be necessary
         init {
-            locationMapView.onCreate(null)
+            //locationMapView.onCreate(null)
         }
 
-        override fun onTouch(v: View?, event: MotionEvent?): Boolean {
+        /*override fun onTouch(v: View?, event: MotionEvent?): Boolean {
             v!!.parent.requestDisallowInterceptTouchEvent(true)
             return false
-        }
+        }*/
     }
     fun setData(diaries: List<Entry>){
         if (diaries.isEmpty()) {
@@ -477,7 +485,7 @@ class DiaryEntriesAdapter(var lifeCycleOwner: LifecycleOwner) : RecyclerView.Ada
     }
 
     fun removeDiaryEntries() {
-        var tempList = arrayListOf<Entry>()
+        val tempList = arrayListOf<Entry>()
         for (entry in todayModelData){
             if(entry !is DiaryEntry){
                 tempList.add(entry)
@@ -488,7 +496,7 @@ class DiaryEntriesAdapter(var lifeCycleOwner: LifecycleOwner) : RecyclerView.Ada
     }
 
     fun removeEmotionalStates() {
-        var tempList = arrayListOf<Entry>()
+        val tempList = arrayListOf<Entry>()
         for (entry in todayModelData){
             if(entry !is EmotionalState){
                 tempList.add(entry)
