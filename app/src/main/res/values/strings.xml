@@ -29,6 +29,7 @@
     <string name="add_thought_audio_dialog_heading">Record some Audio</string>
     <string name="add_thought_text_dialog_heading">Write down some Text</string>
     <string name="add_thought_location_dialog_heading">Record a Location</string>
+    <string name="add_location_fragment_loading_text">Please wait. Your location gets calculated.</string>
 
     <!--likert dialog -->
     <string name="likert_dialog_heading">Current emotional state</string>

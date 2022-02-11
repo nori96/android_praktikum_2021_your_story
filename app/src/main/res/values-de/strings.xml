@@ -35,6 +35,7 @@
     <string name="thought_dialog_permission_audio_permanently">Erlauben Sie den Zugriff auf das Mikrophon in den Einstellungen. Dies ist notwendig, um eine Audio einem Tagebucheintrag hinzuzufügen.</string>
     <string name="add_thought_image_dialog_heading">Nimm ein Bild auf</string>
     <string name="add_thought_audio_dialog_heading">Nimm Audio auf</string>
+    <string name="add_location_fragment_loading_text">Bitte warte. Deine Position wird berechnet.</string>
     <string name="add_thought_text_dialog_heading">Schreib einen Text auf</string>
     <string name="add_thought_location_dialog_heading">Speichere eine Koordinate</string>
     <string name="thought_empty_dialog_ok_button">Okay</string>

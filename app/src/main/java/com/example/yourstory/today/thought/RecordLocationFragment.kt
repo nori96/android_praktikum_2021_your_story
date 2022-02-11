@@ -1,6 +1,7 @@
 package com.example.yourstory.today.thought
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -19,6 +20,7 @@ import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
 import android.content.Context.LOCATION_SERVICE
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java.lang.Exception
 
 
@@ -30,6 +32,8 @@ class RecordLocationFragment : Fragment(), OnMapReadyCallback, LocationListener 
     private var _binding: RecordLocationFragmentBinding? = null
     private val binding get() = _binding!!
     private lateinit var userLocation: LatLng
+    private var loadingDialogBuilder: MaterialAlertDialogBuilder? = null
+    private var loadingDialog: androidx.appcompat.app.AlertDialog? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,6 +42,22 @@ class RecordLocationFragment : Fragment(), OnMapReadyCallback, LocationListener 
         _binding = RecordLocationFragmentBinding.inflate(inflater, container, false)
         hostFragmentNavController = NavHostFragment.findNavController(this)
         viewModelShared = ViewModelProvider(requireActivity())[SharedThoughtDialogViewModel::class.java]
+
+        if (viewModelShared.loading.value!!) {
+            loadingDialogBuilder = MaterialAlertDialogBuilder(requireContext())
+            loadingDialogBuilder!!.setView(R.layout.loading_dialog_add_location)
+            loadingDialogBuilder!!.setCancelable(false)
+            loadingDialog = loadingDialogBuilder!!.show()
+        }
+
+        viewModelShared.loading.observe(viewLifecycleOwner, {
+            if (!viewModelShared.loading.value!!) {
+                if (loadingDialogBuilder != null && loadingDialog != null) {
+                    loadingDialogBuilder!!.setCancelable(true)
+                    loadingDialog!!.dismiss()
+                }
+            }
+        })
 
         binding.confirmThoughtDialogLocation.setOnClickListener {
             viewModelShared.location.value = userLocation
@@ -53,6 +73,8 @@ class RecordLocationFragment : Fragment(), OnMapReadyCallback, LocationListener 
             if(this.mapView == null){
                 return@observe
             }
+            viewModelShared.loading.value = false
+            viewModelShared.loading.value = true
             mapView?.addMarker(
                 MarkerOptions()
                     .position(it)
