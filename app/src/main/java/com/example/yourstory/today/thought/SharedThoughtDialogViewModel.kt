@@ -83,5 +83,17 @@ class SharedThoughtDialogViewModel(application: Application) : AndroidViewModel(
         location.postValue(LatLng(0.0,0.0))
         audio.postValue("")
         text.postValue("")
+        if (mediaRecorder != null) {
+            mediaRecorder!!.release()
+            mediaRecorder = null
+        }
+        if (player != null) {
+            player!!.release()
+            player = null
+        }
+        audioFileName = ""
+        chronometerElapsedTime = 0L
+
+
     }
 }

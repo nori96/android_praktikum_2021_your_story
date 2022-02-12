@@ -34,7 +34,6 @@ import android.animation.AnimatorListenerAdapter
 import android.content.Context.*
 
 import android.view.LayoutInflater
-import androidx.core.content.ContextCompat.getSystemService
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.model.LatLng
@@ -48,7 +47,6 @@ class DiaryEntriesAdapter(var lifeCycleOwner: LifecycleOwner) : RecyclerView.Ada
     private lateinit var context: Context
     private lateinit var selectedItems: ArrayList<Int>
     private lateinit var todayViewModel: TodayViewModel
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DiaryEntriesAdapter.ViewHolder {
         view = LayoutInflater.from(parent.context).inflate(R.layout.text_entry_diary_layout, parent, false)

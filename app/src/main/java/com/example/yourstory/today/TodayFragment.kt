@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import com.example.yourstory.MainActivity
 import com.example.yourstory.R
 import com.example.yourstory.database.data.DiaryEntry
 import com.example.yourstory.database.data.Entry
@@ -50,6 +51,19 @@ class TodayFragment : Fragment() {
         sharedViewModel.resetData()
         recyclerView.adapter = DiaryEntriesAdapter(this)
 
+        hostFramentNavController.addOnDestinationChangedListener { _, destination, _ ->
+            if (destination.id != R.id.navigation_today) {
+                if (viewModel.todayMediaPlayer != null) {
+                    viewModel.todayMediaPlayer!!.stop()
+                    viewModel.todayMediaPlayer!!.release()
+                    viewModel.todayMediaPlayer = null
+                    viewModel.currentAudioTrack.value = ""
+                    viewModel.mediaPlayerRunning.value = false
+                }
+            }
+        }
+
+
         viewModel.todayDiaryEntryData.observe(viewLifecycleOwner, { newDiaryEntries ->
             val todayEntries = newDiaryEntries as List<Entry>
             if(todayEntries.isEmpty()) {
@@ -71,7 +85,6 @@ class TodayFragment : Fragment() {
         likertFab = binding.likertFab
         thoughtFab = binding.thoughtFab
 
-        //Setup Floating-Action-Button
         binding.rootFab.setOnClickListener {
             if (!fabClicked) {
                 likertFab.visibility = View.VISIBLE
