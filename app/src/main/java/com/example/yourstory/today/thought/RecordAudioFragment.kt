@@ -109,7 +109,8 @@ class RecordAudioFragment : Fragment() {
         binding.confirmThoughtDialogAudio.setOnClickListener {
             if (viewModelShared.audioFileName != "") {
                 viewModelShared.audio.value = viewModelShared.audioFileName
-                revertUserActions()
+                viewModelShared.clearAudioData()
+                //revertUserActions()
                 hostFragmentNavController.navigate(R.id.action_recordAudioFragment_to_thought_dialog)
             } else {
                 alertDialogBuilder.setTitle(R.string.record_audio_no_audio_submit_heading)
@@ -119,7 +120,8 @@ class RecordAudioFragment : Fragment() {
             }
         }
         binding.cancelThoughtDialogAudio.setOnClickListener {
-            revertUserActions()
+            //revertUserActions()
+            viewModelShared.clearAudioData()
             hostFragmentNavController.navigate(R.id.action_recordAudioFragment_to_thought_dialog)
         }
         return binding.root
@@ -132,7 +134,7 @@ class RecordAudioFragment : Fragment() {
         return file.path
     }
 
-    private fun revertUserActions() {
+    /*fun revertUserActions() {
         stopPlayer()
         if (viewModelShared.mediaRecorder != null) {
             viewModelShared.mediaRecorder?.apply {
@@ -144,9 +146,9 @@ class RecordAudioFragment : Fragment() {
         viewModelShared.audioFileName = ""
         viewModelShared.mediaRecorder = null
         viewModelShared.player = null
-    }
+    }*/
 
-    private fun stopPlayer() {
+    fun stopPlayer() {
         if (viewModelShared.player != null && viewModelShared.player!!.isPlaying) {
             viewModelShared.player!!.stop()
         }

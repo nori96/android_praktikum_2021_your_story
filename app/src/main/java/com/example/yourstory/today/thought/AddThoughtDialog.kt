@@ -1,13 +1,16 @@
 package com.example.yourstory.today.thought
 
 import android.Manifest
+import android.content.Context
 import android.graphics.Bitmap
+import android.location.LocationManager
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.navigation.NavController
 import com.example.yourstory.R
 import com.vmadalin.easypermissions.EasyPermissions
@@ -17,6 +20,7 @@ import androidx.navigation.fragment.NavHostFragment.findNavController
 import com.example.yourstory.today.TodayViewModel
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import java.security.Provider
 
 class AddThoughtDialog : Fragment(), EasyPermissions.PermissionCallbacks {
 
@@ -47,7 +51,17 @@ class AddThoughtDialog : Fragment(), EasyPermissions.PermissionCallbacks {
 
         binding.thoughtLocationCardView.setOnClickListener {
             if (hasLocationPermission()) {
-                hostFragmentNavController.navigate(R.id.action_thought_dialog_to_recordLocationFragment)
+                val locationManager = requireActivity().getSystemService(Context.LOCATION_SERVICE) as LocationManager
+                if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                    hostFragmentNavController.navigate(R.id.action_thought_dialog_to_recordLocationFragment)
+                } else {
+                    materialAlertDialogBuilder.setTitle(R.string.add_thought_no_gps_dialog_heading)
+                    materialAlertDialogBuilder.setMessage(R.string.add_thought_no_gps_text)
+                    materialAlertDialogBuilder.setPositiveButton(R.string.thought_empty_dialog_ok_button) {
+                            _, _ ->
+                    }
+                    materialAlertDialogBuilder.show()
+                }
             } else {
                 requestLocationPermission()
             }
