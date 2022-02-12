@@ -1,17 +1,15 @@
 package com.example.yourstory.today
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
-import com.example.yourstory.MainActivity
 import com.example.yourstory.R
-import com.example.yourstory.database.data.DiaryEntry
 import com.example.yourstory.database.data.Entry
 import com.example.yourstory.databinding.TodayFragmentBinding
 import com.example.yourstory.today.thought.SharedThoughtDialogViewModel
@@ -121,15 +119,5 @@ class TodayFragment : Fragment() {
             (recyclerView.adapter as DiaryEntriesAdapter).deleteSelectedEntries()
         }
         return binding.root
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        //resetAudio()
-    }
-    private fun resetAudio() {
-        viewModel.todayMediaPlayer!!.pause()
-        viewModel.mediaPlayerRunning.value = false
-        viewModel.currentAudioTrack.value = ""
     }
 }

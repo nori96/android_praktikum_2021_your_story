@@ -2,7 +2,6 @@ package com.example.yourstory.database.data
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import java.util.*
 
 @Entity(tableName = "emotional_states_table")
 class EmotionalState(

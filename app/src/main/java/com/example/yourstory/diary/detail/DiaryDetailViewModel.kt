@@ -48,7 +48,6 @@ class DiaryDetailViewModel(application: Application) : AndroidViewModel(applicat
                     repository.diaryEntryDao.deleteDiaryEntryById(entry.id)
                 }
                 if(entry is EmotionalState){
-                    System.out.println(entry.id)
                     repository.emotionalStateDao.deleteEmotionalStateByID(entry.id)
                 }
             }

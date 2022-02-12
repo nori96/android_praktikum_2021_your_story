@@ -3,15 +3,13 @@ package com.example.yourstory.today.thought
 import android.media.MediaPlayer
 import android.media.MediaRecorder
 import android.media.MediaRecorder.AudioSource.MIC
-import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.os.SystemClock
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.RequiresApi
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -133,20 +131,6 @@ class RecordAudioFragment : Fragment() {
         val file = File(musicDirectory, "$fileName.3gp")
         return file.path
     }
-
-    /*fun revertUserActions() {
-        stopPlayer()
-        if (viewModelShared.mediaRecorder != null) {
-            viewModelShared.mediaRecorder?.apply {
-                stop()
-                release()
-            }
-        }
-        viewModelShared.chronometerElapsedTime = 0L
-        viewModelShared.audioFileName = ""
-        viewModelShared.mediaRecorder = null
-        viewModelShared.player = null
-    }*/
 
     fun stopPlayer() {
         if (viewModelShared.player != null && viewModelShared.player!!.isPlaying) {

@@ -6,15 +6,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.yourstory.database.Repository
-import com.example.yourstory.database.data.DiaryEntry
-import com.example.yourstory.database.data.EmotionalState
 import com.example.yourstory.database.data.ReportEntry
 import com.example.yourstory.utils.DateEpochConverter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.joda.time.DateTime
 import java.util.*
-import kotlin.collections.ArrayList
 
 class ReportsViewModel(application: Application) : AndroidViewModel(application) {
 

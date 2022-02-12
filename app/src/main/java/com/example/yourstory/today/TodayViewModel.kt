@@ -10,7 +10,6 @@ import com.example.yourstory.database.Repository
 import com.example.yourstory.database.data.DiaryEntry
 import com.example.yourstory.database.data.EmotionalState
 import com.example.yourstory.database.data.Entry
-import com.example.yourstory.utils.DateEpochConverter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.joda.time.DateTime
@@ -40,7 +39,6 @@ class TodayViewModel(application: Application) : AndroidViewModel(application) {
                     repository.diaryEntryDao.deleteDiaryEntryById(entry.id)
                 }
                 if(entry is EmotionalState){
-                    System.out.println(entry.id)
                     repository.emotionalStateDao.deleteEmotionalStateByID(entry.id)
                 }
             }

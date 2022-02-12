@@ -1,11 +1,9 @@
 package com.example.yourstory.utils
 
 import android.content.Context
-import android.content.res.Resources
 import com.example.yourstory.R
 import org.joda.time.DateTime
 import org.joda.time.DateTimeZone
-import org.joda.time.MonthDay
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -19,7 +17,7 @@ class DateEpochConverter {
             return DateTime().withZone(DateTimeZone.forID( "Europe/London" )).millis / 1000
         }
         fun convertEpochToDateTime(epochString: Long): DateTime {
-            // TODO shold return with local time zone
+            // TODO should return with local time zone
             return DateTime(epochString * 1000).withZone(DateTimeZone.forID( "Europe/Berlin" ))
         }
 

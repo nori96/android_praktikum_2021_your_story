@@ -1,23 +1,19 @@
 package com.example.yourstory.reports
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
-import androidx.lifecycle.Observer
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.yourstory.R
-import com.example.yourstory.database.data.Entry
 import com.example.yourstory.databinding.ReportsFragmentBinding
-import com.example.yourstory.diary.DiaryAdapter
-import com.example.yourstory.today.DiaryEntriesAdapter
 import org.joda.time.DateTime
 
 class ReportsFragment : Fragment(), AdapterView.OnItemSelectedListener{

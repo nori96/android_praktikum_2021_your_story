@@ -7,7 +7,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
 import android.media.MediaPlayer
-import android.text.method.ScrollingMovementMethod
 import android.view.*
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -275,39 +274,6 @@ class DiaryDetailEntriesAdapter(var lifeCycleOwner: LifecycleOwner) : RecyclerVi
                         R.dimen.new_image_width).toInt()
                     (holder.diaryImage.layoutParams as LinearLayout.LayoutParams).gravity =  Gravity.CENTER
                     holder.firstRowLinearLayout.orientation = LinearLayout.VERTICAL
-                    /*val layoutParams = holder.diaryImage.layoutParams as ViewGroup.MarginLayoutParams
-                    layoutParams.bottomMargin = holder.itemView.context.resources.getDimension(R.dimen.standard_margin).toInt()
-                    holder.diaryImage.layoutParams = layoutParams*/
-                    /*if (textFlag) {
-                        (holder.diaryText.parent as ViewGroup).removeView(holder.diaryText)
-                        val layoutParams = holder.diaryText.layoutParams as ViewGroup.MarginLayoutParams
-                        layoutParams.bottomMargin = 0
-                        layoutParams.topMargin = 0
-                        holder.diaryText.layoutParams = layoutParams
-                        holder.diaryText.movementMethod = ScrollingMovementMethod()
-                        holder.firstRowLinearLayoutSecondItem.addView(holder.diaryText)
-                        if (audioFlag) {
-                            val layoutParamsImage = holder.diaryImage.layoutParams as ViewGroup.MarginLayoutParams
-                            layoutParamsImage.bottomMargin = holder.itemView.context.resources.getDimension(
-                                R.dimen.standard_margin).toInt()
-                            holder.diaryImage.layoutParams = layoutParamsImage
-                            val layoutParamsText = holder.diaryText.layoutParams as ViewGroup.MarginLayoutParams
-                            layoutParamsText.bottomMargin = holder.itemView.context.resources.getDimension(
-                                R.dimen.standard_margin).toInt()
-                            holder.diaryText.layoutParams = layoutParamsText
-
-                        }
-                    } else {
-                        (holder.firstRowLinearLayoutSecondItem.parent as ViewGroup).removeView(holder.firstRowLinearLayoutSecondItem)
-                        (holder.diaryImage.layoutParams as LinearLayout.LayoutParams).weight = 0f
-                        holder.diaryImage.layoutParams.width = holder.itemView.context.resources.getDimension(
-                            R.dimen.new_image_width).toInt()
-                        (holder.diaryImage.layoutParams as LinearLayout.LayoutParams).gravity =  Gravity.CENTER
-                        holder.firstRowLinearLayout.orientation = LinearLayout.VERTICAL
-                        val layoutParams = holder.diaryImage.layoutParams as ViewGroup.MarginLayoutParams
-                        layoutParams.bottomMargin = holder.itemView.context.resources.getDimension(R.dimen.standard_margin).toInt()
-                        holder.diaryImage.layoutParams = layoutParams
-                    }*/
                 }
             }
             if (!textFlag && audioFlag) {

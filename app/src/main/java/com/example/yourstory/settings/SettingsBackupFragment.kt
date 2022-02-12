@@ -3,39 +3,25 @@ package com.example.yourstory.settings
 import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.graphics.Color
-import android.graphics.drawable.Drawable
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import com.example.yourstory.R
-import com.example.yourstory.database.Repository
-import com.example.yourstory.database.Repository.Companion.googleDriveService
 import com.example.yourstory.databinding.SettingsBackupLoggedInFragmentBinding
 import com.example.yourstory.databinding.SettingsBackupNotLoggedInFragmentBinding
-import com.fasterxml.jackson.core.JsonFactory
 import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.SignInButton
 import com.google.android.gms.common.api.Scope
-import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.api.client.extensions.android.http.AndroidHttp
-import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential
-import com.google.api.client.http.FileContent
-import com.google.api.client.json.jackson2.JacksonFactory
-import com.google.api.services.drive.Drive
 import com.google.api.services.drive.DriveScopes
-import org.joda.time.DateTime
-import org.joda.time.DateTimeZone
-import java.io.File
 
 class SettingsBackupFragment : Fragment() {
 

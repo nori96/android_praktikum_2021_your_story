@@ -1,44 +1,40 @@
 package com.example.yourstory.today
+
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
+import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Context.*
+import android.graphics.Color
 import android.media.MediaPlayer
-import android.text.method.ScrollingMovementMethod
 import android.view.*
+import android.view.LayoutInflater
+import android.view.ViewGroup.MarginLayoutParams
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.SeekBar
 import android.widget.TextView
 import androidx.cardview.widget.CardView
+import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
+import com.example.yourstory.MainActivity
 import com.example.yourstory.R
 import com.example.yourstory.database.data.DiaryEntry
 import com.example.yourstory.database.data.EmotionalState
 import com.example.yourstory.database.data.Entry
 import com.example.yourstory.utils.DateEpochConverter
-import java.io.File
-import java.io.IOException
-import android.view.ViewGroup.MarginLayoutParams
-import androidx.lifecycle.ViewModelProvider
-import kotlinx.android.synthetic.main.text_entry_diary_layout.view.*
-import com.example.yourstory.MainActivity
-import android.graphics.Color
-import android.view.MotionEvent
-import android.view.ViewConfiguration
-import androidx.core.content.ContextCompat
-import androidx.lifecycle.LifecycleOwner
-import android.animation.ValueAnimator
-import android.animation.Animator
-
-import android.animation.AnimatorListenerAdapter
-import android.content.Context.*
-
-import android.view.LayoutInflater
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import kotlinx.android.synthetic.main.insertable_map_view.view.*
+import kotlinx.android.synthetic.main.text_entry_diary_layout.view.*
+import java.io.File
+import java.io.IOException
 
 class DiaryEntriesAdapter(var lifeCycleOwner: LifecycleOwner) : RecyclerView.Adapter<DiaryEntriesAdapter.ViewHolder>() {
 
@@ -284,41 +280,6 @@ class DiaryEntriesAdapter(var lifeCycleOwner: LifecycleOwner) : RecyclerView.Ada
                     holder.diaryImage.layoutParams.width = holder.itemView.context.resources.getDimension(R.dimen.new_image_width).toInt()
                     (holder.diaryImage.layoutParams as LinearLayout.LayoutParams).gravity =  Gravity.CENTER
                     holder.firstRowLinearLayout.orientation = LinearLayout.VERTICAL
-                    /*val layoutParams = holder.diaryImage.layoutParams as MarginLayoutParams
-                    layoutParams.bottomMargin = holder.itemView.context.resources.getDimension(R.dimen.standard_margin).toInt()
-                    holder.diaryImage.layoutParams = layoutParams*/
-                    /*if (textFlag) {
-                        (holder.diaryText.parent as ViewGroup).removeView(holder.diaryText)
-                        val layoutParams = holder.diaryText.layoutParams as MarginLayoutParams
-                        layoutParams.bottomMargin = 0
-                        layoutParams.topMargin = 0
-                        holder.diaryText.layoutParams = layoutParams
-                        holder.diaryText.isNestedScrollingEnabled = true
-                        holder.diaryText.setOnTouchListener { v, _ ->
-                            v.parent.requestDisallowInterceptTouchEvent(true)
-                            false
-                        }
-                        holder.diaryText.movementMethod = ScrollingMovementMethod()
-                        holder.firstRowLinearLayoutSecondItem.addView(holder.diaryText)
-                        if (audioFlag) {
-                            val layoutParamsImage = holder.diaryImage.layoutParams as MarginLayoutParams
-                            layoutParamsImage.bottomMargin = holder.itemView.context.resources.getDimension(R.dimen.standard_margin).toInt()
-                            holder.diaryImage.layoutParams = layoutParamsImage
-                            val layoutParamsText = holder.diaryText.layoutParams as MarginLayoutParams
-                            layoutParamsText.bottomMargin = holder.itemView.context.resources.getDimension(R.dimen.standard_margin).toInt()
-                            holder.diaryText.layoutParams = layoutParamsText
-
-                        }
-                    } else {
-                        (holder.firstRowLinearLayoutSecondItem.parent as ViewGroup).removeView(holder.firstRowLinearLayoutSecondItem)
-                        (holder.diaryImage.layoutParams as LinearLayout.LayoutParams).weight = 0f
-                        holder.diaryImage.layoutParams.width = holder.itemView.context.resources.getDimension(R.dimen.new_image_width).toInt()
-                        (holder.diaryImage.layoutParams as LinearLayout.LayoutParams).gravity =  Gravity.CENTER
-                        holder.firstRowLinearLayout.orientation = LinearLayout.VERTICAL
-                        val layoutParams = holder.diaryImage.layoutParams as MarginLayoutParams
-                        layoutParams.bottomMargin = holder.itemView.context.resources.getDimension(R.dimen.standard_margin).toInt()
-                        holder.diaryImage.layoutParams = layoutParams
-                    }*/
                 }
             }
             if (!textFlag && audioFlag) {
@@ -424,14 +385,13 @@ class DiaryEntriesAdapter(var lifeCycleOwner: LifecycleOwner) : RecyclerView.Ada
         todayViewModel.deleteState.postValue(false)
     }
 
-    inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView)/*, View.OnTouchListener*/{
+    inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         // entry nodes
         val diaryText: TextView = itemView.findViewById(R.id.main_today_text)
         val diaryImage: ImageView = itemView.findViewById(R.id.main_today_image)
         val diaryAudio: View = itemView.findViewById(R.id.main_today_audio_source)
         val diaryLocation: CardView = itemView.findViewById(R.id.main_today_location)
         val diaryLocationViewGroupHolder: LinearLayout = itemView.findViewById(R.id.main_today_map_view_holder)
-        //val locationMapView: MapView = itemView.findViewById(R.id.main_today_map_view)
         val playButton: ImageView = itemView.findViewById(R.id.entry_diary_play_button)
         val seekBar: SeekBar = itemView.findViewById(R.id.entry_diary_seek_bar)
         val date: TextView = itemView.findViewById((R.id.entry_date))
@@ -451,15 +411,6 @@ class DiaryEntriesAdapter(var lifeCycleOwner: LifecycleOwner) : RecyclerView.Ada
         val sadnessEmoji: ImageView = itemView.findViewById(R.id.emoji_today_sadness)
         val fearEmoji: ImageView = itemView.findViewById(R.id.emoji_today_fear)
         val disgustEmoji: ImageView = itemView.findViewById(R.id.emoji_today_disgust)
-        // special handling for maps, it seems to be necessary
-        //init {
-            //locationMapView.onCreate(null)
-        //}
-
-        /*override fun onTouch(v: View?, event: MotionEvent?): Boolean {
-            v!!.parent.requestDisallowInterceptTouchEvent(true)
-            return false
-        }*/
     }
     fun setData(diaries: List<Entry>){
         if (diaries.isEmpty()) {

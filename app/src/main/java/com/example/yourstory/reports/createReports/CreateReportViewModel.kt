@@ -1,14 +1,13 @@
 package com.example.yourstory.reports.createReports
 
 import android.app.Application
-import android.graphics.Bitmap
-import android.util.Log
-import androidx.lifecycle.*
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.example.yourstory.database.Repository
-import com.example.yourstory.database.data.DiaryEntry
 import com.example.yourstory.database.data.EmotionalState
 import com.example.yourstory.database.data.ReportEntry
-import com.example.yourstory.diary.DiaryListModel
 import com.example.yourstory.utils.DateEpochConverter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

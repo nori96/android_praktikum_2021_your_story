@@ -1,15 +1,12 @@
 package com.example.yourstory.help
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.text.method.ScrollingMovementMethod
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.yourstory.R
+import androidx.fragment.app.Fragment
 import com.example.yourstory.databinding.HelpFragmentBinding
-import com.example.yourstory.databinding.ReportsFragmentBinding
 
 class HelpFragment : Fragment() {
 

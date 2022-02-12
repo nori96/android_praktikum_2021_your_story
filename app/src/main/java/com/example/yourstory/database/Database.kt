@@ -6,7 +6,6 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.yourstory.database.data.*
 import java.io.File
-import java.security.AccessControlContext
 
 @Database(entities = [DiaryEntry::class, EmotionalState::class, ReportEntry::class], version = 1, exportSchema = false)
 abstract class Database: RoomDatabase() {

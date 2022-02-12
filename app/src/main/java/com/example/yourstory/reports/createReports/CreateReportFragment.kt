@@ -1,12 +1,11 @@
 package com.example.yourstory.reports.createReports
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import com.example.yourstory.R
@@ -14,20 +13,18 @@ import com.example.yourstory.database.data.EmotionalState
 import com.example.yourstory.databinding.CreateReportFragmentBinding
 import com.example.yourstory.utils.DateEpochConverter
 import com.github.mikephil.charting.animation.Easing
-import com.github.mikephil.charting.utils.ColorTemplate
-import com.savvi.rangedatepicker.CalendarPickerView
-import org.joda.time.DateTime
-import org.joda.time.DateTimeZone
-import java.util.*
-import java.text.SimpleDateFormat
-import java.util.Date;
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.*
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
+import com.github.mikephil.charting.utils.ColorTemplate
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.savvi.rangedatepicker.CalendarPickerView
+import org.joda.time.DateTime
+import org.joda.time.DateTimeZone
 import org.joda.time.format.DateTimeFormat
 import org.joda.time.format.DateTimeFormatter
-
+import java.text.SimpleDateFormat
+import java.util.*
 
 class CreateReportFragment : Fragment() {
 
@@ -342,24 +339,16 @@ class CreateReportFragment : Fragment() {
 
     private fun setDateRanges() {
         if (datesAreSelected()) {
-            //Log.i("asdf",binding.createReportsCalendarRangePicker.selectedDates[0].toString())
-
             viewModel.firstSelectedDate.value = DateEpochConverter.convertDateTimeToEpoch (
                 DateTime(binding.createReportsCalendarRangePicker.selectedDates[0])
                     .withTime(0, 0, 0, 0).toDateTimeISO().toString()
             )
-            /*Log.i("asdf", binding.createReportsCalendarRangePicker.selectedDates.last().toString())
-            Log.i("asdf",DateTime(binding.createReportsCalendarRangePicker.selectedDates.last(),
-                DateTimeZone.forTimeZone(TimeZone.getTimeZone("GMT+1")))
-                .withTime(23, 59, 59, 999).toDateTimeISO().toString())*/
-            //TODO get local time zone programmatically, and probable bug in other usages of this kind
             viewModel.lastSelectedDate.value = DateEpochConverter.convertDateTimeToEpoch (
                 DateTime(binding.createReportsCalendarRangePicker.selectedDates.last(),
                     DateTimeZone.forTimeZone(TimeZone.getTimeZone("GMT+1")))
                     .withTime(23, 59, 59, 999).toDateTimeISO().toString()
             )
             viewModel.selectedDates.value = binding.createReportsCalendarRangePicker.selectedDates
-            //Log.i("asdf", DateEpochConverter.convertEpochToDateTime(viewModel.lastSelectedDate.value!!).toString())
         }
     }
 

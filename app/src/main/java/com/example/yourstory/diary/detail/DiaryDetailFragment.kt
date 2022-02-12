@@ -1,22 +1,15 @@
 package com.example.yourstory.diary.detail
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.RecyclerView
-import com.example.yourstory.MainActivity
-import com.example.yourstory.R
 import com.example.yourstory.database.data.Entry
-import com.example.yourstory.databinding.ActivityMainBinding
 import com.example.yourstory.databinding.DiaryDetailFragmentBinding
-import com.example.yourstory.today.DiaryEntriesAdapter
 import kotlinx.android.synthetic.main.activity_main.*
 
 class DiaryDetailFragment : Fragment() {
@@ -25,12 +18,6 @@ class DiaryDetailFragment : Fragment() {
     private val args: DiaryDetailFragmentArgs by navArgs()
     private lateinit var viewModel: DiaryDetailViewModel
     private lateinit var binding: DiaryDetailFragmentBinding
-
-    companion object {
-        fun newInstance() = DiaryDetailFragment()
-    }
-
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -84,7 +71,6 @@ class DiaryDetailFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         requireActivity().custom_toolbar.title = args.date.toString()
-        // TODO: Use the ViewModel
     }
 
 }

@@ -11,9 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.example.yourstory.MainActivity
 import com.example.yourstory.R
-import com.example.yourstory.database.data.Entry
 import com.example.yourstory.database.data.ReportEntry
-import com.example.yourstory.today.TodayViewModel
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.BarData
