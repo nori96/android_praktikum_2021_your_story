@@ -93,7 +93,5 @@ class SharedThoughtDialogViewModel(application: Application) : AndroidViewModel(
         }
         audioFileName = ""
         chronometerElapsedTime = 0L
-
-
     }
 }

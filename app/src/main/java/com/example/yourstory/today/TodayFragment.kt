@@ -48,7 +48,7 @@ class TodayFragment : Fragment() {
 
         viewModel = ViewModelProvider(requireActivity())[TodayViewModel::class.java]
         sharedViewModel = ViewModelProvider(requireActivity())[SharedThoughtDialogViewModel::class.java]
-        sharedViewModel.resetData()
+        //sharedViewModel.resetData()
         recyclerView.adapter = DiaryEntriesAdapter(this)
 
         hostFramentNavController.addOnDestinationChangedListener { _, destination, _ ->
