@@ -444,9 +444,9 @@ class DiaryEntriesAdapter(var lifeCycleOwner: LifecycleOwner) : RecyclerView.Ada
         val fearEmoji: ImageView = itemView.findViewById(R.id.emoji_today_fear)
         val disgustEmoji: ImageView = itemView.findViewById(R.id.emoji_today_disgust)
         // special handling for maps, it seems to be necessary
-        init {
+        //init {
             //locationMapView.onCreate(null)
-        }
+        //}
 
         /*override fun onTouch(v: View?, event: MotionEvent?): Boolean {
             v!!.parent.requestDisallowInterceptTouchEvent(true)

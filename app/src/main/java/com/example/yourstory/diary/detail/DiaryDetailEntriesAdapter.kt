@@ -29,6 +29,7 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import kotlinx.android.synthetic.main.insertable_map_view.view.*
 import kotlinx.android.synthetic.main.text_entry_diary_layout.view.*
 import java.io.File
 import java.io.IOException
@@ -91,7 +92,10 @@ class DiaryDetailEntriesAdapter(var lifeCycleOwner: LifecycleOwner) : RecyclerVi
             } else {
                 locationFlag = true
                 holder.diaryLocation.clipToOutline = true
-                holder.locationMapView.getMapAsync { map ->
+                val mapContainer = View.inflate(context, R.layout.insertable_map_view, holder.diaryLocationViewGroupHolder as ViewGroup)
+                val mapView = mapContainer.main_today_map_view
+                (mapView as MapView).onCreate(null)
+                mapView.getMapAsync { map ->
                     val location = LatLng(entry.locationLat, entry.locationLong)
                     map.addMarker(
                         MarkerOptions()
@@ -100,7 +104,7 @@ class DiaryDetailEntriesAdapter(var lifeCycleOwner: LifecycleOwner) : RecyclerVi
                     map.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 11f))
                     map.uiSettings.setAllGesturesEnabled(false)
                     map.uiSettings.isMapToolbarEnabled = false
-                    holder.locationMapView.onResume()
+                    mapView.onResume()
                 }
             }
 
@@ -139,6 +143,39 @@ class DiaryDetailEntriesAdapter(var lifeCycleOwner: LifecycleOwner) : RecyclerVi
                         diaryDetailViewModel.currentAudioTrack.value = ""
                     }
                 }
+                fun setupCurrentTrackRunning() {
+                    holder.seekBar.progress = diaryDetailViewModel.todayMediaPlayer!!.currentPosition
+                    holder.seekBar.max = diaryDetailViewModel.todayMediaPlayer!!.duration
+                    animSeekbar = ValueAnimator.ofInt(diaryDetailViewModel.todayMediaPlayer!!.currentPosition, holder.seekBar.max)
+                    animSeekbar!!.duration = diaryDetailViewModel.todayMediaPlayer!!.duration.toLong() - diaryDetailViewModel.todayMediaPlayer!!.currentPosition
+                    animSeekbar!!.addUpdateListener { animation ->
+                        val animProgress = animation.animatedValue as Int
+                        holder.seekBar.progress = animProgress
+                    }
+                    animSeekbar!!.addListener(object : AnimatorListenerAdapter() {
+                        override fun onAnimationEnd(animation: Animator) {
+                            holder.seekBar.progress = 0
+                        }
+                    })
+                    animSeekbar!!.start()
+                }
+                fun setupCurrentTrackPaused() {
+                    holder.seekBar.progress = diaryDetailViewModel.todayMediaPlayer!!.currentPosition
+                    holder.seekBar.max = diaryDetailViewModel.todayMediaPlayer!!.duration
+                    animSeekbar = ValueAnimator.ofInt(diaryDetailViewModel.todayMediaPlayer!!.currentPosition, holder.seekBar.max)
+                    animSeekbar!!.duration = diaryDetailViewModel.todayMediaPlayer!!.duration.toLong() - diaryDetailViewModel.todayMediaPlayer!!.currentPosition
+                    animSeekbar!!.addUpdateListener { animation ->
+                        val animProgress = animation.animatedValue as Int
+                        holder.seekBar.progress = animProgress
+                    }
+                    animSeekbar!!.addListener(object : AnimatorListenerAdapter() {
+                        override fun onAnimationEnd(animation: Animator) {
+                            holder.seekBar.progress = 0
+                        }
+                    })
+                    animSeekbar!!.start()
+                    animSeekbar!!.pause()
+                }
                 diaryDetailViewModel.mediaPlayerRunning.observe(lifeCycleOwner,{
                     if (diaryDetailViewModel.currentAudioTrack.value == entry.audio && diaryDetailViewModel.mediaPlayerRunning.value!!) {
                         holder.playButton.setImageResource(R.drawable.pause_icon_media_player)
@@ -156,22 +193,43 @@ class DiaryDetailEntriesAdapter(var lifeCycleOwner: LifecycleOwner) : RecyclerVi
 
                 if (diaryDetailViewModel.todayMediaPlayer != null &&
                     diaryDetailViewModel.mediaPlayerRunning.value!! && diaryDetailViewModel.currentAudioTrack.value == entry.audio) {
-                    holder.seekBar.progress = diaryDetailViewModel.todayMediaPlayer!!.currentPosition
-                    holder.seekBar.max = diaryDetailViewModel.todayMediaPlayer!!.duration
-                    animSeekbar = ValueAnimator.ofInt(diaryDetailViewModel.todayMediaPlayer!!.currentPosition, holder.seekBar.max)
-                    animSeekbar!!.duration = diaryDetailViewModel.todayMediaPlayer!!.duration.toLong() - diaryDetailViewModel.todayMediaPlayer!!.currentPosition
-                    animSeekbar!!.addUpdateListener { animation ->
-                        val animProgress = animation.animatedValue as Int
-                        holder.seekBar.progress = animProgress
-                    }
-                    animSeekbar!!.addListener(object : AnimatorListenerAdapter() {
-                        override fun onAnimationEnd(animation: Animator) {
-                            holder.seekBar.progress = 0
-                        }
-                    })
-                    animSeekbar!!.start()
+                    setupCurrentTrackRunning()
+                } else if (diaryDetailViewModel.todayMediaPlayer != null &&
+                    !diaryDetailViewModel.mediaPlayerRunning.value!! && diaryDetailViewModel.currentAudioTrack.value == entry.audio) {
+                    setupCurrentTrackPaused()
                 }
 
+                holder.seekBar.setOnSeekBarChangeListener (object: SeekBar.OnSeekBarChangeListener {
+                    override fun onProgressChanged(
+                        seekBar: SeekBar?,
+                        progress: Int,
+                        fromUser: Boolean
+                    ) {
+                        if (fromUser) {
+                            if (diaryDetailViewModel.todayMediaPlayer != null &&
+                                diaryDetailViewModel.mediaPlayerRunning.value!! && diaryDetailViewModel.currentAudioTrack.value == entry.audio) {
+                                if (animSeekbar != null) {
+                                    animSeekbar!!.removeAllListeners()
+                                    animSeekbar!!.cancel()
+                                }
+                                diaryDetailViewModel.todayMediaPlayer!!.seekTo(progress)
+                                setupCurrentTrackRunning()
+                            } else if (diaryDetailViewModel.todayMediaPlayer != null &&
+                                !diaryDetailViewModel.mediaPlayerRunning.value!! && diaryDetailViewModel.currentAudioTrack.value == entry.audio) {
+                                if (animSeekbar != null) {
+                                    animSeekbar!!.removeAllListeners()
+                                    animSeekbar!!.cancel()
+                                }
+                                diaryDetailViewModel.todayMediaPlayer!!.seekTo(progress)
+                                setupCurrentTrackPaused()
+                            }
+                        }
+                    }
+                    override fun onStartTrackingTouch(seekBar: SeekBar?) {
+                    }
+                    override fun onStopTrackingTouch(seekBar: SeekBar?) {
+                    }
+                })
                 holder.playButton.setOnClickListener {
                     if (diaryDetailViewModel.todayMediaPlayer != null &&
                         !diaryDetailViewModel.mediaPlayerRunning.value!! && diaryDetailViewModel.currentAudioTrack.value == entry.audio) {
@@ -189,8 +247,7 @@ class DiaryDetailEntriesAdapter(var lifeCycleOwner: LifecycleOwner) : RecyclerVi
                         })
                         animSeekbar!!.start()
                         diaryDetailViewModel.mediaPlayerRunning.value = true
-                    }
-                    else if (diaryDetailViewModel.mediaPlayerRunning.value!! && diaryDetailViewModel.currentAudioTrack.value == entry.audio) {
+                    } else if (diaryDetailViewModel.mediaPlayerRunning.value!! && diaryDetailViewModel.currentAudioTrack.value == entry.audio) {
                         diaryDetailViewModel.todayMediaPlayer!!.pause()
                         animSeekbar!!.pause()
                         diaryDetailViewModel.mediaPlayerRunning.value = false
@@ -210,7 +267,6 @@ class DiaryDetailEntriesAdapter(var lifeCycleOwner: LifecycleOwner) : RecyclerVi
                     }
                 }
             }
-
             if (imageFlag) {
                 if (!locationFlag) {
                     if (textFlag) {
@@ -356,7 +412,8 @@ class DiaryDetailEntriesAdapter(var lifeCycleOwner: LifecycleOwner) : RecyclerVi
         val diaryImage: ImageView = itemView.findViewById(R.id.main_today_image)
         val diaryAudio: View = itemView.findViewById(R.id.main_today_audio_source)
         val diaryLocation: CardView = itemView.findViewById(R.id.main_today_location)
-        val locationMapView: MapView = itemView.findViewById(R.id.main_today_map_view)
+        val diaryLocationViewGroupHolder: LinearLayout = itemView.findViewById(R.id.main_today_map_view_holder)
+        //val locationMapView: MapView = itemView.findViewById(R.id.main_today_map_view)
         val playButton: ImageView = itemView.findViewById(R.id.entry_diary_play_button)
         val seekBar: SeekBar = itemView.findViewById(R.id.entry_diary_seek_bar)
         val date: TextView = itemView.findViewById((R.id.entry_date))
@@ -377,9 +434,9 @@ class DiaryDetailEntriesAdapter(var lifeCycleOwner: LifecycleOwner) : RecyclerVi
         val fearEmoji: ImageView = itemView.findViewById(R.id.emoji_today_fear)
         val disgustEmoji: ImageView = itemView.findViewById(R.id.emoji_today_disgust)
         // special handling for maps, it seems to be necessary
-        init {
+        /*init {
             locationMapView.onCreate(null)
-        }
+        }*/
     }
     fun setData(diaries: List<Entry>){
         if (diaries.isEmpty()) {
