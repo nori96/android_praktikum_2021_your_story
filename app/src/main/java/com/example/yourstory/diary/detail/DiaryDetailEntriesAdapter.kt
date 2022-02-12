@@ -269,7 +269,16 @@ class DiaryDetailEntriesAdapter(var lifeCycleOwner: LifecycleOwner) : RecyclerVi
             }
             if (imageFlag) {
                 if (!locationFlag) {
-                    if (textFlag) {
+                    (holder.firstRowLinearLayoutSecondItem.parent as ViewGroup).removeView(holder.firstRowLinearLayoutSecondItem)
+                    (holder.diaryImage.layoutParams as LinearLayout.LayoutParams).weight = 0f
+                    holder.diaryImage.layoutParams.width = holder.itemView.context.resources.getDimension(
+                        R.dimen.new_image_width).toInt()
+                    (holder.diaryImage.layoutParams as LinearLayout.LayoutParams).gravity =  Gravity.CENTER
+                    holder.firstRowLinearLayout.orientation = LinearLayout.VERTICAL
+                    /*val layoutParams = holder.diaryImage.layoutParams as ViewGroup.MarginLayoutParams
+                    layoutParams.bottomMargin = holder.itemView.context.resources.getDimension(R.dimen.standard_margin).toInt()
+                    holder.diaryImage.layoutParams = layoutParams*/
+                    /*if (textFlag) {
                         (holder.diaryText.parent as ViewGroup).removeView(holder.diaryText)
                         val layoutParams = holder.diaryText.layoutParams as ViewGroup.MarginLayoutParams
                         layoutParams.bottomMargin = 0
@@ -298,7 +307,7 @@ class DiaryDetailEntriesAdapter(var lifeCycleOwner: LifecycleOwner) : RecyclerVi
                         val layoutParams = holder.diaryImage.layoutParams as ViewGroup.MarginLayoutParams
                         layoutParams.bottomMargin = holder.itemView.context.resources.getDimension(R.dimen.standard_margin).toInt()
                         holder.diaryImage.layoutParams = layoutParams
-                    }
+                    }*/
                 }
             }
             if (!textFlag && audioFlag) {
