@@ -115,6 +115,7 @@ class AddThoughtDialog : Fragment(), EasyPermissions.PermissionCallbacks {
         binding.cancelThoughtImageCardViewIcon.setOnClickListener {
             viewModelShared.image.value = Bitmap.createBitmap(1,1, Bitmap.Config.ARGB_8888)
             viewModelShared.isInCaptureMode = true
+            viewModelShared.pictureIsTaken = false
         }
 
         viewModelShared.audio.observe(viewLifecycleOwner, { audio ->

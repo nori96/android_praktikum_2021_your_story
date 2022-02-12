@@ -132,6 +132,7 @@
     <string name="mood">Mood</string>
     <string name="thought">Thought</string>
     <string name="notification_text" >When you are in the mood you can use the buttons to capture either your mood or a thought.</string>
+    <string name="retake">Retake</string>
 
 
 </resources>

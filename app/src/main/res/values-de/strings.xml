@@ -121,4 +121,5 @@
     <string name="mood">Stimmung</string>
     <string name="thought">Gedanke</string>
     <string name="notification_text">Dies ist eine Erinnerung, dass Sie lange kein Gedanken oder ihre Stimmung festgehalten haben. Mit den Buttons können Sie schnell zu diesen Optionen navigieren.</string>
+    <string name="retake">Neuaufnahme</string>
 </resources>

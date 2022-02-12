@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -18,18 +19,21 @@ import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import com.example.yourstory.databinding.ActivityMainBinding
 import com.example.yourstory.notification.NotificationWorker
+import com.example.yourstory.today.thought.SharedThoughtDialogViewModel
 import com.example.yourstory.utils.Constants
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import java.util.concurrent.TimeUnit
+import android.view.KeyEvent
 
 
 class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceChangeListener {
 
+    private lateinit var sharedThoughtDialogViewModel: SharedThoughtDialogViewModel
     lateinit var binding: ActivityMainBinding
     private lateinit var bottomNavigationView: BottomNavigationView
     private lateinit var hostFramentNavController: NavController
     var notificationEnabled = false
-    var notificationInterval = 12;
+    var notificationInterval = 12
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,7 +45,7 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
         setContentView(binding.root)
         setSupportActionBar(binding.customToolbar)
 
-        bottomNavigationView  = binding.bottomNavigation;
+        bottomNavigationView  = binding.bottomNavigation
 
         hostFramentNavController = findNavController(R.id.host_fragment)
 
@@ -66,7 +70,16 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
                 intent.putExtra("notification_intent",0)
             }
         }
+        sharedThoughtDialogViewModel = ViewModelProvider(this)[SharedThoughtDialogViewModel::class.java]
+
+        hostFramentNavController.addOnDestinationChangedListener { _, destination, _ ->
+            if(destination.id != R.id.takePictureFragment){
+                showBottomNav()
+            }
+        }
     }
+
+
 
     fun showBottomNav() {
         bottomNavigationView.visibility = View.VISIBLE
@@ -105,8 +118,12 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
     }
 
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
-        //TODO: Auslagerung des BackPressed-Vehaltens in die Navigation-Component
         16908332 -> {
+            //Manipulate Backpress in TakePictureFragment
+            if(hostFramentNavController.currentDestination!!.id == R.id.takePictureFragment && hostFramentNavController.previousBackStackEntry!!.destination.id == R.id.takePictureFragment){
+                sharedThoughtDialogViewModel.isInCaptureMode = true
+                hostFramentNavController.navigate(R.id.action_takePictureFragment_self)
+            }
             onBackPressed()
             true
         }
@@ -126,6 +143,18 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
             // Invoke the superclass to handle it.
             super.onOptionsItemSelected(item)
         }
+    }
+
+    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            //Manipulate Backpress in TakePictureFragment
+            if(hostFramentNavController.currentDestination!!.id == R.id.takePictureFragment && hostFramentNavController.previousBackStackEntry!!.destination.id == R.id.takePictureFragment){
+                sharedThoughtDialogViewModel.isInCaptureMode = true
+                hostFramentNavController.navigate(R.id.action_takePictureFragment_self)
+            }
+            onBackPressed()
+        }
+        return false
     }
 
     override fun onStart() {
