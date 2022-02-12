@@ -42,6 +42,7 @@
     <string name="thought_empty_dialog_ok_button">Okay</string>
     <string name="add_thought_no_gps_dialog_heading">GPS ausgeschaltet</string>
     <string name="add_thought_no_gps_text">Bitte schalten Sie GPS an, um ihren Standort zu berechnen.</string>
+    <string name="add_location_fragment_back_dialog_text">Zurück</string>
     <!-- help page -->
     <string name="your_story_help_page_heading">Willkommen zu Your Story.</string>
     <string name="your_story_help_page_content">Your Story bietet Ihnen die Möglichkeit, interessante Momente Ihres Lebens in einem digitalen Tagebuch festzuhalten.
