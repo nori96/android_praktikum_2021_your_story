@@ -1,7 +1,6 @@
 package com.example.yourstory.today.thought
 
 import android.annotation.SuppressLint
-import android.app.AlertDialog
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -20,9 +19,9 @@ import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
 import android.content.Context.LOCATION_SERVICE
+import android.os.Build
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java.lang.Exception
-
 
 class RecordLocationFragment : Fragment(), OnMapReadyCallback, LocationListener {
 
@@ -109,6 +108,7 @@ class RecordLocationFragment : Fragment(), OnMapReadyCallback, LocationListener 
         this.mapView = p0
     }
 
+
     @SuppressLint("MissingPermission")
     fun getLocation(){
         try {
@@ -124,12 +124,27 @@ class RecordLocationFragment : Fragment(), OnMapReadyCallback, LocationListener 
                 10f,
                 this
             )
+            if (Build.VERSION.SDK_INT >= 30) {
+                locationManager.getCurrentLocation(
+                    LocationManager.GPS_PROVIDER,
+                    null,
+                    requireActivity().mainExecutor,
+                    { location ->
+                        if (location != null) {
+                            viewModelShared.tmpLocation.postValue(LatLng(location.latitude, location.longitude))
+                        }
+                    })
+            } else {
+                val location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
+                if (location != null) {
+                    viewModelShared.tmpLocation.postValue(LatLng(location.latitude, location.longitude))
+                }
+            }
         } catch (e: Exception) {
             e.printStackTrace()
         }
         return
     }
-
     override fun onLocationChanged(location: Location) {
         viewModelShared.tmpLocation.postValue(LatLng(location.latitude, location.longitude))
     }
