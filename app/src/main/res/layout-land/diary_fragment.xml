@@ -59,7 +59,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="4dp"
-                android:text="Joy = "
+                android:text="@string/diary_page_joy"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -93,7 +93,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="4dp"
-                android:text="Sadness = "
+                android:text="@string/diary_page_sadness"
                 app:layout_constraintStart_toEndOf="@+id/view3"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -137,7 +137,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="4dp"
                 android:layout_weight="1"
-                android:text="Surprise ="
+                android:text="@string/diary_page_surprise"
                 app:layout_constraintStart_toEndOf="@+id/view"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -148,7 +148,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="4dp"
                 android:layout_weight="1"
-                android:text="Fear ="
+                android:text="@string/diary_page_fear"
                 app:layout_constraintStart_toEndOf="@+id/view6"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -158,7 +158,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="4dp"
-                android:text="Anger = "
+                android:text="@string/diary_page_anger"
                 app:layout_constraintStart_toEndOf="@+id/view4"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -168,7 +168,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="4dp"
-                android:text="Disgust ="
+                android:text="@string/diary_page_disgust"
                 app:layout_constraintStart_toEndOf="@+id/view2"
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>

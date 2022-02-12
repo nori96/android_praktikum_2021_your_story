@@ -16,11 +16,12 @@
     <string name="settings_scanning_interval_summary">Falls aktiviert, legen Sie ein Intervall für die Abstastung des Standorts in Minuten fest.</string>
     <string name="notification">Benachrichtigungen</string>
     <string name="settings_enable_notifications">Benachrichtigungen erlauben</string>
-    <string name="settings_notification_interval_title">Notification interval</string>
-    <string name="settings_notification_interval_text">Define an interval for sending notifications</string>
+    <string name="settings_notification_interval_title">Benachrichtigungsintervall</string>
+    <string name="settings_notification_interval_text">Definiere ein Intervall in dem Benachrichtigungen gesendet werden sollen.</string>
     <string name="today_likert_heading">Emotionaler Zustand:</string>
 
     <!--thought dialog -->
+    <string name="likert_dialog_sub_heading">Emotionalen Zustand eintragen</string>
     <string name="thought_dialog_top_heading">Gedanken erstellen</string>
     <string name="thought_dialog_audio">Audio</string>
     <string name="thought_dialog_image">Bild</string>
@@ -48,7 +49,8 @@
     \n \n \n Wir danken Ihnen für die Nutzung dieser App und wenn Sie möchten, können Sie uns ein Feedback als Kommentar im App Store hinterlassen.
     </string>
     <string name="your_story_help_page_devs">Ihre Entwickler</string>
-
+    <!--settings -->
+    <string name="settings_backup_heading">Eingeloggt als:</string>
 
     <!-- Record audio dialog -->
     <string name="record_audio_record_button">AUFNEHMEN</string>
@@ -66,7 +68,7 @@
     <string name="likert_dialog_heading">Emotionaler Zustand</string>
     <string name="likert_dialog_start">Passe die Emotionen deinem Gemüt entsprechend an.</string>
     <string name="likert_dialog_joy">Freude</string>
-    <string name="likert_dialog_surprise">Überraschung</string>
+    <string name="likert_dialog_surprise">Ü-raschung</string>
     <string name="likert_dialog_anger">Wut</string>
     <string name="likert_dialog_sadness">Trauer</string>
     <string name="likert_dialog_fear">Angst</string>
@@ -122,4 +124,13 @@
     <string name="thought">Gedanke</string>
     <string name="notification_text">Dies ist eine Erinnerung, dass Sie lange kein Gedanken oder ihre Stimmung festgehalten haben. Mit den Buttons können Sie schnell zu diesen Optionen navigieren.</string>
     <string name="retake">Neuaufnahme</string>
+
+    <!-- diary page-->
+    <string name="diary_page_joy">Freude =</string>
+    <string name="diary_page_anger">Wut =</string>
+    <string name="diary_page_sadness">Trauer =</string>
+    <string name="diary_page_disgust">Ekel =</string>
+    <string name="diary_page_surprise">Überraschung =</string>
+    <string name="diary_page_fear">Angst =</string>
+    <string name="diary_page_entries">Einträge: </string>
 </resources>

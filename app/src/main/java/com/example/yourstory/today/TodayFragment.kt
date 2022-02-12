@@ -48,6 +48,7 @@ class TodayFragment : Fragment() {
 
         viewModel = ViewModelProvider(requireActivity())[TodayViewModel::class.java]
         sharedViewModel = ViewModelProvider(requireActivity())[SharedThoughtDialogViewModel::class.java]
+        //TODO somehow suddenly saving entries is not possible anymore with this line
         //sharedViewModel.resetData()
         recyclerView.adapter = DiaryEntriesAdapter(this)
 

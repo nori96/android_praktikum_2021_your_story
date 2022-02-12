@@ -4,6 +4,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
 import com.example.yourstory.R
 import com.github.mikephil.charting.charts.PieChart
@@ -122,7 +124,7 @@ class DiaryAdapter(var onDiaryClickListener: OnDiaryClickListener) : RecyclerVie
         }
 
         viewHolder.textViewDate.text = diaryListModelItem.date.toString()
-        viewHolder.textViewEntries.text = "Entries: ${diaryListModelItem.entries}"
+        viewHolder.textViewEntries.text = (onDiaryClickListener as Fragment).resources.getString(R.string.diary_page_entries) + diaryListModelItem.entries
     }
 
     override fun getItemCount(): Int {

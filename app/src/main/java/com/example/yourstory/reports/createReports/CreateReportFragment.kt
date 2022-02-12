@@ -465,27 +465,27 @@ class CreateReportFragment : Fragment() {
             val pieEntries = arrayListOf<PieEntry>()
             val colors = arrayListOf<Int>()
             if (viewModel.joyAverage.value!! > 0 && viewModel.joySelected.value!!) {
-                pieEntries.add(PieEntry(viewModel.joyAverage.value!!, "Joy"))
+                pieEntries.add(PieEntry(viewModel.joyAverage.value!!, resources.getString(R.string.likert_dialog_joy)))
                 colors.add(ColorTemplate.rgb("#4BF430"))
             }
             if (viewModel.angerAverage.value!! > 0 && viewModel.angerSelected.value!!) {
-                pieEntries.add(PieEntry(viewModel.angerAverage.value!!, "Anger"))
+                pieEntries.add(PieEntry(viewModel.angerAverage.value!!, resources.getString(R.string.likert_dialog_anger)))
                 colors.add(ColorTemplate.rgb("#FF8181"))
             }
             if (viewModel.surpriseAverage.value!! > 0 && viewModel.surpriseSelected.value!!) {
-                pieEntries.add(PieEntry(viewModel.surpriseAverage.value!!, "Surprise"))
+                pieEntries.add(PieEntry(viewModel.surpriseAverage.value!!, resources.getString(R.string.likert_dialog_surprise)))
                 colors.add(ColorTemplate.rgb("#FEF63B"))
             }
             if (viewModel.sadnessAverage.value!! > 0 && viewModel.sadnessSelected.value!!) {
-                pieEntries.add(PieEntry(viewModel.sadnessAverage.value!!, "Sadness"))
+                pieEntries.add(PieEntry(viewModel.sadnessAverage.value!!, resources.getString(R.string.likert_dialog_sadness)))
                 colors.add(ColorTemplate.rgb("#7BB8FF"))
             }
             if (viewModel.disgustAverage.value!! > 0 && viewModel.disgustSelected.value!!) {
-                pieEntries.add(PieEntry(viewModel.disgustAverage.value!!, "Disgust"))
+                pieEntries.add(PieEntry(viewModel.disgustAverage.value!!, resources.getString(R.string.likert_dialog_disgust)))
                 colors.add(ColorTemplate.rgb("#869200"))
             }
             if (viewModel.fearAverage.value!! > 0 && viewModel.fearSelected.value!!) {
-                pieEntries.add(PieEntry(viewModel.fearAverage.value!!, "Fear"))
+                pieEntries.add(PieEntry(viewModel.fearAverage.value!!, resources.getString(R.string.likert_dialog_fear)))
                 colors.add(ColorTemplate.rgb("#B960FF"))
             }
             val pieDataSet = PieDataSet(pieEntries, "")

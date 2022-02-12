@@ -13,6 +13,7 @@
     <string name="today_likert_heading">Emotional State:</string>
 
     <!--thought dialog -->
+    <string name="likert_dialog_sub_heading">Record Emotional State</string>
     <string name="thought_dialog_top_heading">Create Thought</string>
     <string name="thought_dialog_audio">Voice</string>
     <string name="thought_dialog_image">Image</string>
@@ -116,7 +117,7 @@
     <string name="notification_description">Toggle, Intervall</string>
     <string name="settings_diary_description">Backup, Export, Import</string>
     <!-- Preference Titles -->
-
+    <string name="settings_backup_heading">Logged in as:</string>
     <!-- Messages Preferences -->
 
     <!-- Sync Preferences -->
@@ -134,5 +135,12 @@
     <string name="notification_text" >When you are in the mood you can use the buttons to capture either your mood or a thought.</string>
     <string name="retake">Retake</string>
 
-
+    <!-- diary page-->
+    <string name="diary_page_joy">Joy =</string>
+    <string name="diary_page_anger">Anger =</string>
+    <string name="diary_page_sadness">Sadness =</string>
+    <string name="diary_page_disgust">Disgust =</string>
+    <string name="diary_page_surprise">Surprise =</string>
+    <string name="diary_page_fear">Fear =</string>
+    <string name="diary_page_entries">Entries: </string>
 </resources>

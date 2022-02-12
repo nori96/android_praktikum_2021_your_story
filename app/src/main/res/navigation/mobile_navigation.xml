@@ -42,7 +42,7 @@
     <fragment
         android:id="@+id/thought_dialog"
         android:name="com.example.yourstory.today.thought.AddThoughtDialog"
-        android:label="Create Thought"
+        android:label="@string/thought_dialog_top_heading"
         tools:layout="@layout/thought_dialog_fragment" >
         <action
             android:id="@+id/action_thought_dialog_to_takePictureFragment"
@@ -68,7 +68,7 @@
     <fragment
         android:id="@+id/likertDialog"
         android:name="com.example.yourstory.today.likert.LikertDialog"
-        android:label="Record Emotional State"
+        android:label="@string/likert_dialog_sub_heading"
         tools:layout="@layout/likert_dialog_fragment" >
         <action
             android:id="@+id/action_likertDialog_to_navigation_today"
