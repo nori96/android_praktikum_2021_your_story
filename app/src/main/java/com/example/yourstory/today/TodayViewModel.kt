@@ -22,6 +22,9 @@ class TodayViewModel(application: Application) : AndroidViewModel(application) {
     var todayDiaryEntryData : LiveData<List<DiaryEntry>>
     var todayEmotionalStateEntryData : LiveData<List<EmotionalState>>
 
+    var exposedTodayDiaryEntryData = MutableLiveData(listOf<DiaryEntry>())//MutableLiveData<List<DiaryEntry>>
+    var exposedTodayEmotionalStateEntryData = MutableLiveData(listOf<EmotionalState>())//: MutableLiveData<List<EmotionalState>>
+
     var todayMediaPlayer: MediaPlayer? = null
     var currentAudioTrack = MutableLiveData("")
     var mediaPlayerRunning = MutableLiveData(false)
@@ -30,6 +33,23 @@ class TodayViewModel(application: Application) : AndroidViewModel(application) {
         repository = Repository(application)
         todayDiaryEntryData = repository.readAllEntriesOfaDate(DateTime.now().toString())
         todayEmotionalStateEntryData = repository.readAllEmotionalStatesOfADate(DateTime.now().toString())
+        todayDiaryEntryData.observeForever { newEntries ->
+            exposedTodayDiaryEntryData.value = newEntries
+        }
+        todayEmotionalStateEntryData.observeForever { newEmotionalStates ->
+            exposedTodayEmotionalStateEntryData.value = newEmotionalStates
+        }
+    }
+
+    fun setObservableTodayData() {
+        todayDiaryEntryData = repository.readAllEntriesOfaDate(DateTime.now().toString())
+        todayEmotionalStateEntryData = repository.readAllEmotionalStatesOfADate(DateTime.now().toString())
+        todayDiaryEntryData.observeForever { newEntries ->
+            exposedTodayDiaryEntryData.value = newEntries
+        }
+        todayEmotionalStateEntryData.observeForever { newEmotionalStates ->
+            exposedTodayEmotionalStateEntryData.value = newEmotionalStates
+        }
     }
 
     fun deleteDiaryEntries(entries: ArrayList<Entry>) {

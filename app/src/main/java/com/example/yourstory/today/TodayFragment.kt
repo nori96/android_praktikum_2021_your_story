@@ -1,6 +1,7 @@
 package com.example.yourstory.today
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +16,7 @@ import com.example.yourstory.databinding.TodayFragmentBinding
 import com.example.yourstory.today.thought.SharedThoughtDialogViewModel
 import com.example.yourstory.utils.BackupManager
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import org.joda.time.DateTime
 
 class TodayFragment : Fragment() {
 
@@ -62,21 +64,20 @@ class TodayFragment : Fragment() {
             }
         }
 
-
-        viewModel.todayDiaryEntryData.observe(viewLifecycleOwner, { newDiaryEntries ->
+        viewModel.exposedTodayDiaryEntryData.observe(viewLifecycleOwner, { newDiaryEntries ->
             val todayEntries = newDiaryEntries as List<Entry>
-            if(todayEntries.isEmpty()) {
+            if (todayEntries.isEmpty()) {
                 (recyclerView.adapter as DiaryEntriesAdapter).removeDiaryEntries()
-            }else {
+            } else {
                 (recyclerView.adapter as DiaryEntriesAdapter).setData(todayEntries)
             }
         })
 
-        viewModel.todayEmotionalStateEntryData.observe(viewLifecycleOwner, { newStates ->
+        viewModel.exposedTodayEmotionalStateEntryData.observe(viewLifecycleOwner, { newStates ->
             val todayStates = newStates as List<Entry>
-            if(todayStates.isEmpty()){
+            if (todayStates.isEmpty()){
                 (recyclerView.adapter as DiaryEntriesAdapter).removeEmotionalStates()
-            }else {
+            } else {
                 (recyclerView.adapter as DiaryEntriesAdapter).setData(todayStates)
             }
         })
@@ -119,5 +120,10 @@ class TodayFragment : Fragment() {
             (recyclerView.adapter as DiaryEntriesAdapter).deleteSelectedEntries()
         }
         return binding.root
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.setObservableTodayData()
     }
 }
