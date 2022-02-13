@@ -40,7 +40,7 @@ class Repository(var application: Application){
     fun signInToGoogle(googleSignInAccount: GoogleSignInAccount){
         googleAccount = googleSignInAccount
 
-        var credential = GoogleAccountCredential.usingOAuth2(application.applicationContext, setOf(DriveScopes.DRIVE_FILE,DriveScopes.DRIVE_APPDATA))
+        val credential = GoogleAccountCredential.usingOAuth2(application.applicationContext, setOf(DriveScopes.DRIVE_FILE,DriveScopes.DRIVE_APPDATA))
         credential.selectedAccount = googleSignInAccount.account
 
         googleDriveService = Drive.Builder(
@@ -59,7 +59,7 @@ class Repository(var application: Application){
         fileMetadata.parents = listOf("appDataFolder")
         fileMetadata.createdTime = com.google.api.client.util.DateTime(DateTime.now().toString())
 
-        var filecontent = FileContent(
+        val filecontent = FileContent(
             "application/database",
            File(Database.getDatabase(application).openHelper.writableDatabase.path)
         )
@@ -70,10 +70,10 @@ class Repository(var application: Application){
     }
 
     fun downloadLatestDB(fileID: String): File {
-        var database = File(Database.getDatabase(application.baseContext).openHelper.writableDatabase.path + "_backup")
+        val database = File(Database.getDatabase(application.baseContext).openHelper.writableDatabase.path + "_backup")
         database.createNewFile()
 
-        var outputStream = FileOutputStream(database) as OutputStream
+        val outputStream = FileOutputStream(database) as OutputStream
         googleDriveService!!.files().get(fileID)
             .executeAndDownloadTo(outputStream)
         outputStream.flush()
@@ -82,7 +82,7 @@ class Repository(var application: Application){
     }
 
     fun getLatestDBMetadata(): com.google.api.services.drive.model.File? {
-        var files = googleDriveService!!.files().list()
+        val files = googleDriveService!!.files().list()
             .setSpaces("appDataFolder")
             .setFields("nextPageToken, files (id,name,createdTime)")
             .setPageSize(10)
@@ -97,7 +97,7 @@ class Repository(var application: Application){
         if(googleDriveService == null){
             return false
         }
-        var files = googleDriveService!!.files().list()
+        val files = googleDriveService!!.files().list()
             .setSpaces("appDataFolder")
             .setFields("nextPageToken, files (id,name,createdTime)")
             .setPageSize(10)
@@ -108,13 +108,13 @@ class Repository(var application: Application){
     //Google
     fun getGoogleAccount() : GoogleSignInAccount?{
         if(googleAccount == null){
-            return null;
+            return null
         }
         return googleAccount
     }
 
     fun signOutFromGoogle(){
-        googleAccount = null;
+        googleAccount = null
     }
 
     //Diary Entry functions
@@ -135,8 +135,8 @@ class Repository(var application: Application){
     }
 
     fun readAllReportsOfaMonth(isoDate: String):LiveData<List<ReportEntry>>{
-        var startEpoch = DateEpochConverter.convertDateTimeToEpoch(DateTime(isoDate).dayOfMonth().withMinimumValue().withTime(0,0,0,0).toString())
-        var endEpoch = DateEpochConverter.convertDateTimeToEpoch(DateTime(isoDate).dayOfMonth().withMaximumValue().withTime(23,59,59,999).toString())
+        val startEpoch = DateEpochConverter.convertDateTimeToEpoch(DateTime(isoDate).dayOfMonth().withMinimumValue().withTime(0,0,0,0).toString())
+        val endEpoch = DateEpochConverter.convertDateTimeToEpoch(DateTime(isoDate).dayOfMonth().withMaximumValue().withTime(23,59,59,999).toString())
         return reportEntryDao.readAllReportsBetweenDates(startEpoch,endEpoch)
     }
 
@@ -147,8 +147,8 @@ class Repository(var application: Application){
     }
 
     fun readAllEntriesOfaMonth(isoDate: String): LiveData<List<DiaryEntry>>{
-            var startEpoch = DateEpochConverter.convertDateTimeToEpoch(DateTime(isoDate).dayOfMonth().withMinimumValue().withTime(0,0,0,0).toString())
-            var endEpoch = DateEpochConverter.convertDateTimeToEpoch(DateTime(isoDate).dayOfMonth().withMaximumValue().withTime(23,59,59,999).toString())
+            val startEpoch = DateEpochConverter.convertDateTimeToEpoch(DateTime(isoDate).dayOfMonth().withMinimumValue().withTime(0,0,0,0).toString())
+            val endEpoch = DateEpochConverter.convertDateTimeToEpoch(DateTime(isoDate).dayOfMonth().withMaximumValue().withTime(23,59,59,999).toString())
 
         return diaryEntryDao.readAllEntriesBetweenDates(startEpoch,endEpoch)
     }
@@ -164,8 +164,8 @@ class Repository(var application: Application){
     }
 
     fun readEmotionalStatesOfAMonth(isoDate: String): LiveData<List<EmotionalState>> {
-        var startEpoch = DateEpochConverter.convertDateTimeToEpoch(DateTime(isoDate).dayOfMonth().withMinimumValue().withTime(0,0,0,0).toString())
-        var endEpoch = DateEpochConverter.convertDateTimeToEpoch(DateTime(isoDate).dayOfMonth().withMaximumValue().withTime(23,59,59,999).toString())
+        val startEpoch = DateEpochConverter.convertDateTimeToEpoch(DateTime(isoDate).dayOfMonth().withMinimumValue().withTime(0,0,0,0).toString())
+        val endEpoch = DateEpochConverter.convertDateTimeToEpoch(DateTime(isoDate).dayOfMonth().withMaximumValue().withTime(23,59,59,999).toString())
 
         return emotionalStateDao.readAllEmotionalSatesBetweenDates(startEpoch,endEpoch)
     }
@@ -174,7 +174,7 @@ class Repository(var application: Application){
     }
 
     fun readLastEmotionalStateID(): Int {
-        var emotionalState = emotionalStateDao.readAllEmotionalStatesSortedByDateWithoutLiveData()
+        val emotionalState = emotionalStateDao.readAllEmotionalStatesSortedByDateWithoutLiveData()
         if(emotionalState.isEmpty()){
             return -1
         }else {
