@@ -55,7 +55,7 @@ class NotificationWorker(var appContext: Context, var workerParams: WorkerParame
             notificationManager.createNotificationChannel(channel)
         }
 
-        var builder = NotificationCompat.Builder(appContext,Constants.NOTIFICATION_CHANNEL_ID)
+        val builder = NotificationCompat.Builder(appContext,Constants.NOTIFICATION_CHANNEL_ID)
             .setSmallIcon(R.drawable.diary_logo)
             .setContentTitle("Your Story")
             .setContentText(appContext.getString(R.string.notification_text))

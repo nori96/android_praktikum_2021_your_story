@@ -69,7 +69,7 @@ class CreateReportViewModel(application: Application) : AndroidViewModel(applica
         }
     }
 
-    fun calculateEmotionalAverage() : Float {
+    private fun calculateEmotionalAverage() : Float {
         var counter = 0
         var emotionality = 0f
         if (joyAverage.value!! > 0 && joySelected.value!!) {

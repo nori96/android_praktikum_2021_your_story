@@ -172,7 +172,7 @@ class ReportsAdapter(var lifeCycleOwner: LifecycleOwner) : RecyclerView.Adapter<
         if(selectedItems.isEmpty()){
             return arrayListOf()
         }
-        var list = arrayListOf<ReportEntry>()
+        val list = arrayListOf<ReportEntry>()
         for (int in selectedItems){
             list.add(dataSet[int])
         }

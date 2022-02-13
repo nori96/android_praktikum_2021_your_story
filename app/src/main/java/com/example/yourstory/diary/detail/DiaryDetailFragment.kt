@@ -53,14 +53,14 @@ class DiaryDetailFragment : Fragment() {
 
         viewModel.deleteState.observe(viewLifecycleOwner,{
             if(it == true){
-                binding.deleteFab!!.visibility = View.VISIBLE
+                binding.deleteFab.visibility = View.VISIBLE
             }else{
-                binding.deleteFab!!.visibility = View.INVISIBLE
+                binding.deleteFab.visibility = View.INVISIBLE
             }
         })
 
-        binding.deleteFab!!.setOnClickListener {
-            var entries = (recyclerView.adapter as DiaryDetailEntriesAdapter).getSelectedEntries()
+        binding.deleteFab.setOnClickListener {
+            val entries = (recyclerView.adapter as DiaryDetailEntriesAdapter).getSelectedEntries()
             viewModel.deleteDiaryEntries(entries)
             (recyclerView.adapter as DiaryDetailEntriesAdapter).deleteSelectedEntries()
         }

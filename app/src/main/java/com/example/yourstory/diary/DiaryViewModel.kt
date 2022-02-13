@@ -14,7 +14,6 @@ import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
-//TODO: Limit Month Spinner to Existing Dates in Line 50
 class DiaryViewModel(application: Application) : AndroidViewModel(application) {
 
     var currentMonth = DateTime.now().monthOfYear().get()
@@ -43,7 +42,7 @@ class DiaryViewModel(application: Application) : AndroidViewModel(application) {
 
         //Sets the years of the Spinner to the oldest Entry
         for(idx in 0.. 5){
-            var prevYear = Calendar.getInstance()
+            val prevYear = Calendar.getInstance()
             prevYear.add(Calendar.YEAR,idx * -1)
             yearsItems.value!!.add(prevYear.get(Calendar.YEAR).toString())
         }
@@ -51,9 +50,9 @@ class DiaryViewModel(application: Application) : AndroidViewModel(application) {
 
     private fun convertDiaryEntriesToListModel() {
 
-        var newEntriesList = arrayListOf<DiaryListModel>()
+        val newEntriesList = arrayListOf<DiaryListModel>()
 
-        var dates = arrayListOf<Long>()
+        val dates = arrayListOf<Long>()
 
         //Filling dates
         for (diaryEntry in diaryEntriesCopy){
@@ -73,25 +72,25 @@ class DiaryViewModel(application: Application) : AndroidViewModel(application) {
         Collections.sort(dates,Collections.reverseOrder())
 
         for (dateInEpochTime in dates){
-            var dateInDateTime = DateEpochConverter.convertEpochToDateTime(dateInEpochTime)
+            val dateInDateTime = DateEpochConverter.convertEpochToDateTime(dateInEpochTime)
 
             //create bounds in epoch
-            var lowerBound = DateEpochConverter.convertDateTimeToEpoch(DateEpochConverter.convertEpochToDateTime(dateInEpochTime).withTime(0,0,0,0).toString())
-            var upperBound = DateEpochConverter.convertDateTimeToEpoch(DateEpochConverter.convertEpochToDateTime(dateInEpochTime).withTime(23,59,59,999).toString())
+            val lowerBound = DateEpochConverter.convertDateTimeToEpoch(DateEpochConverter.convertEpochToDateTime(dateInEpochTime).withTime(0,0,0,0).toString())
+            val upperBound = DateEpochConverter.convertDateTimeToEpoch(DateEpochConverter.convertEpochToDateTime(dateInEpochTime).withTime(23,59,59,999).toString())
 
             //Get all emotional-states and diary-entries of the date
-            var emotionalStatesOfTheDay = emotionalStateEntriesCopy.filter { emotionalState ->
+            val emotionalStatesOfTheDay = emotionalStateEntriesCopy.filter { emotionalState ->
                 emotionalState.date in (lowerBound + 1) until upperBound
             }
-            var diaryEntriesOfTheDay = diaryEntriesCopy.filter { diaryEntry ->
+            val diaryEntriesOfTheDay = diaryEntriesCopy.filter { diaryEntry ->
                 diaryEntry.date in (lowerBound + 1) until upperBound
             }
 
 
 
-            var year = dateInDateTime.year().get()
-            var month = dateInDateTime.monthOfYear
-            var day = dateInDateTime.dayOfMonth
+            val year = dateInDateTime.year().get()
+            val month = dateInDateTime.monthOfYear
+            val day = dateInDateTime.dayOfMonth
 
             //No Emotional-States for the day
             if(emotionalStatesOfTheDay.isEmpty()) {
@@ -146,7 +145,7 @@ class DiaryViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun fetchFilteredData() {
-        var filterDate = DateTime(currentYear.toInt(),currentMonth,1,1,1,1,1)
+        val filterDate = DateTime(currentYear.toInt(),currentMonth,1,1,1,1,1)
         diaryEntries = repository.readAllEntriesOfaMonth(filterDate.toString())
         emotionalStateEntries = repository.readEmotionalStatesOfAMonth(filterDate.toString())
 

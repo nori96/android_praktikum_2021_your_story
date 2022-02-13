@@ -29,21 +29,21 @@ class ReportsViewModel(application: Application) : AndroidViewModel(application)
     private var currentMonthCopy = DateTime.now().monthOfYear().get()
     private var currentYearCopy = DateTime.now().year.toString()
 
-    var months_items = MutableLiveData<ArrayList<String>>(arrayListOf())
-    var years_items =  MutableLiveData<ArrayList<String>>(arrayListOf())
+    var monthsItems = MutableLiveData<ArrayList<String>>(arrayListOf())
+    var yearsItems =  MutableLiveData<ArrayList<String>>(arrayListOf())
 
     init {
 
         //init Spinner Data
         for(idx in 1..12){
-            months_items.value!!.add(DateEpochConverter.monthIntToString(application,idx))
+            monthsItems.value!!.add(DateEpochConverter.monthIntToString(application,idx))
         }
 
         //Sets the years of the Spinner to the oldest Entry
         for(idx in 0.. 5){
-            var prevYear = Calendar.getInstance()
+            val prevYear = Calendar.getInstance()
             prevYear.add(Calendar.YEAR,idx * -1)
-            years_items.value!!.add(prevYear.get(Calendar.YEAR).toString())
+            yearsItems.value!!.add(prevYear.get(Calendar.YEAR).toString())
         }
 
         currentMonth.observeForever{
@@ -64,6 +64,13 @@ class ReportsViewModel(application: Application) : AndroidViewModel(application)
             reportsEntriesData.observeForever{ newReports ->
                 reportsEntriesDataAsList.postValue(newReports)
             }
+        }
+    }
+
+    fun reloadMonthData() {
+
+        for(idx in 1..12){
+            monthsItems.value!!.add(DateEpochConverter.monthIntToString(getApplication() ,idx))
         }
     }
 

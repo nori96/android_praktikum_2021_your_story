@@ -369,7 +369,7 @@ class DiaryDetailEntriesAdapter(var lifeCycleOwner: LifecycleOwner) : RecyclerVi
     }
 
     fun getSelectedEntries(): ArrayList<Entry>{
-        var list = arrayListOf<Entry>()
+        val list = arrayListOf<Entry>()
         for (int in selectedItems){
             list.add(todayModelData[int])
         }
@@ -443,7 +443,7 @@ class DiaryDetailEntriesAdapter(var lifeCycleOwner: LifecycleOwner) : RecyclerVi
     }
 
     fun removeDiaryEntries() {
-        var tempList = arrayListOf<Entry>()
+        val tempList = arrayListOf<Entry>()
         for (entry in todayModelData){
             if(entry !is DiaryEntry){
                 tempList.add(entry)
@@ -454,7 +454,7 @@ class DiaryDetailEntriesAdapter(var lifeCycleOwner: LifecycleOwner) : RecyclerVi
     }
 
     fun removeEmotionalStates() {
-        var tempList = arrayListOf<Entry>()
+        val tempList = arrayListOf<Entry>()
         for (entry in todayModelData){
             if(entry !is EmotionalState){
                 tempList.add(entry)

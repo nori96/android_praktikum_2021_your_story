@@ -25,9 +25,6 @@ import com.google.api.services.drive.DriveScopes
 
 class SettingsBackupFragment : Fragment() {
 
-    companion object {
-        fun newInstance() = SettingsBackupFragment()
-    }
 
     private  lateinit var client: GoogleSignInClient
     private lateinit var hostFramentNavController: NavController
