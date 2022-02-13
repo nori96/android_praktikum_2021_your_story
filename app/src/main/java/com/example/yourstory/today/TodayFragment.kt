@@ -44,7 +44,7 @@ class TodayFragment : Fragment() {
             hostFramentNavController = container.findNavController()
         }
         recyclerView = binding.recyclerViewTodayPage
-        
+
         viewModel = ViewModelProvider(requireActivity())[TodayViewModel::class.java]
         sharedViewModel = ViewModelProvider(requireActivity())[SharedThoughtDialogViewModel::class.java]
 

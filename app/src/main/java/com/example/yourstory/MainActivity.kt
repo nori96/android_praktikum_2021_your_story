@@ -106,10 +106,11 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
         }
         val notificationRequest = PeriodicWorkRequestBuilder<NotificationWorker>(notificationInterval.toLong(),TimeUnit.HOURS)
             .addTag(Constants.NOTIFICATION_ID.toString())
-            //.setInitialDelay(notificationInterval.toLong(),TimeUnit.HOURS)
+            .setInitialDelay(notificationInterval.toLong(),TimeUnit.HOURS)
             .build()
 
-        WorkManager.getInstance(applicationContext).enqueueUniquePeriodicWork("notifications",ExistingPeriodicWorkPolicy.REPLACE,notificationRequest)
+        WorkManager.getInstance(applicationContext).
+        enqueueUniquePeriodicWork("notifications",ExistingPeriodicWorkPolicy.REPLACE,notificationRequest)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
