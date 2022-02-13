@@ -18,8 +18,8 @@ import org.joda.time.DateTime
 
 class ReportsFragment : Fragment(), AdapterView.OnItemSelectedListener{
 
-    private lateinit var monthSpinner: Spinner
     private lateinit var yearSpinner: Spinner
+    lateinit var monthSpinner: Spinner
     private lateinit var binding: ReportsFragmentBinding
     lateinit var recyclerView: RecyclerView
     private lateinit var viewModel : ReportsViewModel
@@ -69,22 +69,36 @@ class ReportsFragment : Fragment(), AdapterView.OnItemSelectedListener{
         yearSpinner.adapter = arrayAdapterYear
         yearSpinner.setSelection(viewModel.yearsItems.value!!.indexOf(DateTime.now().year().toString()))
         yearSpinner.onItemSelectedListener = this
-
-        //Init MonthSpinner
         monthSpinner = binding.spinnerMonthReports
-        val arrayadapterMonth = ArrayAdapter(requireContext(),R.layout.spinner_custom,
-            viewModel.monthsItems.value!!.toList())
-        arrayadapterMonth.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        monthSpinner.adapter = arrayadapterMonth
-        monthSpinner.setSelection(DateTime.now().monthOfYear -1 )
-        monthSpinner.onItemSelectedListener = this
+        initMonthSpinner()
 
         return binding.root
     }
 
+    private fun initMonthSpinner() {
+        val arrayAdapterMonth = ArrayAdapter(requireContext(),R.layout.spinner_custom,
+            viewModel.monthsItems.value!!.toList())
+        arrayAdapterMonth.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        monthSpinner.adapter = arrayAdapterMonth
+        monthSpinner.setSelection(DateTime.now().monthOfYear -1 )
+        monthSpinner.onItemSelectedListener = this
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val pos  = monthSpinner.selectedItemPosition
+        viewModel.reloadMonthData()
+        val arrayAdapterMonth = ArrayAdapter(requireContext(),R.layout.spinner_custom,
+            viewModel.monthsItems.value!!.toList())
+        arrayAdapterMonth.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        monthSpinner.adapter = arrayAdapterMonth
+        monthSpinner.setSelection(pos)
+        monthSpinner.onItemSelectedListener = this
+    }
+
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         when(parent!!.id){
-            monthSpinner.id -> {viewModel.currentMonth.postValue(position +1)}
+            binding.spinnerMonthReports.id -> {viewModel.currentMonth.postValue(position +1)}
             yearSpinner.id -> {viewModel.currentYear.postValue(viewModel.yearsItems.value!![position])}
         }
     }

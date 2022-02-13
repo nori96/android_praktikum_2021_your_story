@@ -62,6 +62,7 @@ class DiaryEntriesAdapter(var lifeCycleOwner: LifecycleOwner) : RecyclerView.Ada
             DateEpochConverter.convertEpochToDateTime(todayModelData[position].date).toString()
                 .split("T")[1].subSequence(0, 5)
 
+        // in this list are diary entries and emotional states and both get handled separately
         if (todayModelData[position] is DiaryEntry) {
             // nodes from emotional state arent needed
             if (holder.emotionalStateRoot.parent is ViewGroup) {
@@ -75,7 +76,9 @@ class DiaryEntriesAdapter(var lifeCycleOwner: LifecycleOwner) : RecyclerView.Ada
             var locationFlag = false
             var textFlag = false
             var audioFlag = false
-
+            // for each possible part in the entry we check if its our defined zero and if so we cut the node from the layout
+            // because its not part of the entry. It looks good anyway, because it was worked with linear layout, which resizes based on
+            // layout weights
             if (entry.text.isEmpty() && holder.diaryText.parent != null) {
                 (holder.diaryText.parent as ViewGroup).removeView(holder.diaryText)
             } else {
@@ -94,6 +97,7 @@ class DiaryEntriesAdapter(var lifeCycleOwner: LifecycleOwner) : RecyclerView.Ada
             if (entry.locationLat == 0.0 && entry.locationLong == 0.0 && holder.diaryLocation.parent != null) {
                 (holder.diaryLocation.parent as ViewGroup).removeView(holder.diaryLocation)
             } else {
+                // if we have a map we add it later to the layout because having it in there from the beginning is bad for performance
                 locationFlag = true
                 holder.diaryLocation.clipToOutline = true
                 val mapContainer = View.inflate(context, R.layout.insertable_map_view, holder.diaryLocationViewGroupHolder as ViewGroup)
@@ -116,6 +120,8 @@ class DiaryEntriesAdapter(var lifeCycleOwner: LifecycleOwner) : RecyclerView.Ada
             if (entry.audio == "" && holder.diaryAudio.parent != null) {
                 (holder.diaryAudio.parent as ViewGroup).removeView(holder.diaryAudio)
             } else {
+                // we have one audio player which is shared between all audio objects, when this specific audio object
+                // is the active one, it persists its state in the view model
                 audioFlag = true
                 var animSeekbar: ValueAnimator? = null
                 holder.diaryAudio.clipToOutline = true
@@ -272,7 +278,8 @@ class DiaryEntriesAdapter(var lifeCycleOwner: LifecycleOwner) : RecyclerView.Ada
                     }
                 }
             }
-
+            // its not always completely true that the layout looks good after removing some nodes, where this is not the case
+            // some layout properties get adjusted programmatically
             if (imageFlag) {
                 if (!locationFlag) {
                     (holder.firstRowLinearLayoutSecondItem.parent as ViewGroup).removeView(holder.firstRowLinearLayoutSecondItem)

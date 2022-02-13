@@ -47,6 +47,13 @@ class DiaryViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+    fun reloadMonthData() {
+        monthsItems.value!!.clear()
+        for(idx in 1..12){
+            monthsItems.value!!.add(DateEpochConverter.monthIntToString(getApplication() ,idx))
+        }
+    }
+
     private fun convertDiaryEntriesToListModel() {
 
         val newEntriesList = arrayListOf<DiaryListModel>()
