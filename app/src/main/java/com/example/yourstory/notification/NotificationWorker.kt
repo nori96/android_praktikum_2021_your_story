@@ -1,5 +1,6 @@
 package com.example.yourstory.notification
 
+import android.annotation.SuppressLint
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -8,7 +9,6 @@ import android.content.Intent
 import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import androidx.preference.PreferenceManager
 import androidx.work.Worker
 import androidx.work.WorkerParameters
 import com.example.yourstory.MainActivity
@@ -17,10 +17,8 @@ import com.example.yourstory.utils.Constants
 
 class NotificationWorker(var appContext: Context, var workerParams: WorkerParameters) : Worker(appContext,workerParams){
 
+    @SuppressLint("UnspecifiedImmutableFlag")
     override fun doWork(): Result {
-
-        var hoursSinceLast = PreferenceManager.getDefaultSharedPreferences(applicationContext)
-            .getInt("interval_notification", 12);
 
         //Intent tapping the notification
         val intent = Intent(appContext,MainActivity::class.java).apply { flags = Intent.FLAG_ACTIVITY_CLEAR_TASK}

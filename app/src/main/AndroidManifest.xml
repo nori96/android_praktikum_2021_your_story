@@ -14,10 +14,10 @@
         android:required="false" />
 
     <application
-        android:allowBackup="false"
-        android:icon="@mipmap/ic_launcher"
+        android:allowBackup="true"
+        android:icon="@drawable/yourstoryicon"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/yourstoryicon"
         android:supportsRtl="true"
         android:theme="@style/Theme.YourStory">
         <meta-data

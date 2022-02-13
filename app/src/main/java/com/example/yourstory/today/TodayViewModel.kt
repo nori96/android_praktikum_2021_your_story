@@ -56,10 +56,10 @@ class TodayViewModel(application: Application) : AndroidViewModel(application) {
         viewModelScope.launch (Dispatchers.IO) {
             for (entry in entries){
                 if(entry is DiaryEntry){
-                    repository.diaryEntryDao.deleteDiaryEntryById(entry.id)
+                    repository.deleteDiaryEntry(entry.id)
                 }
                 if(entry is EmotionalState){
-                    repository.emotionalStateDao.deleteEmotionalStateByID(entry.id)
+                    repository.deleteEmotionalState(entry.id)
                 }
             }
         }
