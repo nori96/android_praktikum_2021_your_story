@@ -145,4 +145,9 @@
     <string name="diary_page_surprise">Surprise =</string>
     <string name="diary_page_fear">Fear =</string>
     <string name="diary_page_entries">Entries: </string>
+
+    <string name="settings_backup_no_backup_found">No backup found.</string>
+    <string name="settings_backup_download_success">Download succeeded.</string>
+    <string name="settings_backup_download_success_text">You\'re download was successful</string>
+
 </resources>

@@ -26,7 +26,7 @@ class LikertDialog : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = LikertDialogFragmentBinding.inflate(inflater, container, false)
         likertViewModel = ViewModelProvider(requireActivity())[LikertDialogViewModel::class.java]
         hostFragmentNavController = NavHostFragment.findNavController(this)

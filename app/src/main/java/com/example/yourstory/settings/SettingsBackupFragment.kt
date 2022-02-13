@@ -84,7 +84,7 @@ class SettingsBackupFragment : Fragment() {
         //Init observing if a backup exists
         viewModel.latestDBMetadata.observe(viewLifecycleOwner,{
             if(it == null){
-                binding_logged_in.textViewBackupDate.text = "No backup found."
+                binding_logged_in.textViewBackupDate.text = resources.getString(R.string.settings_backup_no_backup_found)
                 binding_logged_in.buttonDownload.isEnabled = false;
             }else{
                 binding_logged_in.textViewBackupDate.text = it.createdTime.toString().split("T")[0] + "  " + it.createdTime.toString().split("T")[1].split(".")[0]
@@ -94,10 +94,10 @@ class SettingsBackupFragment : Fragment() {
 
         viewModel.latestDBFile.observe(viewLifecycleOwner,{
             if(it != null){
-                materialAlertDialogBuilder.setTitle("Download succeeded")
-                materialAlertDialogBuilder.setMessage("Downloading the backup succeeded")
-                materialAlertDialogBuilder.setPositiveButton("OK"){
-                        dialog, which ->
+                materialAlertDialogBuilder.setTitle(resources.getString(R.string.settings_backup_download_success))
+                materialAlertDialogBuilder.setMessage(resources.getString(R.string.settings_backup_download_success_text))
+                materialAlertDialogBuilder.setPositiveButton(resources.getString(R.string.thought_empty_dialog_ok_button)){
+                        _, _ ->
                 }
                 materialAlertDialogBuilder.show()
             }
