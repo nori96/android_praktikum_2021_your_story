@@ -125,8 +125,7 @@ class SettingsBackupFragment : Fragment() {
 
     private fun signOut() {
         GoogleSignIn.getClient(requireActivity(),GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestScopes(Scope(DriveScopes.DRIVE_FILE))
-            .requestScopes(Scope(DriveScopes.DRIVE_APPDATA))
+            .requestScopes(Scope(DriveScopes.DRIVE))
             .requestEmail()
             .build()).signOut().addOnCompleteListener(requireActivity()) {
             viewModel.repository.signOutFromGoogle()
@@ -137,8 +136,7 @@ class SettingsBackupFragment : Fragment() {
     private fun requestSignIn() {
         val signInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestEmail()
-            .requestScopes(Scope(DriveScopes.DRIVE_FILE))
-            .requestScopes(Scope(DriveScopes.DRIVE_APPDATA))
+            .requestScopes(Scope(DriveScopes.DRIVE))
             .build()
         client = GoogleSignIn.getClient(requireActivity(), signInOptions)
 
