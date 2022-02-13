@@ -12,7 +12,6 @@ import com.example.yourstory.utils.DateEpochConverter
 import org.joda.time.DateTime
 import java.util.*
 import kotlin.collections.ArrayList
-import kotlin.collections.HashMap
 
 class DiaryViewModel(application: Application) : AndroidViewModel(application) {
 
