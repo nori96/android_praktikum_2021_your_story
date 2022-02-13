@@ -21,14 +21,11 @@ import java.util.*
 class Repository(var application: Application){
 
     private var googleAccount: GoogleSignInAccount?
-    var diaryEntryDao: DiaryEntryDao
-    var emotionalStateDao: EmotionalStateDao
-    var reportEntryDao: ReportEntryDao
+    private var diaryEntryDao: DiaryEntryDao = Database.getDatabase(application).diaryEntryDao()
+    private var emotionalStateDao: EmotionalStateDao = Database.getDatabase(application).emotionalStateDao()
+    var reportEntryDao: ReportEntryDao = Database.getDatabase(application).reportEntryDao()
 
     init {
-        diaryEntryDao = Database.getDatabase(application).diaryEntryDao()
-        emotionalStateDao = Database.getDatabase(application).emotionalStateDao()
-        reportEntryDao = Database.getDatabase(application).reportEntryDao()
         googleAccount = GoogleSignIn.getLastSignedInAccount(application)
         if(googleAccount != null){
             signInToGoogle(googleAccount!!)
@@ -40,7 +37,6 @@ class Repository(var application: Application){
     }
 
     //Google Drive
-
     fun signInToGoogle(googleSignInAccount: GoogleSignInAccount){
         googleAccount = googleSignInAccount
 
@@ -60,7 +56,7 @@ class Repository(var application: Application){
 
         val fileMetadata = com.google.api.services.drive.model.File()
         fileMetadata.name = "yourstory_database_" + UUID.randomUUID()
-        //fileMetadata.parents = listOf("appDataFolder")
+        fileMetadata.parents = listOf("appDataFolder")
         fileMetadata.createdTime = com.google.api.client.util.DateTime(DateTime.now().toString())
 
         var filecontent = FileContent(
@@ -122,19 +118,6 @@ class Repository(var application: Application){
     }
 
     //Diary Entry functions
-
-    fun readAllEntriesSortedByID(): LiveData<List<DiaryEntry>> {
-        return diaryEntryDao.readAllEntriesSortedByID()
-    }
-
-    fun readAllEntriesSortedByDate(): LiveData<List<DiaryEntry>>{
-        return diaryEntryDao.readAllEntriesSortedByDate()
-    }
-
-    fun getEmotionalStateOfDiaryEntry(diaryEntry: DiaryEntry): LiveData<List<EmotionalState>>{
-        return diaryEntryDao.getEmotionalStateOfDiaryEntry(diaryEntry.emotionalStateID)
-    }
-
      fun addDiaryEntry(diaryEntry: DiaryEntry){
         diaryEntryDao.addDiaryEntry(diaryEntry)
     }
@@ -149,10 +132,6 @@ class Repository(var application: Application){
 
     fun deleteReport(id: Int) {
         reportEntryDao.deleteReport(id)
-    }
-
-    fun readAllReportEntries() : LiveData<List<ReportEntry>>{
-        return reportEntryDao.readAllReportsSortedByDate()
     }
 
     fun readAllReportsOfaMonth(isoDate: String):LiveData<List<ReportEntry>>{
@@ -174,19 +153,7 @@ class Repository(var application: Application){
         return diaryEntryDao.readAllEntriesBetweenDates(startEpoch,endEpoch)
     }
 
-    fun readOldestEntry(): DiaryEntry {
-        return diaryEntryDao.readOldestEntry()
-    }
-
     //Emotional State functions
-
-    fun readAllEmotionalStatesSortedByID(): LiveData<List<EmotionalState>>{
-        return emotionalStateDao.readAllEmotionalStatesSortedByID()
-    }
-
-    fun readAllEmotionalStatesSortedByDate(): LiveData<List<EmotionalState>>{
-        return emotionalStateDao.readAllEmotionalStatesSortedByDate()
-    }
 
      fun addEmotionalState(emotionalState: EmotionalState){
         emotionalStateDao.addEmotionalState(emotionalState)
@@ -219,9 +186,5 @@ class Repository(var application: Application){
         val epochCurrentDateStart = DateEpochConverter.convertDateTimeToEpoch(DateTime(isoDate).withTime(0, 0, 0, 0).toString())
         val epochCurrentDateEnd = DateEpochConverter.convertDateTimeToEpoch(DateTime(isoDate).withTime(23, 59, 59, 999).toString())
         return emotionalStateDao.readAllEmotionalSatesBetweenDates(epochCurrentDateStart,epochCurrentDateEnd)
-    }
-
-    fun readoldestEmotionalStateDate(): EmotionalState{
-        return emotionalStateDao.readOldestEmotionalState()
     }
 }
