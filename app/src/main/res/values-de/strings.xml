@@ -40,7 +40,9 @@
     <string name="add_thought_text_dialog_heading">Schreib einen Text auf</string>
     <string name="add_thought_location_dialog_heading">Speichere eine Koordinate</string>
     <string name="thought_empty_dialog_ok_button">Okay</string>
-
+    <string name="add_thought_no_gps_dialog_heading">GPS ausgeschaltet</string>
+    <string name="add_thought_no_gps_text">Bitte schalten Sie GPS an, um ihren Standort zu berechnen.</string>
+    <string name="add_location_fragment_back_dialog_text">Zurück</string>
     <!-- help page -->
     <string name="your_story_help_page_heading">Willkommen zu Your Story.</string>
     <string name="your_story_help_page_content">Your Story bietet Ihnen die Möglichkeit, interessante Momente Ihres Lebens in einem digitalen Tagebuch festzuhalten.
@@ -110,7 +112,7 @@
     <string name="month_december">Dezember</string>
     <string name="settings_location_summary">Erlauben, Intervall</string>
     <string name="notification_description">Erlauben, Intervall</string>
-    <string name="settings_diary_description">Sicherrung, Importieren, Exportieren</string>
+    <string name="settings_diary_description">Sicherung, Importieren, Exportieren</string>
     <string name="channel_description">Benachrichtigungen für Your Story</string>
     <string name="location_settings">GPS - Einstellungen</string>
     <string name="notifiaction_settings">Benachrichtigungen - Einstellungen</string>

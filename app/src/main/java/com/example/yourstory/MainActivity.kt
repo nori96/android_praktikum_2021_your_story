@@ -124,6 +124,10 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
                 sharedThoughtDialogViewModel.isInCaptureMode = true
                 hostFramentNavController.navigate(R.id.action_takePictureFragment_self)
             }
+            if(hostFramentNavController.currentDestination!!.id == R.id.recordAudioFragment) {
+                val viewModelShared = ViewModelProvider(this)[SharedThoughtDialogViewModel::class.java]
+                viewModelShared.clearAudioData()
+            }
             onBackPressed()
             true
         }
@@ -151,6 +155,10 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
             if(hostFramentNavController.currentDestination!!.id == R.id.takePictureFragment && hostFramentNavController.previousBackStackEntry!!.destination.id == R.id.takePictureFragment){
                 sharedThoughtDialogViewModel.isInCaptureMode = true
                 hostFramentNavController.navigate(R.id.action_takePictureFragment_self)
+            }
+            if(hostFramentNavController.currentDestination!!.id == R.id.recordAudioFragment) {
+                val viewModelShared = ViewModelProvider(this)[SharedThoughtDialogViewModel::class.java]
+                viewModelShared.clearAudioData()
             }
             onBackPressed()
         }

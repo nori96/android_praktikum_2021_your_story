@@ -31,7 +31,9 @@
     <string name="add_thought_text_dialog_heading">Write down some Text</string>
     <string name="add_thought_location_dialog_heading">Record a Location</string>
     <string name="add_location_fragment_loading_text">Please wait. Your location gets calculated.</string>
-
+    <string name="add_thought_no_gps_dialog_heading">GPS disabled</string>
+    <string name="add_thought_no_gps_text">Please enable GPS in your settings to record your location.</string>
+    <string name="add_location_fragment_back_dialog_text">Back</string>
     <!-- help page -->
     <string name="your_story_help_page_heading">Welcome to your Story.</string>
     <string name="your_story_help_page_content">Your Story will provide you with an amazing possibility to capture interesting moments of your life in a diary

@@ -1,18 +1,17 @@
 package com.example.yourstory.today.thought
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.TextView
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.example.yourstory.R
 import com.example.yourstory.databinding.RecordTextFragmentBinding
-import org.w3c.dom.Text
 
 class RecordTextFragment : Fragment() {
 

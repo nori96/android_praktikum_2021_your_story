@@ -3,15 +3,13 @@ package com.example.yourstory.today.thought
 import android.media.MediaPlayer
 import android.media.MediaRecorder
 import android.media.MediaRecorder.AudioSource.MIC
-import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.os.SystemClock
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.RequiresApi
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -109,7 +107,8 @@ class RecordAudioFragment : Fragment() {
         binding.confirmThoughtDialogAudio.setOnClickListener {
             if (viewModelShared.audioFileName != "") {
                 viewModelShared.audio.value = viewModelShared.audioFileName
-                revertUserActions()
+                viewModelShared.clearAudioData()
+                //revertUserActions()
                 hostFragmentNavController.navigate(R.id.action_recordAudioFragment_to_thought_dialog)
             } else {
                 alertDialogBuilder.setTitle(R.string.record_audio_no_audio_submit_heading)
@@ -119,7 +118,8 @@ class RecordAudioFragment : Fragment() {
             }
         }
         binding.cancelThoughtDialogAudio.setOnClickListener {
-            revertUserActions()
+            //revertUserActions()
+            viewModelShared.clearAudioData()
             hostFragmentNavController.navigate(R.id.action_recordAudioFragment_to_thought_dialog)
         }
         return binding.root
@@ -132,21 +132,7 @@ class RecordAudioFragment : Fragment() {
         return file.path
     }
 
-    private fun revertUserActions() {
-        stopPlayer()
-        if (viewModelShared.mediaRecorder != null) {
-            viewModelShared.mediaRecorder?.apply {
-                stop()
-                release()
-            }
-        }
-        viewModelShared.chronometerElapsedTime = 0L
-        viewModelShared.audioFileName = ""
-        viewModelShared.mediaRecorder = null
-        viewModelShared.player = null
-    }
-
-    private fun stopPlayer() {
+    fun stopPlayer() {
         if (viewModelShared.player != null && viewModelShared.player!!.isPlaying) {
             viewModelShared.player!!.stop()
         }

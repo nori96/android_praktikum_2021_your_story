@@ -16,11 +16,7 @@ import com.example.yourstory.R
 import com.example.yourstory.databinding.DiaryFragmentBinding
 import org.joda.time.DateTime
 
-class DiaryFragment : Fragment(), DiaryAdapter.OnDiaryClickListener, AdapterView.OnItemSelectedListener{
-
-    companion object {
-        fun newInstance() = DiaryFragment()
-    }
+class DiaryFragment : Fragment(), DiaryAdapter.OnDiaryClickListener, AdapterView.OnItemSelectedListener {
 
     private lateinit var hostFramentNavController: NavController
     lateinit var binding : DiaryFragmentBinding

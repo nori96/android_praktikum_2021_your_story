@@ -95,4 +95,20 @@ class SharedThoughtDialogViewModel(application: Application) : AndroidViewModel(
         audioFileName = ""
         chronometerElapsedTime = 0L
     }
+
+    fun clearAudioData() {
+        if (player != null && player!!.isPlaying) {
+            player!!.stop()
+        }
+        if (mediaRecorder != null) {
+            mediaRecorder?.apply {
+                stop()
+                release()
+            }
+        }
+        chronometerElapsedTime = 0L
+        audioFileName = ""
+        mediaRecorder = null
+        player = null
+    }
 }

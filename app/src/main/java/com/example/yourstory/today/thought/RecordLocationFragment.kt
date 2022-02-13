@@ -45,14 +45,17 @@ class RecordLocationFragment : Fragment(), OnMapReadyCallback, LocationListener 
         if (viewModelShared.loading.value!!) {
             loadingDialogBuilder = MaterialAlertDialogBuilder(requireContext())
             loadingDialogBuilder!!.setView(R.layout.loading_dialog_add_location)
-            loadingDialogBuilder!!.setCancelable(false)
+            //loadingDialogBuilder!!.setCancelable(false)
+            loadingDialogBuilder!!.setPositiveButton(R.string.add_location_fragment_back_dialog_text){
+                _, _ -> hostFragmentNavController.navigate(R.id.action_recordLocationFragment_to_thought_dialog)
+            }
             loadingDialog = loadingDialogBuilder!!.show()
         }
 
         viewModelShared.loading.observe(viewLifecycleOwner, {
             if (!viewModelShared.loading.value!!) {
                 if (loadingDialogBuilder != null && loadingDialog != null) {
-                    loadingDialogBuilder!!.setCancelable(true)
+                    //loadingDialogBuilder!!.setCancelable(true)
                     loadingDialog!!.dismiss()
                 }
             }
@@ -113,11 +116,6 @@ class RecordLocationFragment : Fragment(), OnMapReadyCallback, LocationListener 
     fun getLocation(){
         try {
             val locationManager = requireActivity().getSystemService(LOCATION_SERVICE) as LocationManager
-            val isGPSEnabled = locationManager
-                .isProviderEnabled(LocationManager.GPS_PROVIDER)
-            if (!isGPSEnabled) {
-                return
-            }
             locationManager.requestLocationUpdates(
                 LocationManager.GPS_PROVIDER,
                 1000*60L,
