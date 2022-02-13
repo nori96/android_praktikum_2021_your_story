@@ -17,7 +17,7 @@ import org.joda.time.DateTime
 class DiaryDetailViewModel(application: Application) : AndroidViewModel(application) {
 
     private lateinit var title: String
-    private var repository: Repository
+    private var repository: Repository = Repository(application)
     var deleteState = MutableLiveData(false)
     var selectedItems = MutableLiveData(listOf<Int>())
     lateinit var todayDiaryEntryData : LiveData<List<DiaryEntry>>
@@ -27,15 +27,11 @@ class DiaryDetailViewModel(application: Application) : AndroidViewModel(applicat
     var currentAudioTrack = MutableLiveData("")
     var mediaPlayerRunning = MutableLiveData(false)
 
-    init {
-        repository = Repository(application)
-    }
-
     fun setDate(date: String){
             title = date
-        var year = date.split(".")[2]
-        var month = date.split(".")[1]
-        var day = date.split(".")[0]
+        val year = date.split(".")[2]
+        val month = date.split(".")[1]
+        val day = date.split(".")[0]
 
         todayDiaryEntryData = repository.readAllEntriesOfaDate(DateTime(year.toInt(),month.toInt(),day.toInt(),0,0).toString())
         todayEmotionalStateEntryData = repository.readAllEmotionalStatesOfADate(DateTime(year.toInt(),month.toInt(),day.toInt(),0,0).toString())
