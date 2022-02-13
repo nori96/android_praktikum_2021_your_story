@@ -14,22 +14,15 @@ class SettingsFragment : Fragment() {
 
     private lateinit var hostFramentNavController: NavController
     private lateinit var binding: SettingsFragmentBinding
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = SettingsFragmentBinding.inflate(inflater,container,false)
 
         if (container != null) {
             hostFramentNavController = container.findNavController()
-        }
-
-        binding.locationItem.setOnClickListener {
-            hostFramentNavController.navigate(R.id.action_settingsFragment_to_settingsLocationFragment)
         }
 
         binding.notificationItem.setOnClickListener {

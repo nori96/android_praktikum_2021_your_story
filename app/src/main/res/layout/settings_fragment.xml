@@ -8,77 +8,19 @@
     tools:context=".settings.SettingsFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/location_item"
+        android:id="@+id/notification_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:divider="@drawable/empty_tall_divider">
 
         <ImageView
-            android:id="@+id/imageView_location"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="8dp"
-            android:src="@drawable/tought_dialog_location"
-            android:tint="@color/green_selected"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/textView8"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:text="@string/location_title"
-            android:textColor="@color/green_selected"
-            app:layout_constraintStart_toEndOf="@+id/imageView_location"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/textView9"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:textColor="@color/non_clickable_grey"
-            android:text="@string/settings_location_summary"
-            app:layout_constraintStart_toEndOf="@+id/imageView_location"
-            app:layout_constraintTop_toBottomOf="@+id/textView8" />
-
-        <ImageView
-            android:id="@+id/imageView3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:src="@drawable/ic_baseline_arrow_forward_ios_24"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <View
-        android:id="@+id/divider"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        android:background="?android:attr/listDivider" />
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/notification_item"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <ImageView
             android:id="@+id/imageView_notification"
             android:layout_width="40dp"
             android:layout_height="40dp"
+            android:layout_marginTop="8dp"
             android:layout_marginStart="32dp"
             android:src="@drawable/ic_baseline_notifications_24"
-            android:tint="@color/green_selected"
+            app:tint="@color/green_selected"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -89,6 +31,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
             android:text="@string/notification"
             android:textColor="@color/green_selected"
             app:layout_constraintStart_toEndOf="@+id/imageView_notification"
@@ -136,7 +79,7 @@
             android:layout_height="40dp"
             android:layout_marginStart="32dp"
             android:src="@drawable/diary_filled"
-            android:tint="@color/green_selected"
+            app:tint="@color/green_selected"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
