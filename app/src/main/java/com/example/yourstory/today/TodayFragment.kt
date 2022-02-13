@@ -44,12 +44,10 @@ class TodayFragment : Fragment() {
             hostFramentNavController = container.findNavController()
         }
         recyclerView = binding.recyclerViewTodayPage
-
-
+        
         viewModel = ViewModelProvider(requireActivity())[TodayViewModel::class.java]
         sharedViewModel = ViewModelProvider(requireActivity())[SharedThoughtDialogViewModel::class.java]
-        //TODO somehow suddenly saving entries is not possible anymore with this line
-        //sharedViewModel.resetData()
+
         recyclerView.adapter = DiaryEntriesAdapter(this)
 
         hostFramentNavController.addOnDestinationChangedListener { _, destination, _ ->
@@ -96,6 +94,7 @@ class TodayFragment : Fragment() {
             fabClicked = !fabClicked
         }
         binding.thoughtFab.setOnClickListener {
+            sharedViewModel.resetData()
             hostFramentNavController.navigate(R.id.action_navigation_today_to_thought_dialog)
             fabClicked = false
         }
